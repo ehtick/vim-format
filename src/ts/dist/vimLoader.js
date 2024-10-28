@@ -5,9 +5,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VimLoader = void 0;
 class VimLoader {
-    static async loadFromBfast(bfast, download, ignoreStrings) {
+    static async loadFromBfast(bfast, ignoreStrings) {
         const [entity, strings] = await Promise.all([
-            VimLoader.requestEntities(bfast, download),
+            VimLoader.requestEntities(bfast),
             ignoreStrings ? Promise.resolve(undefined) : VimLoader.requestStrings(bfast)
         ]);
         return [entity, strings];
@@ -21,10 +21,8 @@ class VimLoader {
         const strings = new TextDecoder('utf-8').decode(buffer).split('\0');
         return strings;
     }
-    static async requestEntities(bfast, download) {
-        const entities = download
-            ? await bfast.getLocalBfast('entities')
-            : await bfast.getBfast('entities');
+    static async requestEntities(bfast) {
+        const entities = await bfast.getBfast('entities');
         if (!entities) {
             console.error('Could not get String Data from VIM file. Bim features will be disabled.');
         }

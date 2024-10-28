@@ -140,6 +140,7 @@ class ParameterDescriptor {
             table.getIsReadOnly(index).then(v => result.isReadOnly = v),
             table.getFlags(index).then(v => result.flags = v),
             table.getGuid(index).then(v => result.guid = v),
+            table.getStorageType(index).then(v => result.storageType = v),
             table.getDisplayUnitIndex(index).then(v => result.displayUnitIndex = v),
         ]);
         return result;
@@ -173,6 +174,7 @@ class ParameterDescriptorTable {
         let isReadOnly;
         let flags;
         let guid;
+        let storageType;
         let displayUnitIndex;
         await Promise.all([
             (async () => { name = (await localTable.getStringArray("string:Name")); })(),
@@ -183,6 +185,7 @@ class ParameterDescriptorTable {
             (async () => { isReadOnly = (await localTable.getBooleanArray("byte:IsReadOnly")); })(),
             (async () => { flags = (await localTable.getNumberArray("int:Flags")); })(),
             (async () => { guid = (await localTable.getStringArray("string:Guid")); })(),
+            (async () => { storageType = (await localTable.getNumberArray("int:StorageType")); })(),
             (async () => { displayUnitIndex = (await localTable.getNumberArray("index:Vim.DisplayUnit:DisplayUnit")); })(),
         ]);
         let parameterDescriptor = [];
@@ -198,6 +201,7 @@ class ParameterDescriptorTable {
                 isReadOnly: isReadOnly ? isReadOnly[i] : undefined,
                 flags: flags ? flags[i] : undefined,
                 guid: guid ? guid[i] : undefined,
+                storageType: storageType ? storageType[i] : undefined,
                 displayUnitIndex: displayUnitIndex ? displayUnitIndex[i] : undefined
             });
         }
@@ -250,6 +254,12 @@ class ParameterDescriptorTable {
     }
     async getAllGuid() {
         return (await this.entityTable.getStringArray("string:Guid"));
+    }
+    async getStorageType(parameterDescriptorIndex) {
+        return (await this.entityTable.getNumber(parameterDescriptorIndex, "int:StorageType"));
+    }
+    async getAllStorageType() {
+        return (await this.entityTable.getNumberArray("int:StorageType"));
     }
     async getDisplayUnitIndex(parameterDescriptorIndex) {
         return await this.entityTable.getNumber(parameterDescriptorIndex, "index:Vim.DisplayUnit:DisplayUnit");
@@ -6217,8 +6227,8 @@ class VimDocument {
         this.entities = entities;
         this.strings = strings;
     }
-    static async createFromBfast(bfast, download, ignoreStrings = false) {
-        const loaded = await vimLoader_1.VimLoader.loadFromBfast(bfast, download, ignoreStrings);
+    static async createFromBfast(bfast, ignoreStrings = false) {
+        const loaded = await vimLoader_1.VimLoader.loadFromBfast(bfast, ignoreStrings);
         if (loaded[0] === undefined)
             return undefined;
         let doc = new VimDocument(loaded[0], loaded[1]);

@@ -74,6 +74,7 @@ export interface IParameterDescriptor {
     isReadOnly?: boolean;
     flags?: number;
     guid?: string;
+    storageType?: number;
     displayUnitIndex?: number;
     displayUnit?: IDisplayUnit;
 }
@@ -97,6 +98,8 @@ export interface IParameterDescriptorTable {
     getAllFlags(): Promise<number[] | undefined>;
     getGuid(parameterDescriptorIndex: number): Promise<string | undefined>;
     getAllGuid(): Promise<string[] | undefined>;
+    getStorageType(parameterDescriptorIndex: number): Promise<number | undefined>;
+    getAllStorageType(): Promise<number[] | undefined>;
     getDisplayUnitIndex(parameterDescriptorIndex: number): Promise<number | undefined>;
     getAllDisplayUnitIndex(): Promise<number[] | undefined>;
     getDisplayUnit(parameterDescriptorIndex: number): Promise<IDisplayUnit | undefined>;
@@ -111,6 +114,7 @@ export declare class ParameterDescriptor implements IParameterDescriptor {
     isReadOnly?: boolean;
     flags?: number;
     guid?: string;
+    storageType?: number;
     displayUnitIndex?: number;
     displayUnit?: IDisplayUnit;
     static createFromTable(table: IParameterDescriptorTable, index: number): Promise<IParameterDescriptor>;
@@ -138,6 +142,8 @@ export declare class ParameterDescriptorTable implements IParameterDescriptorTab
     getAllFlags(): Promise<number[] | undefined>;
     getGuid(parameterDescriptorIndex: number): Promise<string | undefined>;
     getAllGuid(): Promise<string[] | undefined>;
+    getStorageType(parameterDescriptorIndex: number): Promise<number | undefined>;
+    getAllStorageType(): Promise<number[] | undefined>;
     getDisplayUnitIndex(parameterDescriptorIndex: number): Promise<number | undefined>;
     getAllDisplayUnitIndex(): Promise<number[] | undefined>;
     getDisplayUnit(parameterDescriptorIndex: number): Promise<IDisplayUnit | undefined>;
@@ -3482,5 +3488,5 @@ export declare class VimDocument {
     entities: BFast;
     strings: string[] | undefined;
     private constructor();
-    static createFromBfast(bfast: BFast, download: boolean, ignoreStrings?: boolean): Promise<VimDocument | undefined>;
+    static createFromBfast(bfast: BFast, ignoreStrings?: boolean): Promise<VimDocument | undefined>;
 }
