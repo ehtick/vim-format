@@ -15,7 +15,7 @@ namespace Vim.Format.ObjectModel
         public static class History
         {
             // Schema additions
-            //   TODO...
+            //   Vim.FamilyInstance__index:Vim.Element:SuperComponent
             public const string v5_4_0 = "5.4.0";
 
             // Schema additions

@@ -1,6 +1,6 @@
 {
   "VimFormatVersion": "1.0.0",
-  "SchemaVersion": "5.3.0",
+  "SchemaVersion": "5.4.0",
   "Tables": {
     "Vim.Area": [
       "byte:IsGrossInterior",
@@ -198,6 +198,7 @@
       "float:Translation.Z",
       "index:Vim.Element:Element",
       "index:Vim.Element:Host",
+      "index:Vim.Element:SuperComponent",
       "index:Vim.FamilyType:FamilyType",
       "index:Vim.Room:FromRoom",
       "index:Vim.Room:ToRoom"
