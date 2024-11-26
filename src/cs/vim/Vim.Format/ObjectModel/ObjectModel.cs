@@ -15,6 +15,10 @@ namespace Vim.Format.ObjectModel
         public static class History
         {
             // Schema additions
+            //   Vim.FamilyInstance__index:Vim.Element:SuperComponent
+            public const string v5_4_0 = "5.4.0";
+
+            // Schema additions
             //   Vim.ParameterDescriptor__int:StorageType
             public const string v5_3_0 = "5.3.0";
 
@@ -163,7 +167,8 @@ namespace Vim.Format.ObjectModel
         // ReSharper enable MemberHidesStaticFromOuterClass
 
         // [MAINTAIN] Add more object model SerializableVersions below and update the current one.
-        public static SerializableVersion Current => v5_3_0;
+        public static SerializableVersion Current => v5_4_0;
+        public static SerializableVersion v5_4_0 => SerializableVersion.Parse(History.v5_4_0);
         public static SerializableVersion v5_3_0 => SerializableVersion.Parse(History.v5_3_0);
         public static SerializableVersion v5_2_0 => SerializableVersion.Parse(History.v5_2_0);
         public static SerializableVersion v5_1_0 => SerializableVersion.Parse(History.v5_1_0);
@@ -817,6 +822,7 @@ namespace Vim.Format.ObjectModel
         public Relation<Element> _Host;
         public Relation<Room> _FromRoom;
         public Relation<Room> _ToRoom;
+        public Relation<Element> _SuperComponent;
     }
 
     /// <summary>
