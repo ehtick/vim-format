@@ -5302,6 +5302,8 @@ namespace Vim
         Room* mFromRoom;
         int mToRoomIndex;
         Room* mToRoom;
+        int mSuperComponentIndex;
+        Element* mSuperComponent;
         int mElementIndex;
         Element* mElement;
         
@@ -5352,6 +5354,7 @@ namespace Vim
             familyInstance->mHostIndex = GetHostIndex(familyInstanceIndex);
             familyInstance->mFromRoomIndex = GetFromRoomIndex(familyInstanceIndex);
             familyInstance->mToRoomIndex = GetToRoomIndex(familyInstanceIndex);
+            familyInstance->mSuperComponentIndex = GetSuperComponentIndex(familyInstanceIndex);
             familyInstance->mElementIndex = GetElementIndex(familyInstanceIndex);
             return familyInstance;
         }
@@ -5385,6 +5388,7 @@ namespace Vim
             bool existsHost = mEntityTable.column_exists("index:Vim.Element:Host");
             bool existsFromRoom = mEntityTable.column_exists("index:Vim.Room:FromRoom");
             bool existsToRoom = mEntityTable.column_exists("index:Vim.Room:ToRoom");
+            bool existsSuperComponent = mEntityTable.column_exists("index:Vim.Element:SuperComponent");
             bool existsElement = mEntityTable.column_exists("index:Vim.Element:Element");
             
             const auto count = GetCount();
@@ -5511,6 +5515,7 @@ namespace Vim
             const std::vector<int>& hostData = mEntityTable.column_exists("index:Vim.Element:Host") ? mEntityTable.mIndexColumns["index:Vim.Element:Host"] : std::vector<int>();
             const std::vector<int>& fromRoomData = mEntityTable.column_exists("index:Vim.Room:FromRoom") ? mEntityTable.mIndexColumns["index:Vim.Room:FromRoom"] : std::vector<int>();
             const std::vector<int>& toRoomData = mEntityTable.column_exists("index:Vim.Room:ToRoom") ? mEntityTable.mIndexColumns["index:Vim.Room:ToRoom"] : std::vector<int>();
+            const std::vector<int>& superComponentData = mEntityTable.column_exists("index:Vim.Element:SuperComponent") ? mEntityTable.mIndexColumns["index:Vim.Element:SuperComponent"] : std::vector<int>();
             const std::vector<int>& elementData = mEntityTable.column_exists("index:Vim.Element:Element") ? mEntityTable.mIndexColumns["index:Vim.Element:Element"] : std::vector<int>();
             
             for (int i = 0; i < count; ++i)
@@ -5567,6 +5572,7 @@ namespace Vim
                 entity.mHostIndex = existsHost ? hostData[i] : -1;
                 entity.mFromRoomIndex = existsFromRoom ? fromRoomData[i] : -1;
                 entity.mToRoomIndex = existsToRoom ? toRoomData[i] : -1;
+                entity.mSuperComponentIndex = existsSuperComponent ? superComponentData[i] : -1;
                 entity.mElementIndex = existsElement ? elementData[i] : -1;
                 familyInstance->push_back(entity);
             }
@@ -6288,6 +6294,18 @@ namespace Vim
                 return -1;
             
             return mEntityTable.mIndexColumns["index:Vim.Room:ToRoom"][familyInstanceIndex];
+        }
+        
+        int GetSuperComponentIndex(int familyInstanceIndex)
+        {
+            if (!mEntityTable.column_exists("index:Vim.Element:SuperComponent")) {
+                return -1;
+            }
+            
+            if (familyInstanceIndex < 0 || familyInstanceIndex >= GetCount())
+                return -1;
+            
+            return mEntityTable.mIndexColumns["index:Vim.Element:SuperComponent"][familyInstanceIndex];
         }
         
         int GetElementIndex(int familyInstanceIndex)

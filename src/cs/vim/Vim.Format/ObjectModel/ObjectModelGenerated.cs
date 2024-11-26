@@ -669,6 +669,7 @@ namespace Vim.Format.ObjectModel {
         public Vim.Format.ObjectModel.Element Host => _Host.Value;
         public Vim.Format.ObjectModel.Room FromRoom => _FromRoom.Value;
         public Vim.Format.ObjectModel.Room ToRoom => _ToRoom.Value;
+        public Vim.Format.ObjectModel.Element SuperComponent => _SuperComponent.Value;
         public Vim.Format.ObjectModel.Element Element => _Element.Value;
         public FamilyInstance()
         {
@@ -676,6 +677,7 @@ namespace Vim.Format.ObjectModel {
             _Host = new Relation<Vim.Format.ObjectModel.Element>();
             _FromRoom = new Relation<Vim.Format.ObjectModel.Room>();
             _ToRoom = new Relation<Vim.Format.ObjectModel.Room>();
+            _SuperComponent = new Relation<Vim.Format.ObjectModel.Element>();
             _Element = new Relation<Vim.Format.ObjectModel.Element>();
         }
         
@@ -712,6 +714,7 @@ namespace Vim.Format.ObjectModel {
                     (_Host?.Index == other._Host?.Index) &&
                     (_FromRoom?.Index == other._FromRoom?.Index) &&
                     (_ToRoom?.Index == other._ToRoom?.Index) &&
+                    (_SuperComponent?.Index == other._SuperComponent?.Index) &&
                     (_Element?.Index == other._Element?.Index);
                 if (!fieldsAreEqual)
                 {
@@ -2612,6 +2615,8 @@ namespace Vim.Format.ObjectModel {
         public int GetFamilyInstanceFromRoomIndex(int index) => FamilyInstanceFromRoomIndex?.ElementAtOrDefault(index, EntityRelation.None) ?? EntityRelation.None;
         public IArray<int> FamilyInstanceToRoomIndex { get; }
         public int GetFamilyInstanceToRoomIndex(int index) => FamilyInstanceToRoomIndex?.ElementAtOrDefault(index, EntityRelation.None) ?? EntityRelation.None;
+        public IArray<int> FamilyInstanceSuperComponentIndex { get; }
+        public int GetFamilyInstanceSuperComponentIndex(int index) => FamilyInstanceSuperComponentIndex?.ElementAtOrDefault(index, EntityRelation.None) ?? EntityRelation.None;
         public IArray<int> FamilyInstanceElementIndex { get; }
         public int GetFamilyInstanceElementIndex(int index) => FamilyInstanceElementIndex?.ElementAtOrDefault(index, EntityRelation.None) ?? EntityRelation.None;
         public int NumFamilyInstance => FamilyInstanceEntityTable?.NumRows ?? 0;
@@ -2649,6 +2654,7 @@ namespace Vim.Format.ObjectModel {
             r._Host = new Relation<Vim.Format.ObjectModel.Element>(GetFamilyInstanceHostIndex(n), GetElement);
             r._FromRoom = new Relation<Vim.Format.ObjectModel.Room>(GetFamilyInstanceFromRoomIndex(n), GetRoom);
             r._ToRoom = new Relation<Vim.Format.ObjectModel.Room>(GetFamilyInstanceToRoomIndex(n), GetRoom);
+            r._SuperComponent = new Relation<Vim.Format.ObjectModel.Element>(GetFamilyInstanceSuperComponentIndex(n), GetElement);
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetFamilyInstanceElementIndex(n), GetElement);
             return r;
         }
@@ -4174,6 +4180,7 @@ namespace Vim.Format.ObjectModel {
             FamilyInstanceHostIndex = FamilyInstanceEntityTable?.GetIndexColumnValues("index:Vim.Element:Host") ?? Array.Empty<int>().ToIArray();
             FamilyInstanceFromRoomIndex = FamilyInstanceEntityTable?.GetIndexColumnValues("index:Vim.Room:FromRoom") ?? Array.Empty<int>().ToIArray();
             FamilyInstanceToRoomIndex = FamilyInstanceEntityTable?.GetIndexColumnValues("index:Vim.Room:ToRoom") ?? Array.Empty<int>().ToIArray();
+            FamilyInstanceSuperComponentIndex = FamilyInstanceEntityTable?.GetIndexColumnValues("index:Vim.Element:SuperComponent") ?? Array.Empty<int>().ToIArray();
             FamilyInstanceElementIndex = FamilyInstanceEntityTable?.GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>().ToIArray();
             ViewCameraIndex = ViewEntityTable?.GetIndexColumnValues("index:Vim.Camera:Camera") ?? Array.Empty<int>().ToIArray();
             ViewFamilyTypeIndex = ViewEntityTable?.GetIndexColumnValues("index:Vim.FamilyType:FamilyType") ?? Array.Empty<int>().ToIArray();
@@ -4617,6 +4624,7 @@ namespace Vim.Format.ObjectModel {
             tb.AddIndexColumn("index:Vim.Element:Host", typedEntities.Select(x => x._Host?.Index ?? EntityRelation.None));
             tb.AddIndexColumn("index:Vim.Room:FromRoom", typedEntities.Select(x => x._FromRoom?.Index ?? EntityRelation.None));
             tb.AddIndexColumn("index:Vim.Room:ToRoom", typedEntities.Select(x => x._ToRoom?.Index ?? EntityRelation.None));
+            tb.AddIndexColumn("index:Vim.Element:SuperComponent", typedEntities.Select(x => x._SuperComponent?.Index ?? EntityRelation.None));
             tb.AddIndexColumn("index:Vim.Element:Element", typedEntities.Select(x => x._Element?.Index ?? EntityRelation.None));
             return tb;
         }

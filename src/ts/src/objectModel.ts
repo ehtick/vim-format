@@ -3919,6 +3919,8 @@ export interface IFamilyInstance {
     fromRoom?: IRoom
     toRoomIndex?: number
     toRoom?: IRoom
+    superComponentIndex?: number
+    superComponent?: IElement
     elementIndex?: number
     element?: IElement
 }
@@ -3987,6 +3989,9 @@ export interface IFamilyInstanceTable {
     getToRoomIndex(familyInstanceIndex: number): Promise<number | undefined>
     getAllToRoomIndex(): Promise<number[] | undefined>
     getToRoom(familyInstanceIndex: number): Promise<IRoom | undefined>
+    getSuperComponentIndex(familyInstanceIndex: number): Promise<number | undefined>
+    getAllSuperComponentIndex(): Promise<number[] | undefined>
+    getSuperComponent(familyInstanceIndex: number): Promise<IElement | undefined>
     getElementIndex(familyInstanceIndex: number): Promise<number | undefined>
     getAllElementIndex(): Promise<number[] | undefined>
     getElement(familyInstanceIndex: number): Promise<IElement | undefined>
@@ -4026,6 +4031,8 @@ export class FamilyInstance implements IFamilyInstance {
     fromRoom?: IRoom
     toRoomIndex?: number
     toRoom?: IRoom
+    superComponentIndex?: number
+    superComponent?: IElement
     elementIndex?: number
     element?: IElement
     
@@ -4061,6 +4068,7 @@ export class FamilyInstance implements IFamilyInstance {
             table.getHostIndex(index).then(v => result.hostIndex = v),
             table.getFromRoomIndex(index).then(v => result.fromRoomIndex = v),
             table.getToRoomIndex(index).then(v => result.toRoomIndex = v),
+            table.getSuperComponentIndex(index).then(v => result.superComponentIndex = v),
             table.getElementIndex(index).then(v => result.elementIndex = v),
         ])
         
@@ -4124,6 +4132,7 @@ export class FamilyInstanceTable implements IFamilyInstanceTable {
         let hostIndex: number[] | undefined
         let fromRoomIndex: number[] | undefined
         let toRoomIndex: number[] | undefined
+        let superComponentIndex: number[] | undefined
         let elementIndex: number[] | undefined
         
         await Promise.all([
@@ -4154,6 +4163,7 @@ export class FamilyInstanceTable implements IFamilyInstanceTable {
             (async () => { hostIndex = (await localTable.getNumberArray("index:Vim.Element:Host")) })(),
             (async () => { fromRoomIndex = (await localTable.getNumberArray("index:Vim.Room:FromRoom")) })(),
             (async () => { toRoomIndex = (await localTable.getNumberArray("index:Vim.Room:ToRoom")) })(),
+            (async () => { superComponentIndex = (await localTable.getNumberArray("index:Vim.Element:SuperComponent")) })(),
             (async () => { elementIndex = (await localTable.getNumberArray("index:Vim.Element:Element")) })(),
         ])
         
@@ -4190,6 +4200,7 @@ export class FamilyInstanceTable implements IFamilyInstanceTable {
                 hostIndex: hostIndex ? hostIndex[i] : undefined,
                 fromRoomIndex: fromRoomIndex ? fromRoomIndex[i] : undefined,
                 toRoomIndex: toRoomIndex ? toRoomIndex[i] : undefined,
+                superComponentIndex: superComponentIndex ? superComponentIndex[i] : undefined,
                 elementIndex: elementIndex ? elementIndex[i] : undefined
             })
         }
@@ -4451,6 +4462,24 @@ export class FamilyInstanceTable implements IFamilyInstanceTable {
         }
         
         return await this.document.room?.get(index)
+    }
+    
+    async getSuperComponentIndex(familyInstanceIndex: number): Promise<number | undefined> {
+        return await this.entityTable.getNumber(familyInstanceIndex, "index:Vim.Element:SuperComponent")
+    }
+    
+    async getAllSuperComponentIndex(): Promise<number[] | undefined> {
+        return await this.entityTable.getNumberArray("index:Vim.Element:SuperComponent")
+    }
+    
+    async getSuperComponent(familyInstanceIndex: number): Promise<IElement | undefined> {
+        const index = await this.getSuperComponentIndex(familyInstanceIndex)
+        
+        if (index === undefined) {
+            return undefined
+        }
+        
+        return await this.document.element?.get(index)
     }
     
     async getElementIndex(familyInstanceIndex: number): Promise<number | undefined> {
