@@ -2334,6 +2334,7 @@ class FamilyInstance {
             table.getHostIndex(index).then(v => result.hostIndex = v),
             table.getFromRoomIndex(index).then(v => result.fromRoomIndex = v),
             table.getToRoomIndex(index).then(v => result.toRoomIndex = v),
+            table.getSuperComponentIndex(index).then(v => result.superComponentIndex = v),
             table.getElementIndex(index).then(v => result.elementIndex = v),
         ]);
         return result;
@@ -2386,6 +2387,7 @@ class FamilyInstanceTable {
         let hostIndex;
         let fromRoomIndex;
         let toRoomIndex;
+        let superComponentIndex;
         let elementIndex;
         await Promise.all([
             (async () => { facingFlipped = (await localTable.getBooleanArray("byte:FacingFlipped")); })(),
@@ -2415,6 +2417,7 @@ class FamilyInstanceTable {
             (async () => { hostIndex = (await localTable.getNumberArray("index:Vim.Element:Host")); })(),
             (async () => { fromRoomIndex = (await localTable.getNumberArray("index:Vim.Room:FromRoom")); })(),
             (async () => { toRoomIndex = (await localTable.getNumberArray("index:Vim.Room:ToRoom")); })(),
+            (async () => { superComponentIndex = (await localTable.getNumberArray("index:Vim.Element:SuperComponent")); })(),
             (async () => { elementIndex = (await localTable.getNumberArray("index:Vim.Element:Element")); })(),
         ]);
         let familyInstance = [];
@@ -2449,6 +2452,7 @@ class FamilyInstanceTable {
                 hostIndex: hostIndex ? hostIndex[i] : undefined,
                 fromRoomIndex: fromRoomIndex ? fromRoomIndex[i] : undefined,
                 toRoomIndex: toRoomIndex ? toRoomIndex[i] : undefined,
+                superComponentIndex: superComponentIndex ? superComponentIndex[i] : undefined,
                 elementIndex: elementIndex ? elementIndex[i] : undefined
             });
         }
@@ -2643,6 +2647,19 @@ class FamilyInstanceTable {
             return undefined;
         }
         return await this.document.room?.get(index);
+    }
+    async getSuperComponentIndex(familyInstanceIndex) {
+        return await this.entityTable.getNumber(familyInstanceIndex, "index:Vim.Element:SuperComponent");
+    }
+    async getAllSuperComponentIndex() {
+        return await this.entityTable.getNumberArray("index:Vim.Element:SuperComponent");
+    }
+    async getSuperComponent(familyInstanceIndex) {
+        const index = await this.getSuperComponentIndex(familyInstanceIndex);
+        if (index === undefined) {
+            return undefined;
+        }
+        return await this.document.element?.get(index);
     }
     async getElementIndex(familyInstanceIndex) {
         return await this.entityTable.getNumber(familyInstanceIndex, "index:Vim.Element:Element");

@@ -1311,6 +1311,8 @@ export interface IFamilyInstance {
     fromRoom?: IRoom;
     toRoomIndex?: number;
     toRoom?: IRoom;
+    superComponentIndex?: number;
+    superComponent?: IElement;
     elementIndex?: number;
     element?: IElement;
 }
@@ -1376,6 +1378,9 @@ export interface IFamilyInstanceTable {
     getToRoomIndex(familyInstanceIndex: number): Promise<number | undefined>;
     getAllToRoomIndex(): Promise<number[] | undefined>;
     getToRoom(familyInstanceIndex: number): Promise<IRoom | undefined>;
+    getSuperComponentIndex(familyInstanceIndex: number): Promise<number | undefined>;
+    getAllSuperComponentIndex(): Promise<number[] | undefined>;
+    getSuperComponent(familyInstanceIndex: number): Promise<IElement | undefined>;
     getElementIndex(familyInstanceIndex: number): Promise<number | undefined>;
     getAllElementIndex(): Promise<number[] | undefined>;
     getElement(familyInstanceIndex: number): Promise<IElement | undefined>;
@@ -1413,6 +1418,8 @@ export declare class FamilyInstance implements IFamilyInstance {
     fromRoom?: IRoom;
     toRoomIndex?: number;
     toRoom?: IRoom;
+    superComponentIndex?: number;
+    superComponent?: IElement;
     elementIndex?: number;
     element?: IElement;
     static createFromTable(table: IFamilyInstanceTable, index: number): Promise<IFamilyInstance>;
@@ -1482,6 +1489,9 @@ export declare class FamilyInstanceTable implements IFamilyInstanceTable {
     getToRoomIndex(familyInstanceIndex: number): Promise<number | undefined>;
     getAllToRoomIndex(): Promise<number[] | undefined>;
     getToRoom(familyInstanceIndex: number): Promise<IRoom | undefined>;
+    getSuperComponentIndex(familyInstanceIndex: number): Promise<number | undefined>;
+    getAllSuperComponentIndex(): Promise<number[] | undefined>;
+    getSuperComponent(familyInstanceIndex: number): Promise<IElement | undefined>;
     getElementIndex(familyInstanceIndex: number): Promise<number | undefined>;
     getAllElementIndex(): Promise<number[] | undefined>;
     getElement(familyInstanceIndex: number): Promise<IElement | undefined>;
