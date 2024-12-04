@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Vim.BFast;
 using Vim.LinqArray;
 
@@ -16,9 +17,8 @@ namespace Vim.Format
             DataColumns = LinqArray.LinqArray.ToLookup(_EntityTable.DataColumns, c => c.Name, c => c);
             IndexColumns = LinqArray.LinqArray.ToLookup(_EntityTable.IndexColumns, c => c.Name, c => c);
             StringColumns = LinqArray.LinqArray.ToLookup(_EntityTable.StringColumns, c => c.Name, c => c);
+            Columns = entityTable.ValidateColumnRowsAreAligned();
             NumRows = Columns.FirstOrDefault()?.NumElements() ?? 0;
-
-            Columns.ToEnumerable().ValidateColumnRowsAreAligned();
         }
 
         private SerializableEntityTable _EntityTable { get; }
@@ -28,18 +28,16 @@ namespace Vim.Format
         public LinqArray.ILookup<string, INamedBuffer> DataColumns { get; }
         public LinqArray.ILookup<string, NamedBuffer<int>> StringColumns { get; }
         public LinqArray.ILookup<string, NamedBuffer<int>> IndexColumns { get; }
-        public IArray<INamedBuffer> Columns
-            => DataColumns.Values
-                .Concatenate(IndexColumns.Values.Select(x => (INamedBuffer)x))
-                .Concatenate(StringColumns.Values.Select(x => (INamedBuffer)x));
+        public INamedBuffer[] Columns { get; }
 
         public IArray<int> GetIndexColumnValues(string columnName)
-            => IndexColumns.GetOrDefault(columnName)?.GetColumnValues<int>();
+            => IndexColumns.GetOrDefault(columnName)?.GetColumnValues<int>().ToIArray();
 
         public IArray<string> GetStringColumnValues(string columnName)
             => StringColumns.GetOrDefault(columnName)
                 ?.GetColumnValues<int>()
-                ?.Select(Document.GetString);
+                ?.Select(Document.GetString)
+                .ToIArray();
 
         public IArray<T> GetDataColumnValues<T>(string columnName) where T : unmanaged
         {
@@ -53,12 +51,12 @@ namespace Vim.Format
                 return null;
 
             if (type == typeof(short))
-                return namedBuffer.GetColumnValues<int>().Select(i => (short)i) as IArray<T>;
+                return namedBuffer.GetColumnValues<int>().Select(i => (short)i).ToIArray() as IArray<T>;
 
             if (type == typeof(bool))
-                return namedBuffer.GetColumnValues<byte>().Select(b => b != 0) as IArray<T>;
+                return namedBuffer.GetColumnValues<byte>().Select(b => b != 0).ToIArray() as IArray<T>;
 
-            return namedBuffer.GetColumnValues<T>();
+            return namedBuffer.GetColumnValues<T>().ToIArray();
         }
     }
 }

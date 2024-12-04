@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Vim.Util
 {
@@ -34,7 +33,7 @@ namespace Vim.Util
             => xs.Concat(x);
 
         public static T ElementAtOrDefault<T>(this IReadOnlyList<T> items, int index, T @default)
-            => index < 0 || index >= items.Count ? @default : items[index];
+            => items == null || (index < 0 || index >= items.Count) ? @default : items[index];
 
         /// <summary>
         /// Given a collection of items, and a map function, counts how often each mapped item is found.

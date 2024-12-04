@@ -72,8 +72,8 @@ namespace Vim.Format.Tests
             Assert.AreEqual(et1.IndexColumns.Keys.ToEnumerable().OrderBy(n => n).ToArray(), et2.IndexColumns.Keys.ToEnumerable().OrderBy(n => n).ToArray());
             Assert.AreEqual(et1.StringColumns.Keys.ToEnumerable().OrderBy(n => n).ToArray(), et2.StringColumns.Keys.ToEnumerable().OrderBy(n => n).ToArray());
 
-            var columns1 = et1.Columns.ToEnumerable().OrderBy(c => c.Name).ToArray();
-            var columns2 = et2.Columns.ToEnumerable().OrderBy(c => c.Name).ToArray();
+            var columns1 = et1.Columns.OrderBy(c => c.Name).ToArray();
+            var columns2 = et2.Columns.OrderBy(c => c.Name).ToArray();
 
             Assert.AreEqual(
                 columns1.Select(ec => ec.Name).ToArray(),

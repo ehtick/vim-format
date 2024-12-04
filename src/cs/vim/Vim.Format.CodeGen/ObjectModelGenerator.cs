@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters;
 using Vim.Format.ObjectModel;
 
 namespace Vim.Format.CodeGen;
@@ -18,6 +19,18 @@ public static class ObjectModelGenerator
             ValueSerializationStrategy.SerializeAsDataColumn
                 => $"{nameof(EntityTable.GetDataColumnValues)}<{type.Name}>",
             _ => throw new Exception($"{nameof(GetEntityTableGetterFunctionName)} error - unknown strategy {strategy:G}")
+        };
+    }
+
+    public static string GetEntityTable_v2GetterFunctionName(this ValueSerializationStrategy strategy, Type type)
+    {
+        return strategy switch
+        {
+            ValueSerializationStrategy.SerializeAsStringColumn
+                => nameof(EntityTable_v2.GetStringColumnValues),
+            ValueSerializationStrategy.SerializeAsDataColumn
+                => $"{nameof(EntityTable_v2.GetDataColumnValues)}<{type.Name}>",
+            _ => throw new Exception($"{nameof(GetEntityTable_v2GetterFunctionName)} error - unknown strategy {strategy:G}")
         };
     }
 
@@ -210,10 +223,8 @@ public static class ObjectModelGenerator
         return cb;
     }
 
-    private static CodeBuilder WriteDocument(CodeBuilder cb = null)
+    private static CodeBuilder WriteDocument(CodeBuilder cb)
     {
-        cb = cb ?? new CodeBuilder();
-
         var entityTypes = ObjectModelReflection.GetEntityTypes().ToArray();
 
         foreach (var et in entityTypes)
@@ -273,7 +284,140 @@ public static class ObjectModelGenerator
 
         cb.AppendLine("}");
         cb.AppendLine("} // Document class");
+        cb.AppendLine();
         return cb;
+    }
+
+    private static void WriteEntityTableSet(CodeBuilder cb)
+    {
+        var entityTypes = ObjectModelReflection.GetEntityTypes().ToArray();
+
+        cb.AppendLine("public partial class EntityTableSet");
+        cb.AppendLine("{");
+        cb.AppendLine(
+            "public Dictionary<string, SerializableEntityTable> RawTableMap { get; } = new Dictionary<string, SerializableEntityTable>();");
+        cb.AppendLine();
+        cb.AppendLine("private SerializableEntityTable GetRawTableOrDefault(string tableName)");
+        cb.AppendLine("    => RawTableMap.TryGetValue(tableName, out var result) ? result : null;");
+        cb.AppendLine();
+
+        cb.AppendLine("public EntityTableSet(SerializableEntityTable[] rawTables, string[] stringBuffer)");
+        cb.AppendLine("{");
+        cb.AppendLine("foreach (var rawTable in rawTables)");
+        cb.AppendLine("    RawTableMap[rawTable.Name] = rawTable;");
+        cb.AppendLine();
+        cb.AppendLine("// Populate the entity tables.");
+        foreach (var t in entityTypes)
+        {
+            var etName = t.GetEntityTableName();
+            var tmp = $"{t.Name.ToLowerInvariant()}Table";
+            cb.AppendLine($"if (GetRawTableOrDefault(\"{etName}\") is SerializableEntityTable {tmp})");
+            cb.AppendLine($"    {t.Name}Table = new {t.Name}Table({tmp}, stringBuffer);");
+            cb.AppendLine();
+        }
+        cb.AppendLine("} // EntityTableSet constructor");
+
+        cb.AppendLine();
+        foreach (var t in entityTypes)
+        {
+            cb.AppendLine($"public {t.Name}Table {t.Name}Table {{ get; }} // can be null");
+            cb.AppendLine($"public {t.Name} Get{t.Name}(int index) => {t.Name}Table?.Get(index);");
+        }
+        cb.AppendLine("} // class EntityTableSet");
+        cb.AppendLine();
+
+        foreach (var t in entityTypes)
+            WriteEntityTable(cb, t);
+    }
+
+    private static void WriteEntityTable(CodeBuilder cb, Type t)
+    {
+        var entityFields = t.GetEntityFields().ToArray();
+        var relationFields = t.GetRelationFields().ToArray();
+
+        cb.AppendLine($"public partial class {t.Name}Table : EntityTable_v2");
+        cb.AppendLine("{");
+        cb.AppendLine("private readonly EntityTableSet _parentTableSet; // can be null");
+        cb.AppendLine();
+        cb.AppendLine($"public {t.Name}Table(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)");
+        cb.AppendLine("{");
+        cb.AppendLine("_parentTableSet = parentTableSet;");
+        foreach (var f in entityFields)
+        {
+            var fieldName = f.Name;
+            var fieldType = f.FieldType;
+            var fieldTypeName = f.FieldType.Name;
+            var loadingInfos = f.GetEntityColumnLoadingInfo();
+            
+            var dataColumnGetters = loadingInfos.Select(eci =>
+            {
+                var functionName = eci.Strategy.GetEntityTable_v2GetterFunctionName(eci.EntityColumnAttribute.SerializedType);
+                var dataColumnGetter = $"{functionName}(\"{eci.SerializedValueColumnName}\")";
+                if (eci.EntityColumnAttribute.SerializedType != fieldType)
+                {
+                    dataColumnGetter += $"?.Select(v => ({fieldTypeName}) v)";
+                }
+                return dataColumnGetter;
+            }).ToArray();
+
+            var dataColumnGetterString = dataColumnGetters.Length > 1
+                ? $"({string.Join(" ?? ", dataColumnGetters)})"
+                : dataColumnGetters[0];
+
+            cb.AppendLine($"Column{fieldName} = {dataColumnGetterString} ?? Array.Empty<{fieldTypeName}>();");
+        }
+        foreach (var f in relationFields)
+        {
+            var (indexColumnName, localFieldName) = f.GetIndexColumnInfo();
+            cb.AppendLine($"Column{localFieldName}Index = GetIndexColumnValues(\"{indexColumnName}\") ?? Array.Empty<int>();");
+        }
+        cb.AppendLine($"}} // {t.Name}Table constructor");
+        cb.AppendLine();
+
+        foreach (var f in entityFields)
+        {
+            var fieldName = f.Name;
+            var fieldTypeName = f.FieldType.Name;
+            var loadingInfos = f.GetEntityColumnLoadingInfo();
+            var baseStrategy = loadingInfos[0].Strategy; // Invariant: there is always at least one entityColumnInfo (the default one)
+            var defaultValue = baseStrategy == ValueSerializationStrategy.SerializeAsStringColumn ? "\"\"" : "default";
+
+            cb.AppendLine($"public {fieldTypeName}[] Column{fieldName} {{ get; }}");
+            cb.AppendLine($"public {fieldTypeName} Get{fieldName}(int index, {fieldTypeName} @default = {defaultValue}) => Column{fieldName}.ElementAtOrDefault(index, @default);");
+            cb.AppendLine();
+        }
+
+        cb.AppendLine();
+        foreach (var f in relationFields)
+        {
+            var (_, localFieldName) = f.GetIndexColumnInfo();
+            var relType = f.FieldType.RelationTypeParameter();
+            cb.AppendLine($"public int[] Column{localFieldName}Index {{ get; }}");
+            cb.AppendLine($"public int Get{localFieldName}Index(int index) => Column{localFieldName}Index.ElementAtOrDefault(index, EntityRelation.None);");
+            cb.AppendLine($"public Get{localFieldName}(int index) => _parentTableSet.Get{relType.Name}(Get{localFieldName}Index(index));");
+            cb.AppendLine();
+        }
+
+        cb.AppendLine("// Object Getter");
+        cb.AppendLine($"public {t.Name} Get(int index)");
+        cb.AppendLine("{");
+        cb.AppendLine("if (index < 0) return null;");
+        cb.AppendLine($"var r = new {t.Name}();");
+        cb.AppendLine("r.Index = index;");
+        foreach (var f in entityFields)
+        {
+            cb.AppendLine($"r.{f.Name} = Get{f.Name}(index);");
+        }
+        foreach (var f in relationFields)
+        {
+            var relType = f.FieldType.RelationTypeParameter();
+            cb.AppendLine($"r.{f.Name} = new Relation<{relType}>(Get{f.Name.Substring(1)}Index(index), _parentTableSet.Get{relType.Name});");
+        }
+        cb.AppendLine("return r;");
+        cb.AppendLine($"}} // {t.Name} Get");
+
+        cb.AppendLine($"}} // class {t.Name}Table ");
+        cb.AppendLine();
     }
 
     private static void WriteDocumentBuilder(CodeBuilder cb)
@@ -352,12 +496,15 @@ public static class ObjectModelGenerator
             cb.AppendLine("using Vim.Math3d;");
             cb.AppendLine("using Vim.LinqArray;");
             cb.AppendLine("using Vim.Format.ObjectModel;");
+            cb.AppendLine("using Vim.Util;");
 
             cb.AppendLine();
 
             cb.AppendLine("namespace Vim.Format.ObjectModel {");
 
             WriteDocument(cb);
+
+            WriteEntityTableSet(cb);
 
             WriteDocumentBuilder(cb);
 

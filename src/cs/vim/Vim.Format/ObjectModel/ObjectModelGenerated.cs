@@ -6,6 +6,7 @@ using System.Linq;
 using Vim.Math3d;
 using Vim.LinqArray;
 using Vim.Format.ObjectModel;
+using Vim.Util;
 
 namespace Vim.Format.ObjectModel {
     // AUTO-GENERATED
@@ -4298,6 +4299,3109 @@ namespace Vim.Format.ObjectModel {
             ElementIndexMaps = new ElementIndexMaps(this, inParallel);
         }
     } // Document class
+    
+    public partial class EntityTableSet
+    {
+        public Dictionary<string, SerializableEntityTable> RawTableMap { get; } = new Dictionary<string, SerializableEntityTable>();
+        
+        private SerializableEntityTable GetRawTableOrDefault(string tableName)
+            => RawTableMap.TryGetValue(tableName, out var result) ? result : null;
+        
+        public EntityTableSet(SerializableEntityTable[] rawTables, string[] stringBuffer)
+        {
+            foreach (var rawTable in rawTables)
+                RawTableMap[rawTable.Name] = rawTable;
+            
+            // Populate the entity tables.
+            if (GetRawTableOrDefault("Vim.Asset") is SerializableEntityTable assetTable)
+                AssetTable = new AssetTable(assetTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.DisplayUnit") is SerializableEntityTable displayunitTable)
+                DisplayUnitTable = new DisplayUnitTable(displayunitTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ParameterDescriptor") is SerializableEntityTable parameterdescriptorTable)
+                ParameterDescriptorTable = new ParameterDescriptorTable(parameterdescriptorTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Parameter") is SerializableEntityTable parameterTable)
+                ParameterTable = new ParameterTable(parameterTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Element") is SerializableEntityTable elementTable)
+                ElementTable = new ElementTable(elementTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Workset") is SerializableEntityTable worksetTable)
+                WorksetTable = new WorksetTable(worksetTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.AssemblyInstance") is SerializableEntityTable assemblyinstanceTable)
+                AssemblyInstanceTable = new AssemblyInstanceTable(assemblyinstanceTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Group") is SerializableEntityTable groupTable)
+                GroupTable = new GroupTable(groupTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.DesignOption") is SerializableEntityTable designoptionTable)
+                DesignOptionTable = new DesignOptionTable(designoptionTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Level") is SerializableEntityTable levelTable)
+                LevelTable = new LevelTable(levelTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Phase") is SerializableEntityTable phaseTable)
+                PhaseTable = new PhaseTable(phaseTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Room") is SerializableEntityTable roomTable)
+                RoomTable = new RoomTable(roomTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.BimDocument") is SerializableEntityTable bimdocumentTable)
+                BimDocumentTable = new BimDocumentTable(bimdocumentTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.DisplayUnitInBimDocument") is SerializableEntityTable displayunitinbimdocumentTable)
+                DisplayUnitInBimDocumentTable = new DisplayUnitInBimDocumentTable(displayunitinbimdocumentTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.PhaseOrderInBimDocument") is SerializableEntityTable phaseorderinbimdocumentTable)
+                PhaseOrderInBimDocumentTable = new PhaseOrderInBimDocumentTable(phaseorderinbimdocumentTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Category") is SerializableEntityTable categoryTable)
+                CategoryTable = new CategoryTable(categoryTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Family") is SerializableEntityTable familyTable)
+                FamilyTable = new FamilyTable(familyTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.FamilyType") is SerializableEntityTable familytypeTable)
+                FamilyTypeTable = new FamilyTypeTable(familytypeTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.FamilyInstance") is SerializableEntityTable familyinstanceTable)
+                FamilyInstanceTable = new FamilyInstanceTable(familyinstanceTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.View") is SerializableEntityTable viewTable)
+                ViewTable = new ViewTable(viewTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ElementInView") is SerializableEntityTable elementinviewTable)
+                ElementInViewTable = new ElementInViewTable(elementinviewTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ShapeInView") is SerializableEntityTable shapeinviewTable)
+                ShapeInViewTable = new ShapeInViewTable(shapeinviewTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.AssetInView") is SerializableEntityTable assetinviewTable)
+                AssetInViewTable = new AssetInViewTable(assetinviewTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.AssetInViewSheet") is SerializableEntityTable assetinviewsheetTable)
+                AssetInViewSheetTable = new AssetInViewSheetTable(assetinviewsheetTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.LevelInView") is SerializableEntityTable levelinviewTable)
+                LevelInViewTable = new LevelInViewTable(levelinviewTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Camera") is SerializableEntityTable cameraTable)
+                CameraTable = new CameraTable(cameraTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Material") is SerializableEntityTable materialTable)
+                MaterialTable = new MaterialTable(materialTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.MaterialInElement") is SerializableEntityTable materialinelementTable)
+                MaterialInElementTable = new MaterialInElementTable(materialinelementTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.CompoundStructureLayer") is SerializableEntityTable compoundstructurelayerTable)
+                CompoundStructureLayerTable = new CompoundStructureLayerTable(compoundstructurelayerTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.CompoundStructure") is SerializableEntityTable compoundstructureTable)
+                CompoundStructureTable = new CompoundStructureTable(compoundstructureTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Node") is SerializableEntityTable nodeTable)
+                NodeTable = new NodeTable(nodeTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Geometry") is SerializableEntityTable geometryTable)
+                GeometryTable = new GeometryTable(geometryTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Shape") is SerializableEntityTable shapeTable)
+                ShapeTable = new ShapeTable(shapeTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ShapeCollection") is SerializableEntityTable shapecollectionTable)
+                ShapeCollectionTable = new ShapeCollectionTable(shapecollectionTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ShapeInShapeCollection") is SerializableEntityTable shapeinshapecollectionTable)
+                ShapeInShapeCollectionTable = new ShapeInShapeCollectionTable(shapeinshapecollectionTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.System") is SerializableEntityTable systemTable)
+                SystemTable = new SystemTable(systemTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ElementInSystem") is SerializableEntityTable elementinsystemTable)
+                ElementInSystemTable = new ElementInSystemTable(elementinsystemTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Warning") is SerializableEntityTable warningTable)
+                WarningTable = new WarningTable(warningTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ElementInWarning") is SerializableEntityTable elementinwarningTable)
+                ElementInWarningTable = new ElementInWarningTable(elementinwarningTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.BasePoint") is SerializableEntityTable basepointTable)
+                BasePointTable = new BasePointTable(basepointTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.PhaseFilter") is SerializableEntityTable phasefilterTable)
+                PhaseFilterTable = new PhaseFilterTable(phasefilterTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Grid") is SerializableEntityTable gridTable)
+                GridTable = new GridTable(gridTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Area") is SerializableEntityTable areaTable)
+                AreaTable = new AreaTable(areaTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.AreaScheme") is SerializableEntityTable areaschemeTable)
+                AreaSchemeTable = new AreaSchemeTable(areaschemeTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Schedule") is SerializableEntityTable scheduleTable)
+                ScheduleTable = new ScheduleTable(scheduleTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ScheduleColumn") is SerializableEntityTable schedulecolumnTable)
+                ScheduleColumnTable = new ScheduleColumnTable(schedulecolumnTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ScheduleCell") is SerializableEntityTable schedulecellTable)
+                ScheduleCellTable = new ScheduleCellTable(schedulecellTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ViewSheetSet") is SerializableEntityTable viewsheetsetTable)
+                ViewSheetSetTable = new ViewSheetSetTable(viewsheetsetTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ViewSheet") is SerializableEntityTable viewsheetTable)
+                ViewSheetTable = new ViewSheetTable(viewsheetTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ViewSheetInViewSheetSet") is SerializableEntityTable viewsheetinviewsheetsetTable)
+                ViewSheetInViewSheetSetTable = new ViewSheetInViewSheetSetTable(viewsheetinviewsheetsetTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ViewInViewSheetSet") is SerializableEntityTable viewinviewsheetsetTable)
+                ViewInViewSheetSetTable = new ViewInViewSheetSetTable(viewinviewsheetsetTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.ViewInViewSheet") is SerializableEntityTable viewinviewsheetTable)
+                ViewInViewSheetTable = new ViewInViewSheetTable(viewinviewsheetTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Site") is SerializableEntityTable siteTable)
+                SiteTable = new SiteTable(siteTable, stringBuffer);
+            
+            if (GetRawTableOrDefault("Vim.Building") is SerializableEntityTable buildingTable)
+                BuildingTable = new BuildingTable(buildingTable, stringBuffer);
+            
+        } // EntityTableSet constructor
+        
+        public AssetTable AssetTable { get; } // can be null
+        public Asset GetAsset(int index) => AssetTable?.Get(index);
+        public DisplayUnitTable DisplayUnitTable { get; } // can be null
+        public DisplayUnit GetDisplayUnit(int index) => DisplayUnitTable?.Get(index);
+        public ParameterDescriptorTable ParameterDescriptorTable { get; } // can be null
+        public ParameterDescriptor GetParameterDescriptor(int index) => ParameterDescriptorTable?.Get(index);
+        public ParameterTable ParameterTable { get; } // can be null
+        public Parameter GetParameter(int index) => ParameterTable?.Get(index);
+        public ElementTable ElementTable { get; } // can be null
+        public Element GetElement(int index) => ElementTable?.Get(index);
+        public WorksetTable WorksetTable { get; } // can be null
+        public Workset GetWorkset(int index) => WorksetTable?.Get(index);
+        public AssemblyInstanceTable AssemblyInstanceTable { get; } // can be null
+        public AssemblyInstance GetAssemblyInstance(int index) => AssemblyInstanceTable?.Get(index);
+        public GroupTable GroupTable { get; } // can be null
+        public Group GetGroup(int index) => GroupTable?.Get(index);
+        public DesignOptionTable DesignOptionTable { get; } // can be null
+        public DesignOption GetDesignOption(int index) => DesignOptionTable?.Get(index);
+        public LevelTable LevelTable { get; } // can be null
+        public Level GetLevel(int index) => LevelTable?.Get(index);
+        public PhaseTable PhaseTable { get; } // can be null
+        public Phase GetPhase(int index) => PhaseTable?.Get(index);
+        public RoomTable RoomTable { get; } // can be null
+        public Room GetRoom(int index) => RoomTable?.Get(index);
+        public BimDocumentTable BimDocumentTable { get; } // can be null
+        public BimDocument GetBimDocument(int index) => BimDocumentTable?.Get(index);
+        public DisplayUnitInBimDocumentTable DisplayUnitInBimDocumentTable { get; } // can be null
+        public DisplayUnitInBimDocument GetDisplayUnitInBimDocument(int index) => DisplayUnitInBimDocumentTable?.Get(index);
+        public PhaseOrderInBimDocumentTable PhaseOrderInBimDocumentTable { get; } // can be null
+        public PhaseOrderInBimDocument GetPhaseOrderInBimDocument(int index) => PhaseOrderInBimDocumentTable?.Get(index);
+        public CategoryTable CategoryTable { get; } // can be null
+        public Category GetCategory(int index) => CategoryTable?.Get(index);
+        public FamilyTable FamilyTable { get; } // can be null
+        public Family GetFamily(int index) => FamilyTable?.Get(index);
+        public FamilyTypeTable FamilyTypeTable { get; } // can be null
+        public FamilyType GetFamilyType(int index) => FamilyTypeTable?.Get(index);
+        public FamilyInstanceTable FamilyInstanceTable { get; } // can be null
+        public FamilyInstance GetFamilyInstance(int index) => FamilyInstanceTable?.Get(index);
+        public ViewTable ViewTable { get; } // can be null
+        public View GetView(int index) => ViewTable?.Get(index);
+        public ElementInViewTable ElementInViewTable { get; } // can be null
+        public ElementInView GetElementInView(int index) => ElementInViewTable?.Get(index);
+        public ShapeInViewTable ShapeInViewTable { get; } // can be null
+        public ShapeInView GetShapeInView(int index) => ShapeInViewTable?.Get(index);
+        public AssetInViewTable AssetInViewTable { get; } // can be null
+        public AssetInView GetAssetInView(int index) => AssetInViewTable?.Get(index);
+        public AssetInViewSheetTable AssetInViewSheetTable { get; } // can be null
+        public AssetInViewSheet GetAssetInViewSheet(int index) => AssetInViewSheetTable?.Get(index);
+        public LevelInViewTable LevelInViewTable { get; } // can be null
+        public LevelInView GetLevelInView(int index) => LevelInViewTable?.Get(index);
+        public CameraTable CameraTable { get; } // can be null
+        public Camera GetCamera(int index) => CameraTable?.Get(index);
+        public MaterialTable MaterialTable { get; } // can be null
+        public Material GetMaterial(int index) => MaterialTable?.Get(index);
+        public MaterialInElementTable MaterialInElementTable { get; } // can be null
+        public MaterialInElement GetMaterialInElement(int index) => MaterialInElementTable?.Get(index);
+        public CompoundStructureLayerTable CompoundStructureLayerTable { get; } // can be null
+        public CompoundStructureLayer GetCompoundStructureLayer(int index) => CompoundStructureLayerTable?.Get(index);
+        public CompoundStructureTable CompoundStructureTable { get; } // can be null
+        public CompoundStructure GetCompoundStructure(int index) => CompoundStructureTable?.Get(index);
+        public NodeTable NodeTable { get; } // can be null
+        public Node GetNode(int index) => NodeTable?.Get(index);
+        public GeometryTable GeometryTable { get; } // can be null
+        public Geometry GetGeometry(int index) => GeometryTable?.Get(index);
+        public ShapeTable ShapeTable { get; } // can be null
+        public Shape GetShape(int index) => ShapeTable?.Get(index);
+        public ShapeCollectionTable ShapeCollectionTable { get; } // can be null
+        public ShapeCollection GetShapeCollection(int index) => ShapeCollectionTable?.Get(index);
+        public ShapeInShapeCollectionTable ShapeInShapeCollectionTable { get; } // can be null
+        public ShapeInShapeCollection GetShapeInShapeCollection(int index) => ShapeInShapeCollectionTable?.Get(index);
+        public SystemTable SystemTable { get; } // can be null
+        public System GetSystem(int index) => SystemTable?.Get(index);
+        public ElementInSystemTable ElementInSystemTable { get; } // can be null
+        public ElementInSystem GetElementInSystem(int index) => ElementInSystemTable?.Get(index);
+        public WarningTable WarningTable { get; } // can be null
+        public Warning GetWarning(int index) => WarningTable?.Get(index);
+        public ElementInWarningTable ElementInWarningTable { get; } // can be null
+        public ElementInWarning GetElementInWarning(int index) => ElementInWarningTable?.Get(index);
+        public BasePointTable BasePointTable { get; } // can be null
+        public BasePoint GetBasePoint(int index) => BasePointTable?.Get(index);
+        public PhaseFilterTable PhaseFilterTable { get; } // can be null
+        public PhaseFilter GetPhaseFilter(int index) => PhaseFilterTable?.Get(index);
+        public GridTable GridTable { get; } // can be null
+        public Grid GetGrid(int index) => GridTable?.Get(index);
+        public AreaTable AreaTable { get; } // can be null
+        public Area GetArea(int index) => AreaTable?.Get(index);
+        public AreaSchemeTable AreaSchemeTable { get; } // can be null
+        public AreaScheme GetAreaScheme(int index) => AreaSchemeTable?.Get(index);
+        public ScheduleTable ScheduleTable { get; } // can be null
+        public Schedule GetSchedule(int index) => ScheduleTable?.Get(index);
+        public ScheduleColumnTable ScheduleColumnTable { get; } // can be null
+        public ScheduleColumn GetScheduleColumn(int index) => ScheduleColumnTable?.Get(index);
+        public ScheduleCellTable ScheduleCellTable { get; } // can be null
+        public ScheduleCell GetScheduleCell(int index) => ScheduleCellTable?.Get(index);
+        public ViewSheetSetTable ViewSheetSetTable { get; } // can be null
+        public ViewSheetSet GetViewSheetSet(int index) => ViewSheetSetTable?.Get(index);
+        public ViewSheetTable ViewSheetTable { get; } // can be null
+        public ViewSheet GetViewSheet(int index) => ViewSheetTable?.Get(index);
+        public ViewSheetInViewSheetSetTable ViewSheetInViewSheetSetTable { get; } // can be null
+        public ViewSheetInViewSheetSet GetViewSheetInViewSheetSet(int index) => ViewSheetInViewSheetSetTable?.Get(index);
+        public ViewInViewSheetSetTable ViewInViewSheetSetTable { get; } // can be null
+        public ViewInViewSheetSet GetViewInViewSheetSet(int index) => ViewInViewSheetSetTable?.Get(index);
+        public ViewInViewSheetTable ViewInViewSheetTable { get; } // can be null
+        public ViewInViewSheet GetViewInViewSheet(int index) => ViewInViewSheetTable?.Get(index);
+        public SiteTable SiteTable { get; } // can be null
+        public Site GetSite(int index) => SiteTable?.Get(index);
+        public BuildingTable BuildingTable { get; } // can be null
+        public Building GetBuilding(int index) => BuildingTable?.Get(index);
+    } // class EntityTableSet
+    
+    public partial class AssetTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public AssetTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnBufferName = GetStringColumnValues("string:BufferName") ?? Array.Empty<String>();
+        } // AssetTable constructor
+        
+        public String[] ColumnBufferName { get; }
+        public String GetBufferName(int index, String @default = "") => ColumnBufferName.ElementAtOrDefault(index, @default);
+        
+        
+        // Object Getter
+        public Asset Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Asset();
+            r.Index = index;
+            r.BufferName = GetBufferName(index);
+            return r;
+        } // Asset Get
+    } // class AssetTable 
+    
+    public partial class DisplayUnitTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public DisplayUnitTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnSpec = GetStringColumnValues("string:Spec") ?? Array.Empty<String>();
+            ColumnType = GetStringColumnValues("string:Type") ?? Array.Empty<String>();
+            ColumnLabel = GetStringColumnValues("string:Label") ?? Array.Empty<String>();
+        } // DisplayUnitTable constructor
+        
+        public String[] ColumnSpec { get; }
+        public String GetSpec(int index, String @default = "") => ColumnSpec.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnType { get; }
+        public String GetType(int index, String @default = "") => ColumnType.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnLabel { get; }
+        public String GetLabel(int index, String @default = "") => ColumnLabel.ElementAtOrDefault(index, @default);
+        
+        
+        // Object Getter
+        public DisplayUnit Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new DisplayUnit();
+            r.Index = index;
+            r.Spec = GetSpec(index);
+            r.Type = GetType(index);
+            r.Label = GetLabel(index);
+            return r;
+        } // DisplayUnit Get
+    } // class DisplayUnitTable 
+    
+    public partial class ParameterDescriptorTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ParameterDescriptorTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnName = GetStringColumnValues("string:Name") ?? Array.Empty<String>();
+            ColumnGroup = GetStringColumnValues("string:Group") ?? Array.Empty<String>();
+            ColumnParameterType = GetStringColumnValues("string:ParameterType") ?? Array.Empty<String>();
+            ColumnIsInstance = GetDataColumnValues<Boolean>("byte:IsInstance") ?? Array.Empty<Boolean>();
+            ColumnIsShared = GetDataColumnValues<Boolean>("byte:IsShared") ?? Array.Empty<Boolean>();
+            ColumnIsReadOnly = GetDataColumnValues<Boolean>("byte:IsReadOnly") ?? Array.Empty<Boolean>();
+            ColumnFlags = GetDataColumnValues<Int32>("int:Flags") ?? Array.Empty<Int32>();
+            ColumnGuid = GetStringColumnValues("string:Guid") ?? Array.Empty<String>();
+            ColumnStorageType = GetDataColumnValues<Int32>("int:StorageType") ?? Array.Empty<Int32>();
+            ColumnDisplayUnitIndex = GetIndexColumnValues("index:Vim.DisplayUnit:DisplayUnit") ?? Array.Empty<int>();
+        } // ParameterDescriptorTable constructor
+        
+        public String[] ColumnName { get; }
+        public String GetName(int index, String @default = "") => ColumnName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnGroup { get; }
+        public String GetGroup(int index, String @default = "") => ColumnGroup.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnParameterType { get; }
+        public String GetParameterType(int index, String @default = "") => ColumnParameterType.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsInstance { get; }
+        public Boolean GetIsInstance(int index, Boolean @default = default) => ColumnIsInstance.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsShared { get; }
+        public Boolean GetIsShared(int index, Boolean @default = default) => ColumnIsShared.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsReadOnly { get; }
+        public Boolean GetIsReadOnly(int index, Boolean @default = default) => ColumnIsReadOnly.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnFlags { get; }
+        public Int32 GetFlags(int index, Int32 @default = default) => ColumnFlags.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnGuid { get; }
+        public String GetGuid(int index, String @default = "") => ColumnGuid.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnStorageType { get; }
+        public Int32 GetStorageType(int index, Int32 @default = default) => ColumnStorageType.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnDisplayUnitIndex { get; }
+        public int GetDisplayUnitIndex(int index) => ColumnDisplayUnitIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetDisplayUnit(int index) => _parentTableSet.GetDisplayUnit(GetDisplayUnitIndex(index));
+        
+        // Object Getter
+        public ParameterDescriptor Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ParameterDescriptor();
+            r.Index = index;
+            r.Name = GetName(index);
+            r.Group = GetGroup(index);
+            r.ParameterType = GetParameterType(index);
+            r.IsInstance = GetIsInstance(index);
+            r.IsShared = GetIsShared(index);
+            r.IsReadOnly = GetIsReadOnly(index);
+            r.Flags = GetFlags(index);
+            r.Guid = GetGuid(index);
+            r.StorageType = GetStorageType(index);
+            r._DisplayUnit = new Relation<Vim.Format.ObjectModel.DisplayUnit>(GetDisplayUnitIndex(index), _parentTableSet.GetDisplayUnit);
+            return r;
+        } // ParameterDescriptor Get
+    } // class ParameterDescriptorTable 
+    
+    public partial class ParameterTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ParameterTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnValue = GetStringColumnValues("string:Value") ?? Array.Empty<String>();
+            ColumnParameterDescriptorIndex = GetIndexColumnValues("index:Vim.ParameterDescriptor:ParameterDescriptor") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ParameterTable constructor
+        
+        public String[] ColumnValue { get; }
+        public String GetValue(int index, String @default = "") => ColumnValue.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnParameterDescriptorIndex { get; }
+        public int GetParameterDescriptorIndex(int index) => ColumnParameterDescriptorIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetParameterDescriptor(int index) => _parentTableSet.GetParameterDescriptor(GetParameterDescriptorIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Parameter Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Parameter();
+            r.Index = index;
+            r.Value = GetValue(index);
+            r._ParameterDescriptor = new Relation<Vim.Format.ObjectModel.ParameterDescriptor>(GetParameterDescriptorIndex(index), _parentTableSet.GetParameterDescriptor);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Parameter Get
+    } // class ParameterTable 
+    
+    public partial class ElementTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ElementTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnId = (GetDataColumnValues<Int64>("long:Id") ?? GetDataColumnValues<Int32>("int:Id")?.Select(v => (Int64) v)) ?? Array.Empty<Int64>();
+            ColumnType = GetStringColumnValues("string:Type") ?? Array.Empty<String>();
+            ColumnName = GetStringColumnValues("string:Name") ?? Array.Empty<String>();
+            ColumnUniqueId = GetStringColumnValues("string:UniqueId") ?? Array.Empty<String>();
+            ColumnLocation_X = GetDataColumnValues<Single>("float:Location.X") ?? Array.Empty<Single>();
+            ColumnLocation_Y = GetDataColumnValues<Single>("float:Location.Y") ?? Array.Empty<Single>();
+            ColumnLocation_Z = GetDataColumnValues<Single>("float:Location.Z") ?? Array.Empty<Single>();
+            ColumnFamilyName = GetStringColumnValues("string:FamilyName") ?? Array.Empty<String>();
+            ColumnIsPinned = GetDataColumnValues<Boolean>("byte:IsPinned") ?? Array.Empty<Boolean>();
+            ColumnLevelIndex = GetIndexColumnValues("index:Vim.Level:Level") ?? Array.Empty<int>();
+            ColumnPhaseCreatedIndex = GetIndexColumnValues("index:Vim.Phase:PhaseCreated") ?? Array.Empty<int>();
+            ColumnPhaseDemolishedIndex = GetIndexColumnValues("index:Vim.Phase:PhaseDemolished") ?? Array.Empty<int>();
+            ColumnCategoryIndex = GetIndexColumnValues("index:Vim.Category:Category") ?? Array.Empty<int>();
+            ColumnWorksetIndex = GetIndexColumnValues("index:Vim.Workset:Workset") ?? Array.Empty<int>();
+            ColumnDesignOptionIndex = GetIndexColumnValues("index:Vim.DesignOption:DesignOption") ?? Array.Empty<int>();
+            ColumnOwnerViewIndex = GetIndexColumnValues("index:Vim.View:OwnerView") ?? Array.Empty<int>();
+            ColumnGroupIndex = GetIndexColumnValues("index:Vim.Group:Group") ?? Array.Empty<int>();
+            ColumnAssemblyInstanceIndex = GetIndexColumnValues("index:Vim.AssemblyInstance:AssemblyInstance") ?? Array.Empty<int>();
+            ColumnBimDocumentIndex = GetIndexColumnValues("index:Vim.BimDocument:BimDocument") ?? Array.Empty<int>();
+            ColumnRoomIndex = GetIndexColumnValues("index:Vim.Room:Room") ?? Array.Empty<int>();
+        } // ElementTable constructor
+        
+        public Int64[] ColumnId { get; }
+        public Int64 GetId(int index, Int64 @default = default) => ColumnId.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnType { get; }
+        public String GetType(int index, String @default = "") => ColumnType.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnName { get; }
+        public String GetName(int index, String @default = "") => ColumnName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnUniqueId { get; }
+        public String GetUniqueId(int index, String @default = "") => ColumnUniqueId.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnLocation_X { get; }
+        public Single GetLocation_X(int index, Single @default = default) => ColumnLocation_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnLocation_Y { get; }
+        public Single GetLocation_Y(int index, Single @default = default) => ColumnLocation_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnLocation_Z { get; }
+        public Single GetLocation_Z(int index, Single @default = default) => ColumnLocation_Z.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnFamilyName { get; }
+        public String GetFamilyName(int index, String @default = "") => ColumnFamilyName.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsPinned { get; }
+        public Boolean GetIsPinned(int index, Boolean @default = default) => ColumnIsPinned.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnLevelIndex { get; }
+        public int GetLevelIndex(int index) => ColumnLevelIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetLevel(int index) => _parentTableSet.GetLevel(GetLevelIndex(index));
+        
+        public int[] ColumnPhaseCreatedIndex { get; }
+        public int GetPhaseCreatedIndex(int index) => ColumnPhaseCreatedIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetPhaseCreated(int index) => _parentTableSet.GetPhase(GetPhaseCreatedIndex(index));
+        
+        public int[] ColumnPhaseDemolishedIndex { get; }
+        public int GetPhaseDemolishedIndex(int index) => ColumnPhaseDemolishedIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetPhaseDemolished(int index) => _parentTableSet.GetPhase(GetPhaseDemolishedIndex(index));
+        
+        public int[] ColumnCategoryIndex { get; }
+        public int GetCategoryIndex(int index) => ColumnCategoryIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetCategory(int index) => _parentTableSet.GetCategory(GetCategoryIndex(index));
+        
+        public int[] ColumnWorksetIndex { get; }
+        public int GetWorksetIndex(int index) => ColumnWorksetIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetWorkset(int index) => _parentTableSet.GetWorkset(GetWorksetIndex(index));
+        
+        public int[] ColumnDesignOptionIndex { get; }
+        public int GetDesignOptionIndex(int index) => ColumnDesignOptionIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetDesignOption(int index) => _parentTableSet.GetDesignOption(GetDesignOptionIndex(index));
+        
+        public int[] ColumnOwnerViewIndex { get; }
+        public int GetOwnerViewIndex(int index) => ColumnOwnerViewIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetOwnerView(int index) => _parentTableSet.GetView(GetOwnerViewIndex(index));
+        
+        public int[] ColumnGroupIndex { get; }
+        public int GetGroupIndex(int index) => ColumnGroupIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetGroup(int index) => _parentTableSet.GetGroup(GetGroupIndex(index));
+        
+        public int[] ColumnAssemblyInstanceIndex { get; }
+        public int GetAssemblyInstanceIndex(int index) => ColumnAssemblyInstanceIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetAssemblyInstance(int index) => _parentTableSet.GetAssemblyInstance(GetAssemblyInstanceIndex(index));
+        
+        public int[] ColumnBimDocumentIndex { get; }
+        public int GetBimDocumentIndex(int index) => ColumnBimDocumentIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetBimDocument(int index) => _parentTableSet.GetBimDocument(GetBimDocumentIndex(index));
+        
+        public int[] ColumnRoomIndex { get; }
+        public int GetRoomIndex(int index) => ColumnRoomIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetRoom(int index) => _parentTableSet.GetRoom(GetRoomIndex(index));
+        
+        // Object Getter
+        public Element Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Element();
+            r.Index = index;
+            r.Id = GetId(index);
+            r.Type = GetType(index);
+            r.Name = GetName(index);
+            r.UniqueId = GetUniqueId(index);
+            r.Location_X = GetLocation_X(index);
+            r.Location_Y = GetLocation_Y(index);
+            r.Location_Z = GetLocation_Z(index);
+            r.FamilyName = GetFamilyName(index);
+            r.IsPinned = GetIsPinned(index);
+            r._Level = new Relation<Vim.Format.ObjectModel.Level>(GetLevelIndex(index), _parentTableSet.GetLevel);
+            r._PhaseCreated = new Relation<Vim.Format.ObjectModel.Phase>(GetPhaseCreatedIndex(index), _parentTableSet.GetPhase);
+            r._PhaseDemolished = new Relation<Vim.Format.ObjectModel.Phase>(GetPhaseDemolishedIndex(index), _parentTableSet.GetPhase);
+            r._Category = new Relation<Vim.Format.ObjectModel.Category>(GetCategoryIndex(index), _parentTableSet.GetCategory);
+            r._Workset = new Relation<Vim.Format.ObjectModel.Workset>(GetWorksetIndex(index), _parentTableSet.GetWorkset);
+            r._DesignOption = new Relation<Vim.Format.ObjectModel.DesignOption>(GetDesignOptionIndex(index), _parentTableSet.GetDesignOption);
+            r._OwnerView = new Relation<Vim.Format.ObjectModel.View>(GetOwnerViewIndex(index), _parentTableSet.GetView);
+            r._Group = new Relation<Vim.Format.ObjectModel.Group>(GetGroupIndex(index), _parentTableSet.GetGroup);
+            r._AssemblyInstance = new Relation<Vim.Format.ObjectModel.AssemblyInstance>(GetAssemblyInstanceIndex(index), _parentTableSet.GetAssemblyInstance);
+            r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _parentTableSet.GetBimDocument);
+            r._Room = new Relation<Vim.Format.ObjectModel.Room>(GetRoomIndex(index), _parentTableSet.GetRoom);
+            return r;
+        } // Element Get
+    } // class ElementTable 
+    
+    public partial class WorksetTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public WorksetTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnId = GetDataColumnValues<Int32>("int:Id") ?? Array.Empty<Int32>();
+            ColumnName = GetStringColumnValues("string:Name") ?? Array.Empty<String>();
+            ColumnKind = GetStringColumnValues("string:Kind") ?? Array.Empty<String>();
+            ColumnIsOpen = GetDataColumnValues<Boolean>("byte:IsOpen") ?? Array.Empty<Boolean>();
+            ColumnIsEditable = GetDataColumnValues<Boolean>("byte:IsEditable") ?? Array.Empty<Boolean>();
+            ColumnOwner = GetStringColumnValues("string:Owner") ?? Array.Empty<String>();
+            ColumnUniqueId = GetStringColumnValues("string:UniqueId") ?? Array.Empty<String>();
+            ColumnBimDocumentIndex = GetIndexColumnValues("index:Vim.BimDocument:BimDocument") ?? Array.Empty<int>();
+        } // WorksetTable constructor
+        
+        public Int32[] ColumnId { get; }
+        public Int32 GetId(int index, Int32 @default = default) => ColumnId.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnName { get; }
+        public String GetName(int index, String @default = "") => ColumnName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnKind { get; }
+        public String GetKind(int index, String @default = "") => ColumnKind.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsOpen { get; }
+        public Boolean GetIsOpen(int index, Boolean @default = default) => ColumnIsOpen.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsEditable { get; }
+        public Boolean GetIsEditable(int index, Boolean @default = default) => ColumnIsEditable.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnOwner { get; }
+        public String GetOwner(int index, String @default = "") => ColumnOwner.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnUniqueId { get; }
+        public String GetUniqueId(int index, String @default = "") => ColumnUniqueId.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnBimDocumentIndex { get; }
+        public int GetBimDocumentIndex(int index) => ColumnBimDocumentIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetBimDocument(int index) => _parentTableSet.GetBimDocument(GetBimDocumentIndex(index));
+        
+        // Object Getter
+        public Workset Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Workset();
+            r.Index = index;
+            r.Id = GetId(index);
+            r.Name = GetName(index);
+            r.Kind = GetKind(index);
+            r.IsOpen = GetIsOpen(index);
+            r.IsEditable = GetIsEditable(index);
+            r.Owner = GetOwner(index);
+            r.UniqueId = GetUniqueId(index);
+            r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _parentTableSet.GetBimDocument);
+            return r;
+        } // Workset Get
+    } // class WorksetTable 
+    
+    public partial class AssemblyInstanceTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public AssemblyInstanceTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnAssemblyTypeName = GetStringColumnValues("string:AssemblyTypeName") ?? Array.Empty<String>();
+            ColumnPosition_X = GetDataColumnValues<Single>("float:Position.X") ?? Array.Empty<Single>();
+            ColumnPosition_Y = GetDataColumnValues<Single>("float:Position.Y") ?? Array.Empty<Single>();
+            ColumnPosition_Z = GetDataColumnValues<Single>("float:Position.Z") ?? Array.Empty<Single>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // AssemblyInstanceTable constructor
+        
+        public String[] ColumnAssemblyTypeName { get; }
+        public String GetAssemblyTypeName(int index, String @default = "") => ColumnAssemblyTypeName.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnPosition_X { get; }
+        public Single GetPosition_X(int index, Single @default = default) => ColumnPosition_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnPosition_Y { get; }
+        public Single GetPosition_Y(int index, Single @default = default) => ColumnPosition_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnPosition_Z { get; }
+        public Single GetPosition_Z(int index, Single @default = default) => ColumnPosition_Z.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public AssemblyInstance Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new AssemblyInstance();
+            r.Index = index;
+            r.AssemblyTypeName = GetAssemblyTypeName(index);
+            r.Position_X = GetPosition_X(index);
+            r.Position_Y = GetPosition_Y(index);
+            r.Position_Z = GetPosition_Z(index);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // AssemblyInstance Get
+    } // class AssemblyInstanceTable 
+    
+    public partial class GroupTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public GroupTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnGroupType = GetStringColumnValues("string:GroupType") ?? Array.Empty<String>();
+            ColumnPosition_X = GetDataColumnValues<Single>("float:Position.X") ?? Array.Empty<Single>();
+            ColumnPosition_Y = GetDataColumnValues<Single>("float:Position.Y") ?? Array.Empty<Single>();
+            ColumnPosition_Z = GetDataColumnValues<Single>("float:Position.Z") ?? Array.Empty<Single>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // GroupTable constructor
+        
+        public String[] ColumnGroupType { get; }
+        public String GetGroupType(int index, String @default = "") => ColumnGroupType.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnPosition_X { get; }
+        public Single GetPosition_X(int index, Single @default = default) => ColumnPosition_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnPosition_Y { get; }
+        public Single GetPosition_Y(int index, Single @default = default) => ColumnPosition_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnPosition_Z { get; }
+        public Single GetPosition_Z(int index, Single @default = default) => ColumnPosition_Z.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Group Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Group();
+            r.Index = index;
+            r.GroupType = GetGroupType(index);
+            r.Position_X = GetPosition_X(index);
+            r.Position_Y = GetPosition_Y(index);
+            r.Position_Z = GetPosition_Z(index);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Group Get
+    } // class GroupTable 
+    
+    public partial class DesignOptionTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public DesignOptionTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnIsPrimary = GetDataColumnValues<Boolean>("byte:IsPrimary") ?? Array.Empty<Boolean>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // DesignOptionTable constructor
+        
+        public Boolean[] ColumnIsPrimary { get; }
+        public Boolean GetIsPrimary(int index, Boolean @default = default) => ColumnIsPrimary.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public DesignOption Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new DesignOption();
+            r.Index = index;
+            r.IsPrimary = GetIsPrimary(index);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // DesignOption Get
+    } // class DesignOptionTable 
+    
+    public partial class LevelTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public LevelTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnElevation = GetDataColumnValues<Double>("double:Elevation") ?? Array.Empty<Double>();
+            ColumnFamilyTypeIndex = GetIndexColumnValues("index:Vim.FamilyType:FamilyType") ?? Array.Empty<int>();
+            ColumnBuildingIndex = GetIndexColumnValues("index:Vim.Building:Building") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // LevelTable constructor
+        
+        public Double[] ColumnElevation { get; }
+        public Double GetElevation(int index, Double @default = default) => ColumnElevation.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnFamilyTypeIndex { get; }
+        public int GetFamilyTypeIndex(int index) => ColumnFamilyTypeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFamilyType(int index) => _parentTableSet.GetFamilyType(GetFamilyTypeIndex(index));
+        
+        public int[] ColumnBuildingIndex { get; }
+        public int GetBuildingIndex(int index) => ColumnBuildingIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetBuilding(int index) => _parentTableSet.GetBuilding(GetBuildingIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Level Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Level();
+            r.Index = index;
+            r.Elevation = GetElevation(index);
+            r._FamilyType = new Relation<Vim.Format.ObjectModel.FamilyType>(GetFamilyTypeIndex(index), _parentTableSet.GetFamilyType);
+            r._Building = new Relation<Vim.Format.ObjectModel.Building>(GetBuildingIndex(index), _parentTableSet.GetBuilding);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Level Get
+    } // class LevelTable 
+    
+    public partial class PhaseTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public PhaseTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // PhaseTable constructor
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Phase Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Phase();
+            r.Index = index;
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Phase Get
+    } // class PhaseTable 
+    
+    public partial class RoomTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public RoomTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnBaseOffset = GetDataColumnValues<Double>("double:BaseOffset") ?? Array.Empty<Double>();
+            ColumnLimitOffset = GetDataColumnValues<Double>("double:LimitOffset") ?? Array.Empty<Double>();
+            ColumnUnboundedHeight = GetDataColumnValues<Double>("double:UnboundedHeight") ?? Array.Empty<Double>();
+            ColumnVolume = GetDataColumnValues<Double>("double:Volume") ?? Array.Empty<Double>();
+            ColumnPerimeter = GetDataColumnValues<Double>("double:Perimeter") ?? Array.Empty<Double>();
+            ColumnArea = GetDataColumnValues<Double>("double:Area") ?? Array.Empty<Double>();
+            ColumnNumber = GetStringColumnValues("string:Number") ?? Array.Empty<String>();
+            ColumnUpperLimitIndex = GetIndexColumnValues("index:Vim.Level:UpperLimit") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // RoomTable constructor
+        
+        public Double[] ColumnBaseOffset { get; }
+        public Double GetBaseOffset(int index, Double @default = default) => ColumnBaseOffset.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnLimitOffset { get; }
+        public Double GetLimitOffset(int index, Double @default = default) => ColumnLimitOffset.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnUnboundedHeight { get; }
+        public Double GetUnboundedHeight(int index, Double @default = default) => ColumnUnboundedHeight.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnVolume { get; }
+        public Double GetVolume(int index, Double @default = default) => ColumnVolume.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnPerimeter { get; }
+        public Double GetPerimeter(int index, Double @default = default) => ColumnPerimeter.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnArea { get; }
+        public Double GetArea(int index, Double @default = default) => ColumnArea.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnNumber { get; }
+        public String GetNumber(int index, String @default = "") => ColumnNumber.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnUpperLimitIndex { get; }
+        public int GetUpperLimitIndex(int index) => ColumnUpperLimitIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetUpperLimit(int index) => _parentTableSet.GetLevel(GetUpperLimitIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Room Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Room();
+            r.Index = index;
+            r.BaseOffset = GetBaseOffset(index);
+            r.LimitOffset = GetLimitOffset(index);
+            r.UnboundedHeight = GetUnboundedHeight(index);
+            r.Volume = GetVolume(index);
+            r.Perimeter = GetPerimeter(index);
+            r.Area = GetArea(index);
+            r.Number = GetNumber(index);
+            r._UpperLimit = new Relation<Vim.Format.ObjectModel.Level>(GetUpperLimitIndex(index), _parentTableSet.GetLevel);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Room Get
+    } // class RoomTable 
+    
+    public partial class BimDocumentTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public BimDocumentTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnTitle = GetStringColumnValues("string:Title") ?? Array.Empty<String>();
+            ColumnIsMetric = GetDataColumnValues<Boolean>("byte:IsMetric") ?? Array.Empty<Boolean>();
+            ColumnGuid = GetStringColumnValues("string:Guid") ?? Array.Empty<String>();
+            ColumnNumSaves = GetDataColumnValues<Int32>("int:NumSaves") ?? Array.Empty<Int32>();
+            ColumnIsLinked = GetDataColumnValues<Boolean>("byte:IsLinked") ?? Array.Empty<Boolean>();
+            ColumnIsDetached = GetDataColumnValues<Boolean>("byte:IsDetached") ?? Array.Empty<Boolean>();
+            ColumnIsWorkshared = GetDataColumnValues<Boolean>("byte:IsWorkshared") ?? Array.Empty<Boolean>();
+            ColumnPathName = GetStringColumnValues("string:PathName") ?? Array.Empty<String>();
+            ColumnLatitude = GetDataColumnValues<Double>("double:Latitude") ?? Array.Empty<Double>();
+            ColumnLongitude = GetDataColumnValues<Double>("double:Longitude") ?? Array.Empty<Double>();
+            ColumnTimeZone = GetDataColumnValues<Double>("double:TimeZone") ?? Array.Empty<Double>();
+            ColumnPlaceName = GetStringColumnValues("string:PlaceName") ?? Array.Empty<String>();
+            ColumnWeatherStationName = GetStringColumnValues("string:WeatherStationName") ?? Array.Empty<String>();
+            ColumnElevation = GetDataColumnValues<Double>("double:Elevation") ?? Array.Empty<Double>();
+            ColumnProjectLocation = GetStringColumnValues("string:ProjectLocation") ?? Array.Empty<String>();
+            ColumnIssueDate = GetStringColumnValues("string:IssueDate") ?? Array.Empty<String>();
+            ColumnStatus = GetStringColumnValues("string:Status") ?? Array.Empty<String>();
+            ColumnClientName = GetStringColumnValues("string:ClientName") ?? Array.Empty<String>();
+            ColumnAddress = GetStringColumnValues("string:Address") ?? Array.Empty<String>();
+            ColumnName = GetStringColumnValues("string:Name") ?? Array.Empty<String>();
+            ColumnNumber = GetStringColumnValues("string:Number") ?? Array.Empty<String>();
+            ColumnAuthor = GetStringColumnValues("string:Author") ?? Array.Empty<String>();
+            ColumnBuildingName = GetStringColumnValues("string:BuildingName") ?? Array.Empty<String>();
+            ColumnOrganizationName = GetStringColumnValues("string:OrganizationName") ?? Array.Empty<String>();
+            ColumnOrganizationDescription = GetStringColumnValues("string:OrganizationDescription") ?? Array.Empty<String>();
+            ColumnProduct = GetStringColumnValues("string:Product") ?? Array.Empty<String>();
+            ColumnVersion = GetStringColumnValues("string:Version") ?? Array.Empty<String>();
+            ColumnUser = GetStringColumnValues("string:User") ?? Array.Empty<String>();
+            ColumnActiveViewIndex = GetIndexColumnValues("index:Vim.View:ActiveView") ?? Array.Empty<int>();
+            ColumnOwnerFamilyIndex = GetIndexColumnValues("index:Vim.Family:OwnerFamily") ?? Array.Empty<int>();
+            ColumnParentIndex = GetIndexColumnValues("index:Vim.BimDocument:Parent") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // BimDocumentTable constructor
+        
+        public String[] ColumnTitle { get; }
+        public String GetTitle(int index, String @default = "") => ColumnTitle.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsMetric { get; }
+        public Boolean GetIsMetric(int index, Boolean @default = default) => ColumnIsMetric.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnGuid { get; }
+        public String GetGuid(int index, String @default = "") => ColumnGuid.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnNumSaves { get; }
+        public Int32 GetNumSaves(int index, Int32 @default = default) => ColumnNumSaves.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsLinked { get; }
+        public Boolean GetIsLinked(int index, Boolean @default = default) => ColumnIsLinked.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsDetached { get; }
+        public Boolean GetIsDetached(int index, Boolean @default = default) => ColumnIsDetached.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsWorkshared { get; }
+        public Boolean GetIsWorkshared(int index, Boolean @default = default) => ColumnIsWorkshared.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnPathName { get; }
+        public String GetPathName(int index, String @default = "") => ColumnPathName.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnLatitude { get; }
+        public Double GetLatitude(int index, Double @default = default) => ColumnLatitude.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnLongitude { get; }
+        public Double GetLongitude(int index, Double @default = default) => ColumnLongitude.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnTimeZone { get; }
+        public Double GetTimeZone(int index, Double @default = default) => ColumnTimeZone.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnPlaceName { get; }
+        public String GetPlaceName(int index, String @default = "") => ColumnPlaceName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnWeatherStationName { get; }
+        public String GetWeatherStationName(int index, String @default = "") => ColumnWeatherStationName.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnElevation { get; }
+        public Double GetElevation(int index, Double @default = default) => ColumnElevation.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnProjectLocation { get; }
+        public String GetProjectLocation(int index, String @default = "") => ColumnProjectLocation.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnIssueDate { get; }
+        public String GetIssueDate(int index, String @default = "") => ColumnIssueDate.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnStatus { get; }
+        public String GetStatus(int index, String @default = "") => ColumnStatus.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnClientName { get; }
+        public String GetClientName(int index, String @default = "") => ColumnClientName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnAddress { get; }
+        public String GetAddress(int index, String @default = "") => ColumnAddress.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnName { get; }
+        public String GetName(int index, String @default = "") => ColumnName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnNumber { get; }
+        public String GetNumber(int index, String @default = "") => ColumnNumber.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnAuthor { get; }
+        public String GetAuthor(int index, String @default = "") => ColumnAuthor.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnBuildingName { get; }
+        public String GetBuildingName(int index, String @default = "") => ColumnBuildingName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnOrganizationName { get; }
+        public String GetOrganizationName(int index, String @default = "") => ColumnOrganizationName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnOrganizationDescription { get; }
+        public String GetOrganizationDescription(int index, String @default = "") => ColumnOrganizationDescription.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnProduct { get; }
+        public String GetProduct(int index, String @default = "") => ColumnProduct.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnVersion { get; }
+        public String GetVersion(int index, String @default = "") => ColumnVersion.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnUser { get; }
+        public String GetUser(int index, String @default = "") => ColumnUser.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnActiveViewIndex { get; }
+        public int GetActiveViewIndex(int index) => ColumnActiveViewIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetActiveView(int index) => _parentTableSet.GetView(GetActiveViewIndex(index));
+        
+        public int[] ColumnOwnerFamilyIndex { get; }
+        public int GetOwnerFamilyIndex(int index) => ColumnOwnerFamilyIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetOwnerFamily(int index) => _parentTableSet.GetFamily(GetOwnerFamilyIndex(index));
+        
+        public int[] ColumnParentIndex { get; }
+        public int GetParentIndex(int index) => ColumnParentIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetParent(int index) => _parentTableSet.GetBimDocument(GetParentIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public BimDocument Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new BimDocument();
+            r.Index = index;
+            r.Title = GetTitle(index);
+            r.IsMetric = GetIsMetric(index);
+            r.Guid = GetGuid(index);
+            r.NumSaves = GetNumSaves(index);
+            r.IsLinked = GetIsLinked(index);
+            r.IsDetached = GetIsDetached(index);
+            r.IsWorkshared = GetIsWorkshared(index);
+            r.PathName = GetPathName(index);
+            r.Latitude = GetLatitude(index);
+            r.Longitude = GetLongitude(index);
+            r.TimeZone = GetTimeZone(index);
+            r.PlaceName = GetPlaceName(index);
+            r.WeatherStationName = GetWeatherStationName(index);
+            r.Elevation = GetElevation(index);
+            r.ProjectLocation = GetProjectLocation(index);
+            r.IssueDate = GetIssueDate(index);
+            r.Status = GetStatus(index);
+            r.ClientName = GetClientName(index);
+            r.Address = GetAddress(index);
+            r.Name = GetName(index);
+            r.Number = GetNumber(index);
+            r.Author = GetAuthor(index);
+            r.BuildingName = GetBuildingName(index);
+            r.OrganizationName = GetOrganizationName(index);
+            r.OrganizationDescription = GetOrganizationDescription(index);
+            r.Product = GetProduct(index);
+            r.Version = GetVersion(index);
+            r.User = GetUser(index);
+            r._ActiveView = new Relation<Vim.Format.ObjectModel.View>(GetActiveViewIndex(index), _parentTableSet.GetView);
+            r._OwnerFamily = new Relation<Vim.Format.ObjectModel.Family>(GetOwnerFamilyIndex(index), _parentTableSet.GetFamily);
+            r._Parent = new Relation<Vim.Format.ObjectModel.BimDocument>(GetParentIndex(index), _parentTableSet.GetBimDocument);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // BimDocument Get
+    } // class BimDocumentTable 
+    
+    public partial class DisplayUnitInBimDocumentTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public DisplayUnitInBimDocumentTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnDisplayUnitIndex = GetIndexColumnValues("index:Vim.DisplayUnit:DisplayUnit") ?? Array.Empty<int>();
+            ColumnBimDocumentIndex = GetIndexColumnValues("index:Vim.BimDocument:BimDocument") ?? Array.Empty<int>();
+        } // DisplayUnitInBimDocumentTable constructor
+        
+        
+        public int[] ColumnDisplayUnitIndex { get; }
+        public int GetDisplayUnitIndex(int index) => ColumnDisplayUnitIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetDisplayUnit(int index) => _parentTableSet.GetDisplayUnit(GetDisplayUnitIndex(index));
+        
+        public int[] ColumnBimDocumentIndex { get; }
+        public int GetBimDocumentIndex(int index) => ColumnBimDocumentIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetBimDocument(int index) => _parentTableSet.GetBimDocument(GetBimDocumentIndex(index));
+        
+        // Object Getter
+        public DisplayUnitInBimDocument Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new DisplayUnitInBimDocument();
+            r.Index = index;
+            r._DisplayUnit = new Relation<Vim.Format.ObjectModel.DisplayUnit>(GetDisplayUnitIndex(index), _parentTableSet.GetDisplayUnit);
+            r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _parentTableSet.GetBimDocument);
+            return r;
+        } // DisplayUnitInBimDocument Get
+    } // class DisplayUnitInBimDocumentTable 
+    
+    public partial class PhaseOrderInBimDocumentTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public PhaseOrderInBimDocumentTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnOrderIndex = GetDataColumnValues<Int32>("int:OrderIndex") ?? Array.Empty<Int32>();
+            ColumnPhaseIndex = GetIndexColumnValues("index:Vim.Phase:Phase") ?? Array.Empty<int>();
+            ColumnBimDocumentIndex = GetIndexColumnValues("index:Vim.BimDocument:BimDocument") ?? Array.Empty<int>();
+        } // PhaseOrderInBimDocumentTable constructor
+        
+        public Int32[] ColumnOrderIndex { get; }
+        public Int32 GetOrderIndex(int index, Int32 @default = default) => ColumnOrderIndex.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnPhaseIndex { get; }
+        public int GetPhaseIndex(int index) => ColumnPhaseIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetPhase(int index) => _parentTableSet.GetPhase(GetPhaseIndex(index));
+        
+        public int[] ColumnBimDocumentIndex { get; }
+        public int GetBimDocumentIndex(int index) => ColumnBimDocumentIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetBimDocument(int index) => _parentTableSet.GetBimDocument(GetBimDocumentIndex(index));
+        
+        // Object Getter
+        public PhaseOrderInBimDocument Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new PhaseOrderInBimDocument();
+            r.Index = index;
+            r.OrderIndex = GetOrderIndex(index);
+            r._Phase = new Relation<Vim.Format.ObjectModel.Phase>(GetPhaseIndex(index), _parentTableSet.GetPhase);
+            r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _parentTableSet.GetBimDocument);
+            return r;
+        } // PhaseOrderInBimDocument Get
+    } // class PhaseOrderInBimDocumentTable 
+    
+    public partial class CategoryTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public CategoryTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnName = GetStringColumnValues("string:Name") ?? Array.Empty<String>();
+            ColumnId = (GetDataColumnValues<Int64>("long:Id") ?? GetDataColumnValues<Int32>("int:Id")?.Select(v => (Int64) v)) ?? Array.Empty<Int64>();
+            ColumnCategoryType = GetStringColumnValues("string:CategoryType") ?? Array.Empty<String>();
+            ColumnLineColor_X = GetDataColumnValues<Double>("double:LineColor.X") ?? Array.Empty<Double>();
+            ColumnLineColor_Y = GetDataColumnValues<Double>("double:LineColor.Y") ?? Array.Empty<Double>();
+            ColumnLineColor_Z = GetDataColumnValues<Double>("double:LineColor.Z") ?? Array.Empty<Double>();
+            ColumnBuiltInCategory = GetStringColumnValues("string:BuiltInCategory") ?? Array.Empty<String>();
+            ColumnParentIndex = GetIndexColumnValues("index:Vim.Category:Parent") ?? Array.Empty<int>();
+            ColumnMaterialIndex = GetIndexColumnValues("index:Vim.Material:Material") ?? Array.Empty<int>();
+        } // CategoryTable constructor
+        
+        public String[] ColumnName { get; }
+        public String GetName(int index, String @default = "") => ColumnName.ElementAtOrDefault(index, @default);
+        
+        public Int64[] ColumnId { get; }
+        public Int64 GetId(int index, Int64 @default = default) => ColumnId.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnCategoryType { get; }
+        public String GetCategoryType(int index, String @default = "") => ColumnCategoryType.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnLineColor_X { get; }
+        public Double GetLineColor_X(int index, Double @default = default) => ColumnLineColor_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnLineColor_Y { get; }
+        public Double GetLineColor_Y(int index, Double @default = default) => ColumnLineColor_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnLineColor_Z { get; }
+        public Double GetLineColor_Z(int index, Double @default = default) => ColumnLineColor_Z.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnBuiltInCategory { get; }
+        public String GetBuiltInCategory(int index, String @default = "") => ColumnBuiltInCategory.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnParentIndex { get; }
+        public int GetParentIndex(int index) => ColumnParentIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetParent(int index) => _parentTableSet.GetCategory(GetParentIndex(index));
+        
+        public int[] ColumnMaterialIndex { get; }
+        public int GetMaterialIndex(int index) => ColumnMaterialIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetMaterial(int index) => _parentTableSet.GetMaterial(GetMaterialIndex(index));
+        
+        // Object Getter
+        public Category Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Category();
+            r.Index = index;
+            r.Name = GetName(index);
+            r.Id = GetId(index);
+            r.CategoryType = GetCategoryType(index);
+            r.LineColor_X = GetLineColor_X(index);
+            r.LineColor_Y = GetLineColor_Y(index);
+            r.LineColor_Z = GetLineColor_Z(index);
+            r.BuiltInCategory = GetBuiltInCategory(index);
+            r._Parent = new Relation<Vim.Format.ObjectModel.Category>(GetParentIndex(index), _parentTableSet.GetCategory);
+            r._Material = new Relation<Vim.Format.ObjectModel.Material>(GetMaterialIndex(index), _parentTableSet.GetMaterial);
+            return r;
+        } // Category Get
+    } // class CategoryTable 
+    
+    public partial class FamilyTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public FamilyTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnStructuralMaterialType = GetStringColumnValues("string:StructuralMaterialType") ?? Array.Empty<String>();
+            ColumnStructuralSectionShape = GetStringColumnValues("string:StructuralSectionShape") ?? Array.Empty<String>();
+            ColumnIsSystemFamily = GetDataColumnValues<Boolean>("byte:IsSystemFamily") ?? Array.Empty<Boolean>();
+            ColumnIsInPlace = GetDataColumnValues<Boolean>("byte:IsInPlace") ?? Array.Empty<Boolean>();
+            ColumnFamilyCategoryIndex = GetIndexColumnValues("index:Vim.Category:FamilyCategory") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // FamilyTable constructor
+        
+        public String[] ColumnStructuralMaterialType { get; }
+        public String GetStructuralMaterialType(int index, String @default = "") => ColumnStructuralMaterialType.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnStructuralSectionShape { get; }
+        public String GetStructuralSectionShape(int index, String @default = "") => ColumnStructuralSectionShape.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsSystemFamily { get; }
+        public Boolean GetIsSystemFamily(int index, Boolean @default = default) => ColumnIsSystemFamily.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsInPlace { get; }
+        public Boolean GetIsInPlace(int index, Boolean @default = default) => ColumnIsInPlace.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnFamilyCategoryIndex { get; }
+        public int GetFamilyCategoryIndex(int index) => ColumnFamilyCategoryIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFamilyCategory(int index) => _parentTableSet.GetCategory(GetFamilyCategoryIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Family Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Family();
+            r.Index = index;
+            r.StructuralMaterialType = GetStructuralMaterialType(index);
+            r.StructuralSectionShape = GetStructuralSectionShape(index);
+            r.IsSystemFamily = GetIsSystemFamily(index);
+            r.IsInPlace = GetIsInPlace(index);
+            r._FamilyCategory = new Relation<Vim.Format.ObjectModel.Category>(GetFamilyCategoryIndex(index), _parentTableSet.GetCategory);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Family Get
+    } // class FamilyTable 
+    
+    public partial class FamilyTypeTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public FamilyTypeTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnIsSystemFamilyType = GetDataColumnValues<Boolean>("byte:IsSystemFamilyType") ?? Array.Empty<Boolean>();
+            ColumnFamilyIndex = GetIndexColumnValues("index:Vim.Family:Family") ?? Array.Empty<int>();
+            ColumnCompoundStructureIndex = GetIndexColumnValues("index:Vim.CompoundStructure:CompoundStructure") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // FamilyTypeTable constructor
+        
+        public Boolean[] ColumnIsSystemFamilyType { get; }
+        public Boolean GetIsSystemFamilyType(int index, Boolean @default = default) => ColumnIsSystemFamilyType.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnFamilyIndex { get; }
+        public int GetFamilyIndex(int index) => ColumnFamilyIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFamily(int index) => _parentTableSet.GetFamily(GetFamilyIndex(index));
+        
+        public int[] ColumnCompoundStructureIndex { get; }
+        public int GetCompoundStructureIndex(int index) => ColumnCompoundStructureIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetCompoundStructure(int index) => _parentTableSet.GetCompoundStructure(GetCompoundStructureIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public FamilyType Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new FamilyType();
+            r.Index = index;
+            r.IsSystemFamilyType = GetIsSystemFamilyType(index);
+            r._Family = new Relation<Vim.Format.ObjectModel.Family>(GetFamilyIndex(index), _parentTableSet.GetFamily);
+            r._CompoundStructure = new Relation<Vim.Format.ObjectModel.CompoundStructure>(GetCompoundStructureIndex(index), _parentTableSet.GetCompoundStructure);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // FamilyType Get
+    } // class FamilyTypeTable 
+    
+    public partial class FamilyInstanceTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public FamilyInstanceTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnFacingFlipped = GetDataColumnValues<Boolean>("byte:FacingFlipped") ?? Array.Empty<Boolean>();
+            ColumnFacingOrientation_X = GetDataColumnValues<Single>("float:FacingOrientation.X") ?? Array.Empty<Single>();
+            ColumnFacingOrientation_Y = GetDataColumnValues<Single>("float:FacingOrientation.Y") ?? Array.Empty<Single>();
+            ColumnFacingOrientation_Z = GetDataColumnValues<Single>("float:FacingOrientation.Z") ?? Array.Empty<Single>();
+            ColumnHandFlipped = GetDataColumnValues<Boolean>("byte:HandFlipped") ?? Array.Empty<Boolean>();
+            ColumnMirrored = GetDataColumnValues<Boolean>("byte:Mirrored") ?? Array.Empty<Boolean>();
+            ColumnHasModifiedGeometry = GetDataColumnValues<Boolean>("byte:HasModifiedGeometry") ?? Array.Empty<Boolean>();
+            ColumnScale = GetDataColumnValues<Single>("float:Scale") ?? Array.Empty<Single>();
+            ColumnBasisX_X = GetDataColumnValues<Single>("float:BasisX.X") ?? Array.Empty<Single>();
+            ColumnBasisX_Y = GetDataColumnValues<Single>("float:BasisX.Y") ?? Array.Empty<Single>();
+            ColumnBasisX_Z = GetDataColumnValues<Single>("float:BasisX.Z") ?? Array.Empty<Single>();
+            ColumnBasisY_X = GetDataColumnValues<Single>("float:BasisY.X") ?? Array.Empty<Single>();
+            ColumnBasisY_Y = GetDataColumnValues<Single>("float:BasisY.Y") ?? Array.Empty<Single>();
+            ColumnBasisY_Z = GetDataColumnValues<Single>("float:BasisY.Z") ?? Array.Empty<Single>();
+            ColumnBasisZ_X = GetDataColumnValues<Single>("float:BasisZ.X") ?? Array.Empty<Single>();
+            ColumnBasisZ_Y = GetDataColumnValues<Single>("float:BasisZ.Y") ?? Array.Empty<Single>();
+            ColumnBasisZ_Z = GetDataColumnValues<Single>("float:BasisZ.Z") ?? Array.Empty<Single>();
+            ColumnTranslation_X = GetDataColumnValues<Single>("float:Translation.X") ?? Array.Empty<Single>();
+            ColumnTranslation_Y = GetDataColumnValues<Single>("float:Translation.Y") ?? Array.Empty<Single>();
+            ColumnTranslation_Z = GetDataColumnValues<Single>("float:Translation.Z") ?? Array.Empty<Single>();
+            ColumnHandOrientation_X = GetDataColumnValues<Single>("float:HandOrientation.X") ?? Array.Empty<Single>();
+            ColumnHandOrientation_Y = GetDataColumnValues<Single>("float:HandOrientation.Y") ?? Array.Empty<Single>();
+            ColumnHandOrientation_Z = GetDataColumnValues<Single>("float:HandOrientation.Z") ?? Array.Empty<Single>();
+            ColumnFamilyTypeIndex = GetIndexColumnValues("index:Vim.FamilyType:FamilyType") ?? Array.Empty<int>();
+            ColumnHostIndex = GetIndexColumnValues("index:Vim.Element:Host") ?? Array.Empty<int>();
+            ColumnFromRoomIndex = GetIndexColumnValues("index:Vim.Room:FromRoom") ?? Array.Empty<int>();
+            ColumnToRoomIndex = GetIndexColumnValues("index:Vim.Room:ToRoom") ?? Array.Empty<int>();
+            ColumnSuperComponentIndex = GetIndexColumnValues("index:Vim.Element:SuperComponent") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // FamilyInstanceTable constructor
+        
+        public Boolean[] ColumnFacingFlipped { get; }
+        public Boolean GetFacingFlipped(int index, Boolean @default = default) => ColumnFacingFlipped.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnFacingOrientation_X { get; }
+        public Single GetFacingOrientation_X(int index, Single @default = default) => ColumnFacingOrientation_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnFacingOrientation_Y { get; }
+        public Single GetFacingOrientation_Y(int index, Single @default = default) => ColumnFacingOrientation_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnFacingOrientation_Z { get; }
+        public Single GetFacingOrientation_Z(int index, Single @default = default) => ColumnFacingOrientation_Z.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnHandFlipped { get; }
+        public Boolean GetHandFlipped(int index, Boolean @default = default) => ColumnHandFlipped.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnMirrored { get; }
+        public Boolean GetMirrored(int index, Boolean @default = default) => ColumnMirrored.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnHasModifiedGeometry { get; }
+        public Boolean GetHasModifiedGeometry(int index, Boolean @default = default) => ColumnHasModifiedGeometry.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnScale { get; }
+        public Single GetScale(int index, Single @default = default) => ColumnScale.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisX_X { get; }
+        public Single GetBasisX_X(int index, Single @default = default) => ColumnBasisX_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisX_Y { get; }
+        public Single GetBasisX_Y(int index, Single @default = default) => ColumnBasisX_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisX_Z { get; }
+        public Single GetBasisX_Z(int index, Single @default = default) => ColumnBasisX_Z.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisY_X { get; }
+        public Single GetBasisY_X(int index, Single @default = default) => ColumnBasisY_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisY_Y { get; }
+        public Single GetBasisY_Y(int index, Single @default = default) => ColumnBasisY_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisY_Z { get; }
+        public Single GetBasisY_Z(int index, Single @default = default) => ColumnBasisY_Z.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisZ_X { get; }
+        public Single GetBasisZ_X(int index, Single @default = default) => ColumnBasisZ_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisZ_Y { get; }
+        public Single GetBasisZ_Y(int index, Single @default = default) => ColumnBasisZ_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBasisZ_Z { get; }
+        public Single GetBasisZ_Z(int index, Single @default = default) => ColumnBasisZ_Z.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnTranslation_X { get; }
+        public Single GetTranslation_X(int index, Single @default = default) => ColumnTranslation_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnTranslation_Y { get; }
+        public Single GetTranslation_Y(int index, Single @default = default) => ColumnTranslation_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnTranslation_Z { get; }
+        public Single GetTranslation_Z(int index, Single @default = default) => ColumnTranslation_Z.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnHandOrientation_X { get; }
+        public Single GetHandOrientation_X(int index, Single @default = default) => ColumnHandOrientation_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnHandOrientation_Y { get; }
+        public Single GetHandOrientation_Y(int index, Single @default = default) => ColumnHandOrientation_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnHandOrientation_Z { get; }
+        public Single GetHandOrientation_Z(int index, Single @default = default) => ColumnHandOrientation_Z.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnFamilyTypeIndex { get; }
+        public int GetFamilyTypeIndex(int index) => ColumnFamilyTypeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFamilyType(int index) => _parentTableSet.GetFamilyType(GetFamilyTypeIndex(index));
+        
+        public int[] ColumnHostIndex { get; }
+        public int GetHostIndex(int index) => ColumnHostIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetHost(int index) => _parentTableSet.GetElement(GetHostIndex(index));
+        
+        public int[] ColumnFromRoomIndex { get; }
+        public int GetFromRoomIndex(int index) => ColumnFromRoomIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFromRoom(int index) => _parentTableSet.GetRoom(GetFromRoomIndex(index));
+        
+        public int[] ColumnToRoomIndex { get; }
+        public int GetToRoomIndex(int index) => ColumnToRoomIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetToRoom(int index) => _parentTableSet.GetRoom(GetToRoomIndex(index));
+        
+        public int[] ColumnSuperComponentIndex { get; }
+        public int GetSuperComponentIndex(int index) => ColumnSuperComponentIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetSuperComponent(int index) => _parentTableSet.GetElement(GetSuperComponentIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public FamilyInstance Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new FamilyInstance();
+            r.Index = index;
+            r.FacingFlipped = GetFacingFlipped(index);
+            r.FacingOrientation_X = GetFacingOrientation_X(index);
+            r.FacingOrientation_Y = GetFacingOrientation_Y(index);
+            r.FacingOrientation_Z = GetFacingOrientation_Z(index);
+            r.HandFlipped = GetHandFlipped(index);
+            r.Mirrored = GetMirrored(index);
+            r.HasModifiedGeometry = GetHasModifiedGeometry(index);
+            r.Scale = GetScale(index);
+            r.BasisX_X = GetBasisX_X(index);
+            r.BasisX_Y = GetBasisX_Y(index);
+            r.BasisX_Z = GetBasisX_Z(index);
+            r.BasisY_X = GetBasisY_X(index);
+            r.BasisY_Y = GetBasisY_Y(index);
+            r.BasisY_Z = GetBasisY_Z(index);
+            r.BasisZ_X = GetBasisZ_X(index);
+            r.BasisZ_Y = GetBasisZ_Y(index);
+            r.BasisZ_Z = GetBasisZ_Z(index);
+            r.Translation_X = GetTranslation_X(index);
+            r.Translation_Y = GetTranslation_Y(index);
+            r.Translation_Z = GetTranslation_Z(index);
+            r.HandOrientation_X = GetHandOrientation_X(index);
+            r.HandOrientation_Y = GetHandOrientation_Y(index);
+            r.HandOrientation_Z = GetHandOrientation_Z(index);
+            r._FamilyType = new Relation<Vim.Format.ObjectModel.FamilyType>(GetFamilyTypeIndex(index), _parentTableSet.GetFamilyType);
+            r._Host = new Relation<Vim.Format.ObjectModel.Element>(GetHostIndex(index), _parentTableSet.GetElement);
+            r._FromRoom = new Relation<Vim.Format.ObjectModel.Room>(GetFromRoomIndex(index), _parentTableSet.GetRoom);
+            r._ToRoom = new Relation<Vim.Format.ObjectModel.Room>(GetToRoomIndex(index), _parentTableSet.GetRoom);
+            r._SuperComponent = new Relation<Vim.Format.ObjectModel.Element>(GetSuperComponentIndex(index), _parentTableSet.GetElement);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // FamilyInstance Get
+    } // class FamilyInstanceTable 
+    
+    public partial class ViewTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ViewTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnTitle = GetStringColumnValues("string:Title") ?? Array.Empty<String>();
+            ColumnViewType = GetStringColumnValues("string:ViewType") ?? Array.Empty<String>();
+            ColumnUp_X = GetDataColumnValues<Double>("double:Up.X") ?? Array.Empty<Double>();
+            ColumnUp_Y = GetDataColumnValues<Double>("double:Up.Y") ?? Array.Empty<Double>();
+            ColumnUp_Z = GetDataColumnValues<Double>("double:Up.Z") ?? Array.Empty<Double>();
+            ColumnRight_X = GetDataColumnValues<Double>("double:Right.X") ?? Array.Empty<Double>();
+            ColumnRight_Y = GetDataColumnValues<Double>("double:Right.Y") ?? Array.Empty<Double>();
+            ColumnRight_Z = GetDataColumnValues<Double>("double:Right.Z") ?? Array.Empty<Double>();
+            ColumnOrigin_X = GetDataColumnValues<Double>("double:Origin.X") ?? Array.Empty<Double>();
+            ColumnOrigin_Y = GetDataColumnValues<Double>("double:Origin.Y") ?? Array.Empty<Double>();
+            ColumnOrigin_Z = GetDataColumnValues<Double>("double:Origin.Z") ?? Array.Empty<Double>();
+            ColumnViewDirection_X = GetDataColumnValues<Double>("double:ViewDirection.X") ?? Array.Empty<Double>();
+            ColumnViewDirection_Y = GetDataColumnValues<Double>("double:ViewDirection.Y") ?? Array.Empty<Double>();
+            ColumnViewDirection_Z = GetDataColumnValues<Double>("double:ViewDirection.Z") ?? Array.Empty<Double>();
+            ColumnViewPosition_X = GetDataColumnValues<Double>("double:ViewPosition.X") ?? Array.Empty<Double>();
+            ColumnViewPosition_Y = GetDataColumnValues<Double>("double:ViewPosition.Y") ?? Array.Empty<Double>();
+            ColumnViewPosition_Z = GetDataColumnValues<Double>("double:ViewPosition.Z") ?? Array.Empty<Double>();
+            ColumnScale = GetDataColumnValues<Double>("double:Scale") ?? Array.Empty<Double>();
+            ColumnOutline_Min_X = GetDataColumnValues<Double>("double:Outline.Min.X") ?? Array.Empty<Double>();
+            ColumnOutline_Min_Y = GetDataColumnValues<Double>("double:Outline.Min.Y") ?? Array.Empty<Double>();
+            ColumnOutline_Max_X = GetDataColumnValues<Double>("double:Outline.Max.X") ?? Array.Empty<Double>();
+            ColumnOutline_Max_Y = GetDataColumnValues<Double>("double:Outline.Max.Y") ?? Array.Empty<Double>();
+            ColumnDetailLevel = GetDataColumnValues<Int32>("int:DetailLevel") ?? Array.Empty<Int32>();
+            ColumnCameraIndex = GetIndexColumnValues("index:Vim.Camera:Camera") ?? Array.Empty<int>();
+            ColumnFamilyTypeIndex = GetIndexColumnValues("index:Vim.FamilyType:FamilyType") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ViewTable constructor
+        
+        public String[] ColumnTitle { get; }
+        public String GetTitle(int index, String @default = "") => ColumnTitle.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnViewType { get; }
+        public String GetViewType(int index, String @default = "") => ColumnViewType.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnUp_X { get; }
+        public Double GetUp_X(int index, Double @default = default) => ColumnUp_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnUp_Y { get; }
+        public Double GetUp_Y(int index, Double @default = default) => ColumnUp_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnUp_Z { get; }
+        public Double GetUp_Z(int index, Double @default = default) => ColumnUp_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnRight_X { get; }
+        public Double GetRight_X(int index, Double @default = default) => ColumnRight_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnRight_Y { get; }
+        public Double GetRight_Y(int index, Double @default = default) => ColumnRight_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnRight_Z { get; }
+        public Double GetRight_Z(int index, Double @default = default) => ColumnRight_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnOrigin_X { get; }
+        public Double GetOrigin_X(int index, Double @default = default) => ColumnOrigin_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnOrigin_Y { get; }
+        public Double GetOrigin_Y(int index, Double @default = default) => ColumnOrigin_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnOrigin_Z { get; }
+        public Double GetOrigin_Z(int index, Double @default = default) => ColumnOrigin_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnViewDirection_X { get; }
+        public Double GetViewDirection_X(int index, Double @default = default) => ColumnViewDirection_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnViewDirection_Y { get; }
+        public Double GetViewDirection_Y(int index, Double @default = default) => ColumnViewDirection_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnViewDirection_Z { get; }
+        public Double GetViewDirection_Z(int index, Double @default = default) => ColumnViewDirection_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnViewPosition_X { get; }
+        public Double GetViewPosition_X(int index, Double @default = default) => ColumnViewPosition_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnViewPosition_Y { get; }
+        public Double GetViewPosition_Y(int index, Double @default = default) => ColumnViewPosition_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnViewPosition_Z { get; }
+        public Double GetViewPosition_Z(int index, Double @default = default) => ColumnViewPosition_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnScale { get; }
+        public Double GetScale(int index, Double @default = default) => ColumnScale.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnOutline_Min_X { get; }
+        public Double GetOutline_Min_X(int index, Double @default = default) => ColumnOutline_Min_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnOutline_Min_Y { get; }
+        public Double GetOutline_Min_Y(int index, Double @default = default) => ColumnOutline_Min_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnOutline_Max_X { get; }
+        public Double GetOutline_Max_X(int index, Double @default = default) => ColumnOutline_Max_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnOutline_Max_Y { get; }
+        public Double GetOutline_Max_Y(int index, Double @default = default) => ColumnOutline_Max_Y.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnDetailLevel { get; }
+        public Int32 GetDetailLevel(int index, Int32 @default = default) => ColumnDetailLevel.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnCameraIndex { get; }
+        public int GetCameraIndex(int index) => ColumnCameraIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetCamera(int index) => _parentTableSet.GetCamera(GetCameraIndex(index));
+        
+        public int[] ColumnFamilyTypeIndex { get; }
+        public int GetFamilyTypeIndex(int index) => ColumnFamilyTypeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFamilyType(int index) => _parentTableSet.GetFamilyType(GetFamilyTypeIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public View Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new View();
+            r.Index = index;
+            r.Title = GetTitle(index);
+            r.ViewType = GetViewType(index);
+            r.Up_X = GetUp_X(index);
+            r.Up_Y = GetUp_Y(index);
+            r.Up_Z = GetUp_Z(index);
+            r.Right_X = GetRight_X(index);
+            r.Right_Y = GetRight_Y(index);
+            r.Right_Z = GetRight_Z(index);
+            r.Origin_X = GetOrigin_X(index);
+            r.Origin_Y = GetOrigin_Y(index);
+            r.Origin_Z = GetOrigin_Z(index);
+            r.ViewDirection_X = GetViewDirection_X(index);
+            r.ViewDirection_Y = GetViewDirection_Y(index);
+            r.ViewDirection_Z = GetViewDirection_Z(index);
+            r.ViewPosition_X = GetViewPosition_X(index);
+            r.ViewPosition_Y = GetViewPosition_Y(index);
+            r.ViewPosition_Z = GetViewPosition_Z(index);
+            r.Scale = GetScale(index);
+            r.Outline_Min_X = GetOutline_Min_X(index);
+            r.Outline_Min_Y = GetOutline_Min_Y(index);
+            r.Outline_Max_X = GetOutline_Max_X(index);
+            r.Outline_Max_Y = GetOutline_Max_Y(index);
+            r.DetailLevel = GetDetailLevel(index);
+            r._Camera = new Relation<Vim.Format.ObjectModel.Camera>(GetCameraIndex(index), _parentTableSet.GetCamera);
+            r._FamilyType = new Relation<Vim.Format.ObjectModel.FamilyType>(GetFamilyTypeIndex(index), _parentTableSet.GetFamilyType);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // View Get
+    } // class ViewTable 
+    
+    public partial class ElementInViewTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ElementInViewTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnViewIndex = GetIndexColumnValues("index:Vim.View:View") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ElementInViewTable constructor
+        
+        
+        public int[] ColumnViewIndex { get; }
+        public int GetViewIndex(int index) => ColumnViewIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetView(int index) => _parentTableSet.GetView(GetViewIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public ElementInView Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ElementInView();
+            r.Index = index;
+            r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _parentTableSet.GetView);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // ElementInView Get
+    } // class ElementInViewTable 
+    
+    public partial class ShapeInViewTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ShapeInViewTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnShapeIndex = GetIndexColumnValues("index:Vim.Shape:Shape") ?? Array.Empty<int>();
+            ColumnViewIndex = GetIndexColumnValues("index:Vim.View:View") ?? Array.Empty<int>();
+        } // ShapeInViewTable constructor
+        
+        
+        public int[] ColumnShapeIndex { get; }
+        public int GetShapeIndex(int index) => ColumnShapeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetShape(int index) => _parentTableSet.GetShape(GetShapeIndex(index));
+        
+        public int[] ColumnViewIndex { get; }
+        public int GetViewIndex(int index) => ColumnViewIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetView(int index) => _parentTableSet.GetView(GetViewIndex(index));
+        
+        // Object Getter
+        public ShapeInView Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ShapeInView();
+            r.Index = index;
+            r._Shape = new Relation<Vim.Format.ObjectModel.Shape>(GetShapeIndex(index), _parentTableSet.GetShape);
+            r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _parentTableSet.GetView);
+            return r;
+        } // ShapeInView Get
+    } // class ShapeInViewTable 
+    
+    public partial class AssetInViewTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public AssetInViewTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnAssetIndex = GetIndexColumnValues("index:Vim.Asset:Asset") ?? Array.Empty<int>();
+            ColumnViewIndex = GetIndexColumnValues("index:Vim.View:View") ?? Array.Empty<int>();
+        } // AssetInViewTable constructor
+        
+        
+        public int[] ColumnAssetIndex { get; }
+        public int GetAssetIndex(int index) => ColumnAssetIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetAsset(int index) => _parentTableSet.GetAsset(GetAssetIndex(index));
+        
+        public int[] ColumnViewIndex { get; }
+        public int GetViewIndex(int index) => ColumnViewIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetView(int index) => _parentTableSet.GetView(GetViewIndex(index));
+        
+        // Object Getter
+        public AssetInView Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new AssetInView();
+            r.Index = index;
+            r._Asset = new Relation<Vim.Format.ObjectModel.Asset>(GetAssetIndex(index), _parentTableSet.GetAsset);
+            r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _parentTableSet.GetView);
+            return r;
+        } // AssetInView Get
+    } // class AssetInViewTable 
+    
+    public partial class AssetInViewSheetTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public AssetInViewSheetTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnAssetIndex = GetIndexColumnValues("index:Vim.Asset:Asset") ?? Array.Empty<int>();
+            ColumnViewSheetIndex = GetIndexColumnValues("index:Vim.ViewSheet:ViewSheet") ?? Array.Empty<int>();
+        } // AssetInViewSheetTable constructor
+        
+        
+        public int[] ColumnAssetIndex { get; }
+        public int GetAssetIndex(int index) => ColumnAssetIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetAsset(int index) => _parentTableSet.GetAsset(GetAssetIndex(index));
+        
+        public int[] ColumnViewSheetIndex { get; }
+        public int GetViewSheetIndex(int index) => ColumnViewSheetIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetViewSheet(int index) => _parentTableSet.GetViewSheet(GetViewSheetIndex(index));
+        
+        // Object Getter
+        public AssetInViewSheet Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new AssetInViewSheet();
+            r.Index = index;
+            r._Asset = new Relation<Vim.Format.ObjectModel.Asset>(GetAssetIndex(index), _parentTableSet.GetAsset);
+            r._ViewSheet = new Relation<Vim.Format.ObjectModel.ViewSheet>(GetViewSheetIndex(index), _parentTableSet.GetViewSheet);
+            return r;
+        } // AssetInViewSheet Get
+    } // class AssetInViewSheetTable 
+    
+    public partial class LevelInViewTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public LevelInViewTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnExtents_Min_X = GetDataColumnValues<Double>("double:Extents.Min.X") ?? Array.Empty<Double>();
+            ColumnExtents_Min_Y = GetDataColumnValues<Double>("double:Extents.Min.Y") ?? Array.Empty<Double>();
+            ColumnExtents_Min_Z = GetDataColumnValues<Double>("double:Extents.Min.Z") ?? Array.Empty<Double>();
+            ColumnExtents_Max_X = GetDataColumnValues<Double>("double:Extents.Max.X") ?? Array.Empty<Double>();
+            ColumnExtents_Max_Y = GetDataColumnValues<Double>("double:Extents.Max.Y") ?? Array.Empty<Double>();
+            ColumnExtents_Max_Z = GetDataColumnValues<Double>("double:Extents.Max.Z") ?? Array.Empty<Double>();
+            ColumnLevelIndex = GetIndexColumnValues("index:Vim.Level:Level") ?? Array.Empty<int>();
+            ColumnViewIndex = GetIndexColumnValues("index:Vim.View:View") ?? Array.Empty<int>();
+        } // LevelInViewTable constructor
+        
+        public Double[] ColumnExtents_Min_X { get; }
+        public Double GetExtents_Min_X(int index, Double @default = default) => ColumnExtents_Min_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Min_Y { get; }
+        public Double GetExtents_Min_Y(int index, Double @default = default) => ColumnExtents_Min_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Min_Z { get; }
+        public Double GetExtents_Min_Z(int index, Double @default = default) => ColumnExtents_Min_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Max_X { get; }
+        public Double GetExtents_Max_X(int index, Double @default = default) => ColumnExtents_Max_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Max_Y { get; }
+        public Double GetExtents_Max_Y(int index, Double @default = default) => ColumnExtents_Max_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Max_Z { get; }
+        public Double GetExtents_Max_Z(int index, Double @default = default) => ColumnExtents_Max_Z.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnLevelIndex { get; }
+        public int GetLevelIndex(int index) => ColumnLevelIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetLevel(int index) => _parentTableSet.GetLevel(GetLevelIndex(index));
+        
+        public int[] ColumnViewIndex { get; }
+        public int GetViewIndex(int index) => ColumnViewIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetView(int index) => _parentTableSet.GetView(GetViewIndex(index));
+        
+        // Object Getter
+        public LevelInView Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new LevelInView();
+            r.Index = index;
+            r.Extents_Min_X = GetExtents_Min_X(index);
+            r.Extents_Min_Y = GetExtents_Min_Y(index);
+            r.Extents_Min_Z = GetExtents_Min_Z(index);
+            r.Extents_Max_X = GetExtents_Max_X(index);
+            r.Extents_Max_Y = GetExtents_Max_Y(index);
+            r.Extents_Max_Z = GetExtents_Max_Z(index);
+            r._Level = new Relation<Vim.Format.ObjectModel.Level>(GetLevelIndex(index), _parentTableSet.GetLevel);
+            r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _parentTableSet.GetView);
+            return r;
+        } // LevelInView Get
+    } // class LevelInViewTable 
+    
+    public partial class CameraTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public CameraTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnId = GetDataColumnValues<Int32>("int:Id") ?? Array.Empty<Int32>();
+            ColumnIsPerspective = GetDataColumnValues<Int32>("int:IsPerspective") ?? Array.Empty<Int32>();
+            ColumnVerticalExtent = GetDataColumnValues<Double>("double:VerticalExtent") ?? Array.Empty<Double>();
+            ColumnHorizontalExtent = GetDataColumnValues<Double>("double:HorizontalExtent") ?? Array.Empty<Double>();
+            ColumnFarDistance = GetDataColumnValues<Double>("double:FarDistance") ?? Array.Empty<Double>();
+            ColumnNearDistance = GetDataColumnValues<Double>("double:NearDistance") ?? Array.Empty<Double>();
+            ColumnTargetDistance = GetDataColumnValues<Double>("double:TargetDistance") ?? Array.Empty<Double>();
+            ColumnRightOffset = GetDataColumnValues<Double>("double:RightOffset") ?? Array.Empty<Double>();
+            ColumnUpOffset = GetDataColumnValues<Double>("double:UpOffset") ?? Array.Empty<Double>();
+        } // CameraTable constructor
+        
+        public Int32[] ColumnId { get; }
+        public Int32 GetId(int index, Int32 @default = default) => ColumnId.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnIsPerspective { get; }
+        public Int32 GetIsPerspective(int index, Int32 @default = default) => ColumnIsPerspective.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnVerticalExtent { get; }
+        public Double GetVerticalExtent(int index, Double @default = default) => ColumnVerticalExtent.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnHorizontalExtent { get; }
+        public Double GetHorizontalExtent(int index, Double @default = default) => ColumnHorizontalExtent.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnFarDistance { get; }
+        public Double GetFarDistance(int index, Double @default = default) => ColumnFarDistance.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnNearDistance { get; }
+        public Double GetNearDistance(int index, Double @default = default) => ColumnNearDistance.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnTargetDistance { get; }
+        public Double GetTargetDistance(int index, Double @default = default) => ColumnTargetDistance.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnRightOffset { get; }
+        public Double GetRightOffset(int index, Double @default = default) => ColumnRightOffset.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnUpOffset { get; }
+        public Double GetUpOffset(int index, Double @default = default) => ColumnUpOffset.ElementAtOrDefault(index, @default);
+        
+        
+        // Object Getter
+        public Camera Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Camera();
+            r.Index = index;
+            r.Id = GetId(index);
+            r.IsPerspective = GetIsPerspective(index);
+            r.VerticalExtent = GetVerticalExtent(index);
+            r.HorizontalExtent = GetHorizontalExtent(index);
+            r.FarDistance = GetFarDistance(index);
+            r.NearDistance = GetNearDistance(index);
+            r.TargetDistance = GetTargetDistance(index);
+            r.RightOffset = GetRightOffset(index);
+            r.UpOffset = GetUpOffset(index);
+            return r;
+        } // Camera Get
+    } // class CameraTable 
+    
+    public partial class MaterialTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public MaterialTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnName = GetStringColumnValues("string:Name") ?? Array.Empty<String>();
+            ColumnMaterialCategory = GetStringColumnValues("string:MaterialCategory") ?? Array.Empty<String>();
+            ColumnColor_X = GetDataColumnValues<Double>("double:Color.X") ?? Array.Empty<Double>();
+            ColumnColor_Y = GetDataColumnValues<Double>("double:Color.Y") ?? Array.Empty<Double>();
+            ColumnColor_Z = GetDataColumnValues<Double>("double:Color.Z") ?? Array.Empty<Double>();
+            ColumnColorUvScaling_X = GetDataColumnValues<Double>("double:ColorUvScaling.X") ?? Array.Empty<Double>();
+            ColumnColorUvScaling_Y = GetDataColumnValues<Double>("double:ColorUvScaling.Y") ?? Array.Empty<Double>();
+            ColumnColorUvOffset_X = GetDataColumnValues<Double>("double:ColorUvOffset.X") ?? Array.Empty<Double>();
+            ColumnColorUvOffset_Y = GetDataColumnValues<Double>("double:ColorUvOffset.Y") ?? Array.Empty<Double>();
+            ColumnNormalUvScaling_X = GetDataColumnValues<Double>("double:NormalUvScaling.X") ?? Array.Empty<Double>();
+            ColumnNormalUvScaling_Y = GetDataColumnValues<Double>("double:NormalUvScaling.Y") ?? Array.Empty<Double>();
+            ColumnNormalUvOffset_X = GetDataColumnValues<Double>("double:NormalUvOffset.X") ?? Array.Empty<Double>();
+            ColumnNormalUvOffset_Y = GetDataColumnValues<Double>("double:NormalUvOffset.Y") ?? Array.Empty<Double>();
+            ColumnNormalAmount = GetDataColumnValues<Double>("double:NormalAmount") ?? Array.Empty<Double>();
+            ColumnGlossiness = GetDataColumnValues<Double>("double:Glossiness") ?? Array.Empty<Double>();
+            ColumnSmoothness = GetDataColumnValues<Double>("double:Smoothness") ?? Array.Empty<Double>();
+            ColumnTransparency = GetDataColumnValues<Double>("double:Transparency") ?? Array.Empty<Double>();
+            ColumnColorTextureFileIndex = GetIndexColumnValues("index:Vim.Asset:ColorTextureFile") ?? Array.Empty<int>();
+            ColumnNormalTextureFileIndex = GetIndexColumnValues("index:Vim.Asset:NormalTextureFile") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // MaterialTable constructor
+        
+        public String[] ColumnName { get; }
+        public String GetName(int index, String @default = "") => ColumnName.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnMaterialCategory { get; }
+        public String GetMaterialCategory(int index, String @default = "") => ColumnMaterialCategory.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnColor_X { get; }
+        public Double GetColor_X(int index, Double @default = default) => ColumnColor_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnColor_Y { get; }
+        public Double GetColor_Y(int index, Double @default = default) => ColumnColor_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnColor_Z { get; }
+        public Double GetColor_Z(int index, Double @default = default) => ColumnColor_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnColorUvScaling_X { get; }
+        public Double GetColorUvScaling_X(int index, Double @default = default) => ColumnColorUvScaling_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnColorUvScaling_Y { get; }
+        public Double GetColorUvScaling_Y(int index, Double @default = default) => ColumnColorUvScaling_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnColorUvOffset_X { get; }
+        public Double GetColorUvOffset_X(int index, Double @default = default) => ColumnColorUvOffset_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnColorUvOffset_Y { get; }
+        public Double GetColorUvOffset_Y(int index, Double @default = default) => ColumnColorUvOffset_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnNormalUvScaling_X { get; }
+        public Double GetNormalUvScaling_X(int index, Double @default = default) => ColumnNormalUvScaling_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnNormalUvScaling_Y { get; }
+        public Double GetNormalUvScaling_Y(int index, Double @default = default) => ColumnNormalUvScaling_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnNormalUvOffset_X { get; }
+        public Double GetNormalUvOffset_X(int index, Double @default = default) => ColumnNormalUvOffset_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnNormalUvOffset_Y { get; }
+        public Double GetNormalUvOffset_Y(int index, Double @default = default) => ColumnNormalUvOffset_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnNormalAmount { get; }
+        public Double GetNormalAmount(int index, Double @default = default) => ColumnNormalAmount.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnGlossiness { get; }
+        public Double GetGlossiness(int index, Double @default = default) => ColumnGlossiness.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnSmoothness { get; }
+        public Double GetSmoothness(int index, Double @default = default) => ColumnSmoothness.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnTransparency { get; }
+        public Double GetTransparency(int index, Double @default = default) => ColumnTransparency.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnColorTextureFileIndex { get; }
+        public int GetColorTextureFileIndex(int index) => ColumnColorTextureFileIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetColorTextureFile(int index) => _parentTableSet.GetAsset(GetColorTextureFileIndex(index));
+        
+        public int[] ColumnNormalTextureFileIndex { get; }
+        public int GetNormalTextureFileIndex(int index) => ColumnNormalTextureFileIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetNormalTextureFile(int index) => _parentTableSet.GetAsset(GetNormalTextureFileIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Material Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Material();
+            r.Index = index;
+            r.Name = GetName(index);
+            r.MaterialCategory = GetMaterialCategory(index);
+            r.Color_X = GetColor_X(index);
+            r.Color_Y = GetColor_Y(index);
+            r.Color_Z = GetColor_Z(index);
+            r.ColorUvScaling_X = GetColorUvScaling_X(index);
+            r.ColorUvScaling_Y = GetColorUvScaling_Y(index);
+            r.ColorUvOffset_X = GetColorUvOffset_X(index);
+            r.ColorUvOffset_Y = GetColorUvOffset_Y(index);
+            r.NormalUvScaling_X = GetNormalUvScaling_X(index);
+            r.NormalUvScaling_Y = GetNormalUvScaling_Y(index);
+            r.NormalUvOffset_X = GetNormalUvOffset_X(index);
+            r.NormalUvOffset_Y = GetNormalUvOffset_Y(index);
+            r.NormalAmount = GetNormalAmount(index);
+            r.Glossiness = GetGlossiness(index);
+            r.Smoothness = GetSmoothness(index);
+            r.Transparency = GetTransparency(index);
+            r._ColorTextureFile = new Relation<Vim.Format.ObjectModel.Asset>(GetColorTextureFileIndex(index), _parentTableSet.GetAsset);
+            r._NormalTextureFile = new Relation<Vim.Format.ObjectModel.Asset>(GetNormalTextureFileIndex(index), _parentTableSet.GetAsset);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Material Get
+    } // class MaterialTable 
+    
+    public partial class MaterialInElementTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public MaterialInElementTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnArea = GetDataColumnValues<Double>("double:Area") ?? Array.Empty<Double>();
+            ColumnVolume = GetDataColumnValues<Double>("double:Volume") ?? Array.Empty<Double>();
+            ColumnIsPaint = GetDataColumnValues<Boolean>("byte:IsPaint") ?? Array.Empty<Boolean>();
+            ColumnMaterialIndex = GetIndexColumnValues("index:Vim.Material:Material") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // MaterialInElementTable constructor
+        
+        public Double[] ColumnArea { get; }
+        public Double GetArea(int index, Double @default = default) => ColumnArea.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnVolume { get; }
+        public Double GetVolume(int index, Double @default = default) => ColumnVolume.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsPaint { get; }
+        public Boolean GetIsPaint(int index, Boolean @default = default) => ColumnIsPaint.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnMaterialIndex { get; }
+        public int GetMaterialIndex(int index) => ColumnMaterialIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetMaterial(int index) => _parentTableSet.GetMaterial(GetMaterialIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public MaterialInElement Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new MaterialInElement();
+            r.Index = index;
+            r.Area = GetArea(index);
+            r.Volume = GetVolume(index);
+            r.IsPaint = GetIsPaint(index);
+            r._Material = new Relation<Vim.Format.ObjectModel.Material>(GetMaterialIndex(index), _parentTableSet.GetMaterial);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // MaterialInElement Get
+    } // class MaterialInElementTable 
+    
+    public partial class CompoundStructureLayerTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public CompoundStructureLayerTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnOrderIndex = GetDataColumnValues<Int32>("int:OrderIndex") ?? Array.Empty<Int32>();
+            ColumnWidth = GetDataColumnValues<Double>("double:Width") ?? Array.Empty<Double>();
+            ColumnMaterialFunctionAssignment = GetStringColumnValues("string:MaterialFunctionAssignment") ?? Array.Empty<String>();
+            ColumnMaterialIndex = GetIndexColumnValues("index:Vim.Material:Material") ?? Array.Empty<int>();
+            ColumnCompoundStructureIndex = GetIndexColumnValues("index:Vim.CompoundStructure:CompoundStructure") ?? Array.Empty<int>();
+        } // CompoundStructureLayerTable constructor
+        
+        public Int32[] ColumnOrderIndex { get; }
+        public Int32 GetOrderIndex(int index, Int32 @default = default) => ColumnOrderIndex.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnWidth { get; }
+        public Double GetWidth(int index, Double @default = default) => ColumnWidth.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnMaterialFunctionAssignment { get; }
+        public String GetMaterialFunctionAssignment(int index, String @default = "") => ColumnMaterialFunctionAssignment.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnMaterialIndex { get; }
+        public int GetMaterialIndex(int index) => ColumnMaterialIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetMaterial(int index) => _parentTableSet.GetMaterial(GetMaterialIndex(index));
+        
+        public int[] ColumnCompoundStructureIndex { get; }
+        public int GetCompoundStructureIndex(int index) => ColumnCompoundStructureIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetCompoundStructure(int index) => _parentTableSet.GetCompoundStructure(GetCompoundStructureIndex(index));
+        
+        // Object Getter
+        public CompoundStructureLayer Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new CompoundStructureLayer();
+            r.Index = index;
+            r.OrderIndex = GetOrderIndex(index);
+            r.Width = GetWidth(index);
+            r.MaterialFunctionAssignment = GetMaterialFunctionAssignment(index);
+            r._Material = new Relation<Vim.Format.ObjectModel.Material>(GetMaterialIndex(index), _parentTableSet.GetMaterial);
+            r._CompoundStructure = new Relation<Vim.Format.ObjectModel.CompoundStructure>(GetCompoundStructureIndex(index), _parentTableSet.GetCompoundStructure);
+            return r;
+        } // CompoundStructureLayer Get
+    } // class CompoundStructureLayerTable 
+    
+    public partial class CompoundStructureTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public CompoundStructureTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnWidth = GetDataColumnValues<Double>("double:Width") ?? Array.Empty<Double>();
+            ColumnStructuralLayerIndex = GetIndexColumnValues("index:Vim.CompoundStructureLayer:StructuralLayer") ?? Array.Empty<int>();
+        } // CompoundStructureTable constructor
+        
+        public Double[] ColumnWidth { get; }
+        public Double GetWidth(int index, Double @default = default) => ColumnWidth.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnStructuralLayerIndex { get; }
+        public int GetStructuralLayerIndex(int index) => ColumnStructuralLayerIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetStructuralLayer(int index) => _parentTableSet.GetCompoundStructureLayer(GetStructuralLayerIndex(index));
+        
+        // Object Getter
+        public CompoundStructure Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new CompoundStructure();
+            r.Index = index;
+            r.Width = GetWidth(index);
+            r._StructuralLayer = new Relation<Vim.Format.ObjectModel.CompoundStructureLayer>(GetStructuralLayerIndex(index), _parentTableSet.GetCompoundStructureLayer);
+            return r;
+        } // CompoundStructure Get
+    } // class CompoundStructureTable 
+    
+    public partial class NodeTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public NodeTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // NodeTable constructor
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Node Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Node();
+            r.Index = index;
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Node Get
+    } // class NodeTable 
+    
+    public partial class GeometryTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public GeometryTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnBox_Min_X = GetDataColumnValues<Single>("float:Box.Min.X") ?? Array.Empty<Single>();
+            ColumnBox_Min_Y = GetDataColumnValues<Single>("float:Box.Min.Y") ?? Array.Empty<Single>();
+            ColumnBox_Min_Z = GetDataColumnValues<Single>("float:Box.Min.Z") ?? Array.Empty<Single>();
+            ColumnBox_Max_X = GetDataColumnValues<Single>("float:Box.Max.X") ?? Array.Empty<Single>();
+            ColumnBox_Max_Y = GetDataColumnValues<Single>("float:Box.Max.Y") ?? Array.Empty<Single>();
+            ColumnBox_Max_Z = GetDataColumnValues<Single>("float:Box.Max.Z") ?? Array.Empty<Single>();
+            ColumnVertexCount = GetDataColumnValues<Int32>("int:VertexCount") ?? Array.Empty<Int32>();
+            ColumnFaceCount = GetDataColumnValues<Int32>("int:FaceCount") ?? Array.Empty<Int32>();
+        } // GeometryTable constructor
+        
+        public Single[] ColumnBox_Min_X { get; }
+        public Single GetBox_Min_X(int index, Single @default = default) => ColumnBox_Min_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBox_Min_Y { get; }
+        public Single GetBox_Min_Y(int index, Single @default = default) => ColumnBox_Min_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBox_Min_Z { get; }
+        public Single GetBox_Min_Z(int index, Single @default = default) => ColumnBox_Min_Z.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBox_Max_X { get; }
+        public Single GetBox_Max_X(int index, Single @default = default) => ColumnBox_Max_X.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBox_Max_Y { get; }
+        public Single GetBox_Max_Y(int index, Single @default = default) => ColumnBox_Max_Y.ElementAtOrDefault(index, @default);
+        
+        public Single[] ColumnBox_Max_Z { get; }
+        public Single GetBox_Max_Z(int index, Single @default = default) => ColumnBox_Max_Z.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnVertexCount { get; }
+        public Int32 GetVertexCount(int index, Int32 @default = default) => ColumnVertexCount.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnFaceCount { get; }
+        public Int32 GetFaceCount(int index, Int32 @default = default) => ColumnFaceCount.ElementAtOrDefault(index, @default);
+        
+        
+        // Object Getter
+        public Geometry Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Geometry();
+            r.Index = index;
+            r.Box_Min_X = GetBox_Min_X(index);
+            r.Box_Min_Y = GetBox_Min_Y(index);
+            r.Box_Min_Z = GetBox_Min_Z(index);
+            r.Box_Max_X = GetBox_Max_X(index);
+            r.Box_Max_Y = GetBox_Max_Y(index);
+            r.Box_Max_Z = GetBox_Max_Z(index);
+            r.VertexCount = GetVertexCount(index);
+            r.FaceCount = GetFaceCount(index);
+            return r;
+        } // Geometry Get
+    } // class GeometryTable 
+    
+    public partial class ShapeTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ShapeTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ShapeTable constructor
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Shape Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Shape();
+            r.Index = index;
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Shape Get
+    } // class ShapeTable 
+    
+    public partial class ShapeCollectionTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ShapeCollectionTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ShapeCollectionTable constructor
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public ShapeCollection Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ShapeCollection();
+            r.Index = index;
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // ShapeCollection Get
+    } // class ShapeCollectionTable 
+    
+    public partial class ShapeInShapeCollectionTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ShapeInShapeCollectionTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnShapeIndex = GetIndexColumnValues("index:Vim.Shape:Shape") ?? Array.Empty<int>();
+            ColumnShapeCollectionIndex = GetIndexColumnValues("index:Vim.ShapeCollection:ShapeCollection") ?? Array.Empty<int>();
+        } // ShapeInShapeCollectionTable constructor
+        
+        
+        public int[] ColumnShapeIndex { get; }
+        public int GetShapeIndex(int index) => ColumnShapeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetShape(int index) => _parentTableSet.GetShape(GetShapeIndex(index));
+        
+        public int[] ColumnShapeCollectionIndex { get; }
+        public int GetShapeCollectionIndex(int index) => ColumnShapeCollectionIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetShapeCollection(int index) => _parentTableSet.GetShapeCollection(GetShapeCollectionIndex(index));
+        
+        // Object Getter
+        public ShapeInShapeCollection Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ShapeInShapeCollection();
+            r.Index = index;
+            r._Shape = new Relation<Vim.Format.ObjectModel.Shape>(GetShapeIndex(index), _parentTableSet.GetShape);
+            r._ShapeCollection = new Relation<Vim.Format.ObjectModel.ShapeCollection>(GetShapeCollectionIndex(index), _parentTableSet.GetShapeCollection);
+            return r;
+        } // ShapeInShapeCollection Get
+    } // class ShapeInShapeCollectionTable 
+    
+    public partial class SystemTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public SystemTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnSystemType = GetDataColumnValues<Int32>("int:SystemType") ?? Array.Empty<Int32>();
+            ColumnFamilyTypeIndex = GetIndexColumnValues("index:Vim.FamilyType:FamilyType") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // SystemTable constructor
+        
+        public Int32[] ColumnSystemType { get; }
+        public Int32 GetSystemType(int index, Int32 @default = default) => ColumnSystemType.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnFamilyTypeIndex { get; }
+        public int GetFamilyTypeIndex(int index) => ColumnFamilyTypeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFamilyType(int index) => _parentTableSet.GetFamilyType(GetFamilyTypeIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public System Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new System();
+            r.Index = index;
+            r.SystemType = GetSystemType(index);
+            r._FamilyType = new Relation<Vim.Format.ObjectModel.FamilyType>(GetFamilyTypeIndex(index), _parentTableSet.GetFamilyType);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // System Get
+    } // class SystemTable 
+    
+    public partial class ElementInSystemTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ElementInSystemTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnRoles = GetDataColumnValues<Int32>("int:Roles") ?? Array.Empty<Int32>();
+            ColumnSystemIndex = GetIndexColumnValues("index:Vim.System:System") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ElementInSystemTable constructor
+        
+        public Int32[] ColumnRoles { get; }
+        public Int32 GetRoles(int index, Int32 @default = default) => ColumnRoles.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnSystemIndex { get; }
+        public int GetSystemIndex(int index) => ColumnSystemIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetSystem(int index) => _parentTableSet.GetSystem(GetSystemIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public ElementInSystem Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ElementInSystem();
+            r.Index = index;
+            r.Roles = GetRoles(index);
+            r._System = new Relation<Vim.Format.ObjectModel.System>(GetSystemIndex(index), _parentTableSet.GetSystem);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // ElementInSystem Get
+    } // class ElementInSystemTable 
+    
+    public partial class WarningTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public WarningTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnGuid = GetStringColumnValues("string:Guid") ?? Array.Empty<String>();
+            ColumnSeverity = GetStringColumnValues("string:Severity") ?? Array.Empty<String>();
+            ColumnDescription = GetStringColumnValues("string:Description") ?? Array.Empty<String>();
+            ColumnBimDocumentIndex = GetIndexColumnValues("index:Vim.BimDocument:BimDocument") ?? Array.Empty<int>();
+        } // WarningTable constructor
+        
+        public String[] ColumnGuid { get; }
+        public String GetGuid(int index, String @default = "") => ColumnGuid.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnSeverity { get; }
+        public String GetSeverity(int index, String @default = "") => ColumnSeverity.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnDescription { get; }
+        public String GetDescription(int index, String @default = "") => ColumnDescription.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnBimDocumentIndex { get; }
+        public int GetBimDocumentIndex(int index) => ColumnBimDocumentIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetBimDocument(int index) => _parentTableSet.GetBimDocument(GetBimDocumentIndex(index));
+        
+        // Object Getter
+        public Warning Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Warning();
+            r.Index = index;
+            r.Guid = GetGuid(index);
+            r.Severity = GetSeverity(index);
+            r.Description = GetDescription(index);
+            r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _parentTableSet.GetBimDocument);
+            return r;
+        } // Warning Get
+    } // class WarningTable 
+    
+    public partial class ElementInWarningTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ElementInWarningTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnWarningIndex = GetIndexColumnValues("index:Vim.Warning:Warning") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ElementInWarningTable constructor
+        
+        
+        public int[] ColumnWarningIndex { get; }
+        public int GetWarningIndex(int index) => ColumnWarningIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetWarning(int index) => _parentTableSet.GetWarning(GetWarningIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public ElementInWarning Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ElementInWarning();
+            r.Index = index;
+            r._Warning = new Relation<Vim.Format.ObjectModel.Warning>(GetWarningIndex(index), _parentTableSet.GetWarning);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // ElementInWarning Get
+    } // class ElementInWarningTable 
+    
+    public partial class BasePointTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public BasePointTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnIsSurveyPoint = GetDataColumnValues<Boolean>("byte:IsSurveyPoint") ?? Array.Empty<Boolean>();
+            ColumnPosition_X = GetDataColumnValues<Double>("double:Position.X") ?? Array.Empty<Double>();
+            ColumnPosition_Y = GetDataColumnValues<Double>("double:Position.Y") ?? Array.Empty<Double>();
+            ColumnPosition_Z = GetDataColumnValues<Double>("double:Position.Z") ?? Array.Empty<Double>();
+            ColumnSharedPosition_X = GetDataColumnValues<Double>("double:SharedPosition.X") ?? Array.Empty<Double>();
+            ColumnSharedPosition_Y = GetDataColumnValues<Double>("double:SharedPosition.Y") ?? Array.Empty<Double>();
+            ColumnSharedPosition_Z = GetDataColumnValues<Double>("double:SharedPosition.Z") ?? Array.Empty<Double>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // BasePointTable constructor
+        
+        public Boolean[] ColumnIsSurveyPoint { get; }
+        public Boolean GetIsSurveyPoint(int index, Boolean @default = default) => ColumnIsSurveyPoint.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnPosition_X { get; }
+        public Double GetPosition_X(int index, Double @default = default) => ColumnPosition_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnPosition_Y { get; }
+        public Double GetPosition_Y(int index, Double @default = default) => ColumnPosition_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnPosition_Z { get; }
+        public Double GetPosition_Z(int index, Double @default = default) => ColumnPosition_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnSharedPosition_X { get; }
+        public Double GetSharedPosition_X(int index, Double @default = default) => ColumnSharedPosition_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnSharedPosition_Y { get; }
+        public Double GetSharedPosition_Y(int index, Double @default = default) => ColumnSharedPosition_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnSharedPosition_Z { get; }
+        public Double GetSharedPosition_Z(int index, Double @default = default) => ColumnSharedPosition_Z.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public BasePoint Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new BasePoint();
+            r.Index = index;
+            r.IsSurveyPoint = GetIsSurveyPoint(index);
+            r.Position_X = GetPosition_X(index);
+            r.Position_Y = GetPosition_Y(index);
+            r.Position_Z = GetPosition_Z(index);
+            r.SharedPosition_X = GetSharedPosition_X(index);
+            r.SharedPosition_Y = GetSharedPosition_Y(index);
+            r.SharedPosition_Z = GetSharedPosition_Z(index);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // BasePoint Get
+    } // class BasePointTable 
+    
+    public partial class PhaseFilterTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public PhaseFilterTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnNew = GetDataColumnValues<Int32>("int:New") ?? Array.Empty<Int32>();
+            ColumnExisting = GetDataColumnValues<Int32>("int:Existing") ?? Array.Empty<Int32>();
+            ColumnDemolished = GetDataColumnValues<Int32>("int:Demolished") ?? Array.Empty<Int32>();
+            ColumnTemporary = GetDataColumnValues<Int32>("int:Temporary") ?? Array.Empty<Int32>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // PhaseFilterTable constructor
+        
+        public Int32[] ColumnNew { get; }
+        public Int32 GetNew(int index, Int32 @default = default) => ColumnNew.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnExisting { get; }
+        public Int32 GetExisting(int index, Int32 @default = default) => ColumnExisting.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnDemolished { get; }
+        public Int32 GetDemolished(int index, Int32 @default = default) => ColumnDemolished.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnTemporary { get; }
+        public Int32 GetTemporary(int index, Int32 @default = default) => ColumnTemporary.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public PhaseFilter Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new PhaseFilter();
+            r.Index = index;
+            r.New = GetNew(index);
+            r.Existing = GetExisting(index);
+            r.Demolished = GetDemolished(index);
+            r.Temporary = GetTemporary(index);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // PhaseFilter Get
+    } // class PhaseFilterTable 
+    
+    public partial class GridTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public GridTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnStartPoint_X = GetDataColumnValues<Double>("double:StartPoint.X") ?? Array.Empty<Double>();
+            ColumnStartPoint_Y = GetDataColumnValues<Double>("double:StartPoint.Y") ?? Array.Empty<Double>();
+            ColumnStartPoint_Z = GetDataColumnValues<Double>("double:StartPoint.Z") ?? Array.Empty<Double>();
+            ColumnEndPoint_X = GetDataColumnValues<Double>("double:EndPoint.X") ?? Array.Empty<Double>();
+            ColumnEndPoint_Y = GetDataColumnValues<Double>("double:EndPoint.Y") ?? Array.Empty<Double>();
+            ColumnEndPoint_Z = GetDataColumnValues<Double>("double:EndPoint.Z") ?? Array.Empty<Double>();
+            ColumnIsCurved = GetDataColumnValues<Boolean>("byte:IsCurved") ?? Array.Empty<Boolean>();
+            ColumnExtents_Min_X = GetDataColumnValues<Double>("double:Extents.Min.X") ?? Array.Empty<Double>();
+            ColumnExtents_Min_Y = GetDataColumnValues<Double>("double:Extents.Min.Y") ?? Array.Empty<Double>();
+            ColumnExtents_Min_Z = GetDataColumnValues<Double>("double:Extents.Min.Z") ?? Array.Empty<Double>();
+            ColumnExtents_Max_X = GetDataColumnValues<Double>("double:Extents.Max.X") ?? Array.Empty<Double>();
+            ColumnExtents_Max_Y = GetDataColumnValues<Double>("double:Extents.Max.Y") ?? Array.Empty<Double>();
+            ColumnExtents_Max_Z = GetDataColumnValues<Double>("double:Extents.Max.Z") ?? Array.Empty<Double>();
+            ColumnFamilyTypeIndex = GetIndexColumnValues("index:Vim.FamilyType:FamilyType") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // GridTable constructor
+        
+        public Double[] ColumnStartPoint_X { get; }
+        public Double GetStartPoint_X(int index, Double @default = default) => ColumnStartPoint_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnStartPoint_Y { get; }
+        public Double GetStartPoint_Y(int index, Double @default = default) => ColumnStartPoint_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnStartPoint_Z { get; }
+        public Double GetStartPoint_Z(int index, Double @default = default) => ColumnStartPoint_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnEndPoint_X { get; }
+        public Double GetEndPoint_X(int index, Double @default = default) => ColumnEndPoint_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnEndPoint_Y { get; }
+        public Double GetEndPoint_Y(int index, Double @default = default) => ColumnEndPoint_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnEndPoint_Z { get; }
+        public Double GetEndPoint_Z(int index, Double @default = default) => ColumnEndPoint_Z.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsCurved { get; }
+        public Boolean GetIsCurved(int index, Boolean @default = default) => ColumnIsCurved.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Min_X { get; }
+        public Double GetExtents_Min_X(int index, Double @default = default) => ColumnExtents_Min_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Min_Y { get; }
+        public Double GetExtents_Min_Y(int index, Double @default = default) => ColumnExtents_Min_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Min_Z { get; }
+        public Double GetExtents_Min_Z(int index, Double @default = default) => ColumnExtents_Min_Z.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Max_X { get; }
+        public Double GetExtents_Max_X(int index, Double @default = default) => ColumnExtents_Max_X.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Max_Y { get; }
+        public Double GetExtents_Max_Y(int index, Double @default = default) => ColumnExtents_Max_Y.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnExtents_Max_Z { get; }
+        public Double GetExtents_Max_Z(int index, Double @default = default) => ColumnExtents_Max_Z.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnFamilyTypeIndex { get; }
+        public int GetFamilyTypeIndex(int index) => ColumnFamilyTypeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFamilyType(int index) => _parentTableSet.GetFamilyType(GetFamilyTypeIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Grid Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Grid();
+            r.Index = index;
+            r.StartPoint_X = GetStartPoint_X(index);
+            r.StartPoint_Y = GetStartPoint_Y(index);
+            r.StartPoint_Z = GetStartPoint_Z(index);
+            r.EndPoint_X = GetEndPoint_X(index);
+            r.EndPoint_Y = GetEndPoint_Y(index);
+            r.EndPoint_Z = GetEndPoint_Z(index);
+            r.IsCurved = GetIsCurved(index);
+            r.Extents_Min_X = GetExtents_Min_X(index);
+            r.Extents_Min_Y = GetExtents_Min_Y(index);
+            r.Extents_Min_Z = GetExtents_Min_Z(index);
+            r.Extents_Max_X = GetExtents_Max_X(index);
+            r.Extents_Max_Y = GetExtents_Max_Y(index);
+            r.Extents_Max_Z = GetExtents_Max_Z(index);
+            r._FamilyType = new Relation<Vim.Format.ObjectModel.FamilyType>(GetFamilyTypeIndex(index), _parentTableSet.GetFamilyType);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Grid Get
+    } // class GridTable 
+    
+    public partial class AreaTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public AreaTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnValue = GetDataColumnValues<Double>("double:Value") ?? Array.Empty<Double>();
+            ColumnPerimeter = GetDataColumnValues<Double>("double:Perimeter") ?? Array.Empty<Double>();
+            ColumnNumber = GetStringColumnValues("string:Number") ?? Array.Empty<String>();
+            ColumnIsGrossInterior = GetDataColumnValues<Boolean>("byte:IsGrossInterior") ?? Array.Empty<Boolean>();
+            ColumnAreaSchemeIndex = GetIndexColumnValues("index:Vim.AreaScheme:AreaScheme") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // AreaTable constructor
+        
+        public Double[] ColumnValue { get; }
+        public Double GetValue(int index, Double @default = default) => ColumnValue.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnPerimeter { get; }
+        public Double GetPerimeter(int index, Double @default = default) => ColumnPerimeter.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnNumber { get; }
+        public String GetNumber(int index, String @default = "") => ColumnNumber.ElementAtOrDefault(index, @default);
+        
+        public Boolean[] ColumnIsGrossInterior { get; }
+        public Boolean GetIsGrossInterior(int index, Boolean @default = default) => ColumnIsGrossInterior.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnAreaSchemeIndex { get; }
+        public int GetAreaSchemeIndex(int index) => ColumnAreaSchemeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetAreaScheme(int index) => _parentTableSet.GetAreaScheme(GetAreaSchemeIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Area Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Area();
+            r.Index = index;
+            r.Value = GetValue(index);
+            r.Perimeter = GetPerimeter(index);
+            r.Number = GetNumber(index);
+            r.IsGrossInterior = GetIsGrossInterior(index);
+            r._AreaScheme = new Relation<Vim.Format.ObjectModel.AreaScheme>(GetAreaSchemeIndex(index), _parentTableSet.GetAreaScheme);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Area Get
+    } // class AreaTable 
+    
+    public partial class AreaSchemeTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public AreaSchemeTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnIsGrossBuildingArea = GetDataColumnValues<Boolean>("byte:IsGrossBuildingArea") ?? Array.Empty<Boolean>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // AreaSchemeTable constructor
+        
+        public Boolean[] ColumnIsGrossBuildingArea { get; }
+        public Boolean GetIsGrossBuildingArea(int index, Boolean @default = default) => ColumnIsGrossBuildingArea.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public AreaScheme Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new AreaScheme();
+            r.Index = index;
+            r.IsGrossBuildingArea = GetIsGrossBuildingArea(index);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // AreaScheme Get
+    } // class AreaSchemeTable 
+    
+    public partial class ScheduleTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ScheduleTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ScheduleTable constructor
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Schedule Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Schedule();
+            r.Index = index;
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Schedule Get
+    } // class ScheduleTable 
+    
+    public partial class ScheduleColumnTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ScheduleColumnTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnName = GetStringColumnValues("string:Name") ?? Array.Empty<String>();
+            ColumnColumnIndex = GetDataColumnValues<Int32>("int:ColumnIndex") ?? Array.Empty<Int32>();
+            ColumnScheduleIndex = GetIndexColumnValues("index:Vim.Schedule:Schedule") ?? Array.Empty<int>();
+        } // ScheduleColumnTable constructor
+        
+        public String[] ColumnName { get; }
+        public String GetName(int index, String @default = "") => ColumnName.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnColumnIndex { get; }
+        public Int32 GetColumnIndex(int index, Int32 @default = default) => ColumnColumnIndex.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnScheduleIndex { get; }
+        public int GetScheduleIndex(int index) => ColumnScheduleIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetSchedule(int index) => _parentTableSet.GetSchedule(GetScheduleIndex(index));
+        
+        // Object Getter
+        public ScheduleColumn Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ScheduleColumn();
+            r.Index = index;
+            r.Name = GetName(index);
+            r.ColumnIndex = GetColumnIndex(index);
+            r._Schedule = new Relation<Vim.Format.ObjectModel.Schedule>(GetScheduleIndex(index), _parentTableSet.GetSchedule);
+            return r;
+        } // ScheduleColumn Get
+    } // class ScheduleColumnTable 
+    
+    public partial class ScheduleCellTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ScheduleCellTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnValue = GetStringColumnValues("string:Value") ?? Array.Empty<String>();
+            ColumnRowIndex = GetDataColumnValues<Int32>("int:RowIndex") ?? Array.Empty<Int32>();
+            ColumnScheduleColumnIndex = GetIndexColumnValues("index:Vim.ScheduleColumn:ScheduleColumn") ?? Array.Empty<int>();
+        } // ScheduleCellTable constructor
+        
+        public String[] ColumnValue { get; }
+        public String GetValue(int index, String @default = "") => ColumnValue.ElementAtOrDefault(index, @default);
+        
+        public Int32[] ColumnRowIndex { get; }
+        public Int32 GetRowIndex(int index, Int32 @default = default) => ColumnRowIndex.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnScheduleColumnIndex { get; }
+        public int GetScheduleColumnIndex(int index) => ColumnScheduleColumnIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetScheduleColumn(int index) => _parentTableSet.GetScheduleColumn(GetScheduleColumnIndex(index));
+        
+        // Object Getter
+        public ScheduleCell Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ScheduleCell();
+            r.Index = index;
+            r.Value = GetValue(index);
+            r.RowIndex = GetRowIndex(index);
+            r._ScheduleColumn = new Relation<Vim.Format.ObjectModel.ScheduleColumn>(GetScheduleColumnIndex(index), _parentTableSet.GetScheduleColumn);
+            return r;
+        } // ScheduleCell Get
+    } // class ScheduleCellTable 
+    
+    public partial class ViewSheetSetTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ViewSheetSetTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ViewSheetSetTable constructor
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public ViewSheetSet Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ViewSheetSet();
+            r.Index = index;
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // ViewSheetSet Get
+    } // class ViewSheetSetTable 
+    
+    public partial class ViewSheetTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ViewSheetTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnFamilyTypeIndex = GetIndexColumnValues("index:Vim.FamilyType:FamilyType") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // ViewSheetTable constructor
+        
+        
+        public int[] ColumnFamilyTypeIndex { get; }
+        public int GetFamilyTypeIndex(int index) => ColumnFamilyTypeIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetFamilyType(int index) => _parentTableSet.GetFamilyType(GetFamilyTypeIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public ViewSheet Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ViewSheet();
+            r.Index = index;
+            r._FamilyType = new Relation<Vim.Format.ObjectModel.FamilyType>(GetFamilyTypeIndex(index), _parentTableSet.GetFamilyType);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // ViewSheet Get
+    } // class ViewSheetTable 
+    
+    public partial class ViewSheetInViewSheetSetTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ViewSheetInViewSheetSetTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnViewSheetIndex = GetIndexColumnValues("index:Vim.ViewSheet:ViewSheet") ?? Array.Empty<int>();
+            ColumnViewSheetSetIndex = GetIndexColumnValues("index:Vim.ViewSheetSet:ViewSheetSet") ?? Array.Empty<int>();
+        } // ViewSheetInViewSheetSetTable constructor
+        
+        
+        public int[] ColumnViewSheetIndex { get; }
+        public int GetViewSheetIndex(int index) => ColumnViewSheetIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetViewSheet(int index) => _parentTableSet.GetViewSheet(GetViewSheetIndex(index));
+        
+        public int[] ColumnViewSheetSetIndex { get; }
+        public int GetViewSheetSetIndex(int index) => ColumnViewSheetSetIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetViewSheetSet(int index) => _parentTableSet.GetViewSheetSet(GetViewSheetSetIndex(index));
+        
+        // Object Getter
+        public ViewSheetInViewSheetSet Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ViewSheetInViewSheetSet();
+            r.Index = index;
+            r._ViewSheet = new Relation<Vim.Format.ObjectModel.ViewSheet>(GetViewSheetIndex(index), _parentTableSet.GetViewSheet);
+            r._ViewSheetSet = new Relation<Vim.Format.ObjectModel.ViewSheetSet>(GetViewSheetSetIndex(index), _parentTableSet.GetViewSheetSet);
+            return r;
+        } // ViewSheetInViewSheetSet Get
+    } // class ViewSheetInViewSheetSetTable 
+    
+    public partial class ViewInViewSheetSetTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ViewInViewSheetSetTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnViewIndex = GetIndexColumnValues("index:Vim.View:View") ?? Array.Empty<int>();
+            ColumnViewSheetSetIndex = GetIndexColumnValues("index:Vim.ViewSheetSet:ViewSheetSet") ?? Array.Empty<int>();
+        } // ViewInViewSheetSetTable constructor
+        
+        
+        public int[] ColumnViewIndex { get; }
+        public int GetViewIndex(int index) => ColumnViewIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetView(int index) => _parentTableSet.GetView(GetViewIndex(index));
+        
+        public int[] ColumnViewSheetSetIndex { get; }
+        public int GetViewSheetSetIndex(int index) => ColumnViewSheetSetIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetViewSheetSet(int index) => _parentTableSet.GetViewSheetSet(GetViewSheetSetIndex(index));
+        
+        // Object Getter
+        public ViewInViewSheetSet Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ViewInViewSheetSet();
+            r.Index = index;
+            r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _parentTableSet.GetView);
+            r._ViewSheetSet = new Relation<Vim.Format.ObjectModel.ViewSheetSet>(GetViewSheetSetIndex(index), _parentTableSet.GetViewSheetSet);
+            return r;
+        } // ViewInViewSheetSet Get
+    } // class ViewInViewSheetSetTable 
+    
+    public partial class ViewInViewSheetTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public ViewInViewSheetTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnViewIndex = GetIndexColumnValues("index:Vim.View:View") ?? Array.Empty<int>();
+            ColumnViewSheetIndex = GetIndexColumnValues("index:Vim.ViewSheet:ViewSheet") ?? Array.Empty<int>();
+        } // ViewInViewSheetTable constructor
+        
+        
+        public int[] ColumnViewIndex { get; }
+        public int GetViewIndex(int index) => ColumnViewIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetView(int index) => _parentTableSet.GetView(GetViewIndex(index));
+        
+        public int[] ColumnViewSheetIndex { get; }
+        public int GetViewSheetIndex(int index) => ColumnViewSheetIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetViewSheet(int index) => _parentTableSet.GetViewSheet(GetViewSheetIndex(index));
+        
+        // Object Getter
+        public ViewInViewSheet Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new ViewInViewSheet();
+            r.Index = index;
+            r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _parentTableSet.GetView);
+            r._ViewSheet = new Relation<Vim.Format.ObjectModel.ViewSheet>(GetViewSheetIndex(index), _parentTableSet.GetViewSheet);
+            return r;
+        } // ViewInViewSheet Get
+    } // class ViewInViewSheetTable 
+    
+    public partial class SiteTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public SiteTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnLatitude = GetDataColumnValues<Double>("double:Latitude") ?? Array.Empty<Double>();
+            ColumnLongitude = GetDataColumnValues<Double>("double:Longitude") ?? Array.Empty<Double>();
+            ColumnAddress = GetStringColumnValues("string:Address") ?? Array.Empty<String>();
+            ColumnElevation = GetDataColumnValues<Double>("double:Elevation") ?? Array.Empty<Double>();
+            ColumnNumber = GetStringColumnValues("string:Number") ?? Array.Empty<String>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // SiteTable constructor
+        
+        public Double[] ColumnLatitude { get; }
+        public Double GetLatitude(int index, Double @default = default) => ColumnLatitude.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnLongitude { get; }
+        public Double GetLongitude(int index, Double @default = default) => ColumnLongitude.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnAddress { get; }
+        public String GetAddress(int index, String @default = "") => ColumnAddress.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnElevation { get; }
+        public Double GetElevation(int index, Double @default = default) => ColumnElevation.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnNumber { get; }
+        public String GetNumber(int index, String @default = "") => ColumnNumber.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Site Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Site();
+            r.Index = index;
+            r.Latitude = GetLatitude(index);
+            r.Longitude = GetLongitude(index);
+            r.Address = GetAddress(index);
+            r.Elevation = GetElevation(index);
+            r.Number = GetNumber(index);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Site Get
+    } // class SiteTable 
+    
+    public partial class BuildingTable : EntityTable_v2
+    {
+        private readonly EntityTableSet _parentTableSet; // can be null
+        
+        public BuildingTable(SerializableEntityTable rawTable, string[] stringBuffer, EntityTableSet parentTableSet = null) : base(rawTable, stringBuffer)
+        {
+            _parentTableSet = parentTableSet;
+            ColumnElevation = GetDataColumnValues<Double>("double:Elevation") ?? Array.Empty<Double>();
+            ColumnTerrainElevation = GetDataColumnValues<Double>("double:TerrainElevation") ?? Array.Empty<Double>();
+            ColumnAddress = GetStringColumnValues("string:Address") ?? Array.Empty<String>();
+            ColumnSiteIndex = GetIndexColumnValues("index:Vim.Site:Site") ?? Array.Empty<int>();
+            ColumnElementIndex = GetIndexColumnValues("index:Vim.Element:Element") ?? Array.Empty<int>();
+        } // BuildingTable constructor
+        
+        public Double[] ColumnElevation { get; }
+        public Double GetElevation(int index, Double @default = default) => ColumnElevation.ElementAtOrDefault(index, @default);
+        
+        public Double[] ColumnTerrainElevation { get; }
+        public Double GetTerrainElevation(int index, Double @default = default) => ColumnTerrainElevation.ElementAtOrDefault(index, @default);
+        
+        public String[] ColumnAddress { get; }
+        public String GetAddress(int index, String @default = "") => ColumnAddress.ElementAtOrDefault(index, @default);
+        
+        
+        public int[] ColumnSiteIndex { get; }
+        public int GetSiteIndex(int index) => ColumnSiteIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetSite(int index) => _parentTableSet.GetSite(GetSiteIndex(index));
+        
+        public int[] ColumnElementIndex { get; }
+        public int GetElementIndex(int index) => ColumnElementIndex.ElementAtOrDefault(index, EntityRelation.None);
+        public GetElement(int index) => _parentTableSet.GetElement(GetElementIndex(index));
+        
+        // Object Getter
+        public Building Get(int index)
+        {
+            if (index < 0) return null;
+            var r = new Building();
+            r.Index = index;
+            r.Elevation = GetElevation(index);
+            r.TerrainElevation = GetTerrainElevation(index);
+            r.Address = GetAddress(index);
+            r._Site = new Relation<Vim.Format.ObjectModel.Site>(GetSiteIndex(index), _parentTableSet.GetSite);
+            r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _parentTableSet.GetElement);
+            return r;
+        } // Building Get
+    } // class BuildingTable 
+    
     public static class DocumentBuilderExtensions
     {
         public static Func<IEnumerable<Entity>, EntityTableBuilder> GetTableBuilderFunc(this Type type)

@@ -9,10 +9,10 @@ namespace Vim.Format
 {
     public static partial class ColumnExtensions
     {
-        public static IEnumerable<INamedBuffer> GetAllColumns(this SerializableEntityTable et)
-            => et.DataColumns.Concat(et.IndexColumns).Concat(et.StringColumns).ToList();
+        public static INamedBuffer[] GetAllColumns(this SerializableEntityTable et)
+            => et.DataColumns.Concat(et.IndexColumns).Concat(et.StringColumns).ToArray();
 
-        public static void ValidateColumnRowsAreAligned(this IEnumerable<INamedBuffer> columns)
+        public static INamedBuffer[] ValidateColumnRowsAreAligned(this INamedBuffer[] columns)
         {
             var numRows = columns.FirstOrDefault()?.NumElements() ?? 0;
 
@@ -25,13 +25,12 @@ namespace Vim.Format
                 var msg = $"Column '{column.Name}' has {columnRows} rows which does not match the first column's {numRows} rows";
                 Debug.Fail(msg);
             }
+
+            return columns;
         }
 
-        public static SerializableEntityTable ValidateColumnRowsAreAligned(this SerializableEntityTable et)
-        {
-            et.GetAllColumns().ValidateColumnRowsAreAligned();
-            return et;
-        }
+        public static INamedBuffer[] ValidateColumnRowsAreAligned(this SerializableEntityTable et)
+            => et.GetAllColumns().ValidateColumnRowsAreAligned();
 
         public static string ValidateCanConcatBuffers(this INamedBuffer thisBuffer, INamedBuffer otherBuffer)
         {
@@ -184,17 +183,23 @@ namespace Vim.Format
         /// <summary>
         /// Returns a concatenated SerializableEntityTable based on the column names of thisTable.
         /// </summary>
-        public static SerializableEntityTable Concat(this SerializableEntityTable thisTable, SerializableEntityTable otherTable)
-            => new SerializableEntityTable
+        public static SerializableEntityTable Concat(
+            this SerializableEntityTable thisTable,
+            SerializableEntityTable otherTable)
+        {
+            var concatenated = new SerializableEntityTable
             {
                 Name = thisTable.Name,
                 IndexColumns = thisTable.IndexColumns.ConcatIntColumns(otherTable.IndexColumns),
                 StringColumns = thisTable.StringColumns.ConcatIntColumns(otherTable.StringColumns),
                 DataColumns = thisTable.DataColumns.ConcatDataColumns(otherTable.DataColumns),
-            }.ValidateColumnRowsAreAligned();
+            };
+            concatenated.ValidateColumnRowsAreAligned();
+            return concatenated;
+        }
 
-        public static IArray<T> GetColumnValues<T>(this INamedBuffer nb) where T : unmanaged
-            => nb.AsArray<T>().ToIArray();
+        public static T[] GetColumnValues<T>(this INamedBuffer nb) where T : unmanaged
+            => nb.AsArray<T>();
 
         /// <summary>
         /// Returns a new collection of index columns in which the designated column names have repeated values of VimConstants.NoEntityRelation.
