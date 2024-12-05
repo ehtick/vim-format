@@ -1,6 +1,7 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY.
 // ReSharper disable All
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Vim.Math3d;
@@ -4307,7 +4308,9 @@ namespace Vim.Format.ObjectModel {
         private SerializableEntityTable GetRawTableOrDefault(string tableName)
             => RawTableMap.TryGetValue(tableName, out var result) ? result : null;
         
-        public EntityTableSet(SerializableEntityTable[] rawTables, string[] stringBuffer)
+        public ElementIndexMaps ElementIndexMaps { get; }
+        
+        public EntityTableSet(SerializableEntityTable[] rawTables, string[] stringBuffer, bool inParallel = true)
         {
             foreach (var rawTable in rawTables)
                 RawTableMap[rawTable.Name] = rawTable;
@@ -4475,6 +4478,9 @@ namespace Vim.Format.ObjectModel {
             if (GetRawTableOrDefault("Vim.Building") is SerializableEntityTable buildingTable)
                 BuildingTable = new BuildingTable(buildingTable, stringBuffer);
             
+            // Initialize element index maps
+            ElementIndexMaps = new ElementIndexMaps(this, inParallel);
+            
         } // EntityTableSet constructor
         
         public AssetTable AssetTable { get; } // can be null
@@ -4587,7 +4593,7 @@ namespace Vim.Format.ObjectModel {
         public Building GetBuilding(int index) => BuildingTable?.Get(index);
     } // class EntityTableSet
     
-    public partial class AssetTable : EntityTable_v2
+    public partial class AssetTable : EntityTable_v2, IEnumerable<Asset>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -4608,9 +4614,16 @@ namespace Vim.Format.ObjectModel {
             r.BufferName = GetBufferName(index);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Asset> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class AssetTable 
     
-    public partial class DisplayUnitTable : EntityTable_v2
+    public partial class DisplayUnitTable : EntityTable_v2, IEnumerable<DisplayUnit>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -4639,9 +4652,16 @@ namespace Vim.Format.ObjectModel {
             r.Label = GetLabel(index);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<DisplayUnit> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class DisplayUnitTable 
     
-    public partial class ParameterDescriptorTable : EntityTable_v2
+    public partial class ParameterDescriptorTable : EntityTable_v2, IEnumerable<ParameterDescriptor>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -4700,9 +4720,16 @@ namespace Vim.Format.ObjectModel {
             r._DisplayUnit = new Relation<Vim.Format.ObjectModel.DisplayUnit>(GetDisplayUnitIndex(index), _GetReferencedDisplayUnit);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ParameterDescriptor> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ParameterDescriptorTable 
     
-    public partial class ParameterTable : EntityTable_v2
+    public partial class ParameterTable : EntityTable_v2, IEnumerable<Parameter>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -4735,9 +4762,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Parameter> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ParameterTable 
     
-    public partial class ElementTable : EntityTable_v2
+    public partial class ElementTable : EntityTable_v2, IEnumerable<Element>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -4856,9 +4890,16 @@ namespace Vim.Format.ObjectModel {
             r._Room = new Relation<Vim.Format.ObjectModel.Room>(GetRoomIndex(index), _GetReferencedRoom);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Element> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ElementTable 
     
-    public partial class WorksetTable : EntityTable_v2
+    public partial class WorksetTable : EntityTable_v2, IEnumerable<Workset>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -4909,9 +4950,16 @@ namespace Vim.Format.ObjectModel {
             r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _GetReferencedBimDocument);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Workset> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class WorksetTable 
     
-    public partial class AssemblyInstanceTable : EntityTable_v2
+    public partial class AssemblyInstanceTable : EntityTable_v2, IEnumerable<AssemblyInstance>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -4950,9 +4998,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<AssemblyInstance> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class AssemblyInstanceTable 
     
-    public partial class GroupTable : EntityTable_v2
+    public partial class GroupTable : EntityTable_v2, IEnumerable<Group>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -4991,9 +5046,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Group> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class GroupTable 
     
-    public partial class DesignOptionTable : EntityTable_v2
+    public partial class DesignOptionTable : EntityTable_v2, IEnumerable<DesignOption>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5020,9 +5082,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<DesignOption> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class DesignOptionTable 
     
-    public partial class LevelTable : EntityTable_v2
+    public partial class LevelTable : EntityTable_v2, IEnumerable<Level>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5061,9 +5130,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Level> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class LevelTable 
     
-    public partial class PhaseTable : EntityTable_v2
+    public partial class PhaseTable : EntityTable_v2, IEnumerable<Phase>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5086,9 +5162,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Phase> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class PhaseTable 
     
-    public partial class RoomTable : EntityTable_v2
+    public partial class RoomTable : EntityTable_v2, IEnumerable<Room>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5145,9 +5228,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Room> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class RoomTable 
     
-    public partial class BimDocumentTable : EntityTable_v2
+    public partial class BimDocumentTable : EntityTable_v2, IEnumerable<BimDocument>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5300,9 +5390,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<BimDocument> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class BimDocumentTable 
     
-    public partial class DisplayUnitInBimDocumentTable : EntityTable_v2
+    public partial class DisplayUnitInBimDocumentTable : EntityTable_v2, IEnumerable<DisplayUnitInBimDocument>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5331,9 +5428,16 @@ namespace Vim.Format.ObjectModel {
             r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _GetReferencedBimDocument);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<DisplayUnitInBimDocument> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class DisplayUnitInBimDocumentTable 
     
-    public partial class PhaseOrderInBimDocumentTable : EntityTable_v2
+    public partial class PhaseOrderInBimDocumentTable : EntityTable_v2, IEnumerable<PhaseOrderInBimDocument>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5366,9 +5470,16 @@ namespace Vim.Format.ObjectModel {
             r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _GetReferencedBimDocument);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<PhaseOrderInBimDocument> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class PhaseOrderInBimDocumentTable 
     
-    public partial class CategoryTable : EntityTable_v2
+    public partial class CategoryTable : EntityTable_v2, IEnumerable<Category>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5425,9 +5536,16 @@ namespace Vim.Format.ObjectModel {
             r._Material = new Relation<Vim.Format.ObjectModel.Material>(GetMaterialIndex(index), _GetReferencedMaterial);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Category> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class CategoryTable 
     
-    public partial class FamilyTable : EntityTable_v2
+    public partial class FamilyTable : EntityTable_v2, IEnumerable<Family>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5472,9 +5590,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Family> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class FamilyTable 
     
-    public partial class FamilyTypeTable : EntityTable_v2
+    public partial class FamilyTypeTable : EntityTable_v2, IEnumerable<FamilyType>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5513,9 +5638,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<FamilyType> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class FamilyTypeTable 
     
-    public partial class FamilyInstanceTable : EntityTable_v2
+    public partial class FamilyInstanceTable : EntityTable_v2, IEnumerable<FamilyInstance>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5660,9 +5792,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<FamilyInstance> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class FamilyInstanceTable 
     
-    public partial class ViewTable : EntityTable_v2
+    public partial class ViewTable : EntityTable_v2, IEnumerable<View>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5789,9 +5928,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<View> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ViewTable 
     
-    public partial class ElementInViewTable : EntityTable_v2
+    public partial class ElementInViewTable : EntityTable_v2, IEnumerable<ElementInView>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5820,9 +5966,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ElementInView> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ElementInViewTable 
     
-    public partial class ShapeInViewTable : EntityTable_v2
+    public partial class ShapeInViewTable : EntityTable_v2, IEnumerable<ShapeInView>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5851,9 +6004,16 @@ namespace Vim.Format.ObjectModel {
             r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _GetReferencedView);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ShapeInView> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ShapeInViewTable 
     
-    public partial class AssetInViewTable : EntityTable_v2
+    public partial class AssetInViewTable : EntityTable_v2, IEnumerable<AssetInView>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5882,9 +6042,16 @@ namespace Vim.Format.ObjectModel {
             r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _GetReferencedView);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<AssetInView> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class AssetInViewTable 
     
-    public partial class AssetInViewSheetTable : EntityTable_v2
+    public partial class AssetInViewSheetTable : EntityTable_v2, IEnumerable<AssetInViewSheet>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5913,9 +6080,16 @@ namespace Vim.Format.ObjectModel {
             r._ViewSheet = new Relation<Vim.Format.ObjectModel.ViewSheet>(GetViewSheetIndex(index), _GetReferencedViewSheet);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<AssetInViewSheet> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class AssetInViewSheetTable 
     
-    public partial class LevelInViewTable : EntityTable_v2
+    public partial class LevelInViewTable : EntityTable_v2, IEnumerable<LevelInView>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -5968,9 +6142,16 @@ namespace Vim.Format.ObjectModel {
             r._View = new Relation<Vim.Format.ObjectModel.View>(GetViewIndex(index), _GetReferencedView);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<LevelInView> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class LevelInViewTable 
     
-    public partial class CameraTable : EntityTable_v2
+    public partial class CameraTable : EntityTable_v2, IEnumerable<Camera>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6023,9 +6204,16 @@ namespace Vim.Format.ObjectModel {
             r.UpOffset = GetUpOffset(index);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Camera> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class CameraTable 
     
-    public partial class MaterialTable : EntityTable_v2
+    public partial class MaterialTable : EntityTable_v2, IEnumerable<Material>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6128,9 +6316,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Material> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class MaterialTable 
     
-    public partial class MaterialInElementTable : EntityTable_v2
+    public partial class MaterialInElementTable : EntityTable_v2, IEnumerable<MaterialInElement>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6171,9 +6366,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<MaterialInElement> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class MaterialInElementTable 
     
-    public partial class CompoundStructureLayerTable : EntityTable_v2
+    public partial class CompoundStructureLayerTable : EntityTable_v2, IEnumerable<CompoundStructureLayer>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6214,9 +6416,16 @@ namespace Vim.Format.ObjectModel {
             r._CompoundStructure = new Relation<Vim.Format.ObjectModel.CompoundStructure>(GetCompoundStructureIndex(index), _GetReferencedCompoundStructure);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<CompoundStructureLayer> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class CompoundStructureLayerTable 
     
-    public partial class CompoundStructureTable : EntityTable_v2
+    public partial class CompoundStructureTable : EntityTable_v2, IEnumerable<CompoundStructure>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6243,9 +6452,16 @@ namespace Vim.Format.ObjectModel {
             r._StructuralLayer = new Relation<Vim.Format.ObjectModel.CompoundStructureLayer>(GetStructuralLayerIndex(index), _GetReferencedStructuralLayer);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<CompoundStructure> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class CompoundStructureTable 
     
-    public partial class NodeTable : EntityTable_v2
+    public partial class NodeTable : EntityTable_v2, IEnumerable<Node>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6268,9 +6484,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Node> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class NodeTable 
     
-    public partial class GeometryTable : EntityTable_v2
+    public partial class GeometryTable : EntityTable_v2, IEnumerable<Geometry>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6319,9 +6542,16 @@ namespace Vim.Format.ObjectModel {
             r.FaceCount = GetFaceCount(index);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Geometry> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class GeometryTable 
     
-    public partial class ShapeTable : EntityTable_v2
+    public partial class ShapeTable : EntityTable_v2, IEnumerable<Shape>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6344,9 +6574,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Shape> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ShapeTable 
     
-    public partial class ShapeCollectionTable : EntityTable_v2
+    public partial class ShapeCollectionTable : EntityTable_v2, IEnumerable<ShapeCollection>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6369,9 +6606,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ShapeCollection> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ShapeCollectionTable 
     
-    public partial class ShapeInShapeCollectionTable : EntityTable_v2
+    public partial class ShapeInShapeCollectionTable : EntityTable_v2, IEnumerable<ShapeInShapeCollection>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6400,9 +6644,16 @@ namespace Vim.Format.ObjectModel {
             r._ShapeCollection = new Relation<Vim.Format.ObjectModel.ShapeCollection>(GetShapeCollectionIndex(index), _GetReferencedShapeCollection);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ShapeInShapeCollection> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ShapeInShapeCollectionTable 
     
-    public partial class SystemTable : EntityTable_v2
+    public partial class SystemTable : EntityTable_v2, IEnumerable<System>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6435,9 +6686,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<System> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class SystemTable 
     
-    public partial class ElementInSystemTable : EntityTable_v2
+    public partial class ElementInSystemTable : EntityTable_v2, IEnumerable<ElementInSystem>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6470,9 +6728,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ElementInSystem> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ElementInSystemTable 
     
-    public partial class WarningTable : EntityTable_v2
+    public partial class WarningTable : EntityTable_v2, IEnumerable<Warning>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6507,9 +6772,16 @@ namespace Vim.Format.ObjectModel {
             r._BimDocument = new Relation<Vim.Format.ObjectModel.BimDocument>(GetBimDocumentIndex(index), _GetReferencedBimDocument);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Warning> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class WarningTable 
     
-    public partial class ElementInWarningTable : EntityTable_v2
+    public partial class ElementInWarningTable : EntityTable_v2, IEnumerable<ElementInWarning>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6538,9 +6810,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ElementInWarning> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ElementInWarningTable 
     
-    public partial class BasePointTable : EntityTable_v2
+    public partial class BasePointTable : EntityTable_v2, IEnumerable<BasePoint>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6591,9 +6870,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<BasePoint> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class BasePointTable 
     
-    public partial class PhaseFilterTable : EntityTable_v2
+    public partial class PhaseFilterTable : EntityTable_v2, IEnumerable<PhaseFilter>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6632,9 +6918,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<PhaseFilter> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class PhaseFilterTable 
     
-    public partial class GridTable : EntityTable_v2
+    public partial class GridTable : EntityTable_v2, IEnumerable<Grid>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6715,9 +7008,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Grid> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class GridTable 
     
-    public partial class AreaTable : EntityTable_v2
+    public partial class AreaTable : EntityTable_v2, IEnumerable<Area>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6762,9 +7062,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Area> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class AreaTable 
     
-    public partial class AreaSchemeTable : EntityTable_v2
+    public partial class AreaSchemeTable : EntityTable_v2, IEnumerable<AreaScheme>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6791,9 +7098,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<AreaScheme> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class AreaSchemeTable 
     
-    public partial class ScheduleTable : EntityTable_v2
+    public partial class ScheduleTable : EntityTable_v2, IEnumerable<Schedule>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6816,9 +7130,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Schedule> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ScheduleTable 
     
-    public partial class ScheduleColumnTable : EntityTable_v2
+    public partial class ScheduleColumnTable : EntityTable_v2, IEnumerable<ScheduleColumn>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6849,9 +7170,16 @@ namespace Vim.Format.ObjectModel {
             r._Schedule = new Relation<Vim.Format.ObjectModel.Schedule>(GetScheduleIndex(index), _GetReferencedSchedule);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ScheduleColumn> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ScheduleColumnTable 
     
-    public partial class ScheduleCellTable : EntityTable_v2
+    public partial class ScheduleCellTable : EntityTable_v2, IEnumerable<ScheduleCell>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6882,9 +7210,16 @@ namespace Vim.Format.ObjectModel {
             r._ScheduleColumn = new Relation<Vim.Format.ObjectModel.ScheduleColumn>(GetScheduleColumnIndex(index), _GetReferencedScheduleColumn);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ScheduleCell> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ScheduleCellTable 
     
-    public partial class ViewSheetSetTable : EntityTable_v2
+    public partial class ViewSheetSetTable : EntityTable_v2, IEnumerable<ViewSheetSet>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6907,9 +7242,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ViewSheetSet> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ViewSheetSetTable 
     
-    public partial class ViewSheetTable : EntityTable_v2
+    public partial class ViewSheetTable : EntityTable_v2, IEnumerable<ViewSheet>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6938,9 +7280,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ViewSheet> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ViewSheetTable 
     
-    public partial class ViewSheetInViewSheetSetTable : EntityTable_v2
+    public partial class ViewSheetInViewSheetSetTable : EntityTable_v2, IEnumerable<ViewSheetInViewSheetSet>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -6969,9 +7318,16 @@ namespace Vim.Format.ObjectModel {
             r._ViewSheetSet = new Relation<Vim.Format.ObjectModel.ViewSheetSet>(GetViewSheetSetIndex(index), _GetReferencedViewSheetSet);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ViewSheetInViewSheetSet> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ViewSheetInViewSheetSetTable 
     
-    public partial class ViewInViewSheetSetTable : EntityTable_v2
+    public partial class ViewInViewSheetSetTable : EntityTable_v2, IEnumerable<ViewInViewSheetSet>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -7000,9 +7356,16 @@ namespace Vim.Format.ObjectModel {
             r._ViewSheetSet = new Relation<Vim.Format.ObjectModel.ViewSheetSet>(GetViewSheetSetIndex(index), _GetReferencedViewSheetSet);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ViewInViewSheetSet> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ViewInViewSheetSetTable 
     
-    public partial class ViewInViewSheetTable : EntityTable_v2
+    public partial class ViewInViewSheetTable : EntityTable_v2, IEnumerable<ViewInViewSheet>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -7031,9 +7394,16 @@ namespace Vim.Format.ObjectModel {
             r._ViewSheet = new Relation<Vim.Format.ObjectModel.ViewSheet>(GetViewSheetIndex(index), _GetReferencedViewSheet);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ViewInViewSheet> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class ViewInViewSheetTable 
     
-    public partial class SiteTable : EntityTable_v2
+    public partial class SiteTable : EntityTable_v2, IEnumerable<Site>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -7076,9 +7446,16 @@ namespace Vim.Format.ObjectModel {
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
         }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Site> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
+        }
     } // class SiteTable 
     
-    public partial class BuildingTable : EntityTable_v2
+    public partial class BuildingTable : EntityTable_v2, IEnumerable<Building>
     {
         private readonly EntityTableSet _parentTableSet; // can be null
         
@@ -7118,6 +7495,13 @@ namespace Vim.Format.ObjectModel {
             r._Site = new Relation<Vim.Format.ObjectModel.Site>(GetSiteIndex(index), _GetReferencedSite);
             r._Element = new Relation<Vim.Format.ObjectModel.Element>(GetElementIndex(index), _GetReferencedElement);
             return r;
+        }
+        // Enumerator
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<Building> GetEnumerator()
+        {
+            for (var i = 0; i < RowCount; ++i)
+                yield return Get(i);
         }
     } // class BuildingTable 
     

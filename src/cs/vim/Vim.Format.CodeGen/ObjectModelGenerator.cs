@@ -299,8 +299,10 @@ public static class ObjectModelGenerator
         cb.AppendLine("private SerializableEntityTable GetRawTableOrDefault(string tableName)");
         cb.AppendLine("    => RawTableMap.TryGetValue(tableName, out var result) ? result : null;");
         cb.AppendLine();
+        cb.AppendLine("public ElementIndexMaps ElementIndexMaps { get; }");
+        cb.AppendLine();
 
-        cb.AppendLine("public EntityTableSet(SerializableEntityTable[] rawTables, string[] stringBuffer)");
+        cb.AppendLine("public EntityTableSet(SerializableEntityTable[] rawTables, string[] stringBuffer, bool inParallel = true)");
         cb.AppendLine("{");
         cb.AppendLine("foreach (var rawTable in rawTables)");
         cb.AppendLine("    RawTableMap[rawTable.Name] = rawTable;");
@@ -314,6 +316,9 @@ public static class ObjectModelGenerator
             cb.AppendLine($"    {t.Name}Table = new {t.Name}Table({tmp}, stringBuffer);");
             cb.AppendLine();
         }
+        cb.AppendLine("// Initialize element index maps");
+        cb.AppendLine("ElementIndexMaps = new ElementIndexMaps(this, inParallel);");
+        cb.AppendLine();
         cb.AppendLine("} // EntityTableSet constructor");
 
         cb.AppendLine();
@@ -322,6 +327,7 @@ public static class ObjectModelGenerator
             cb.AppendLine($"public {t.Name}Table {t.Name}Table {{ get; }} // can be null");
             cb.AppendLine($"public {t.Name} Get{t.Name}(int index) => {t.Name}Table?.Get(index);");
         }
+
         cb.AppendLine("} // class EntityTableSet");
         cb.AppendLine();
 
@@ -334,7 +340,7 @@ public static class ObjectModelGenerator
         var entityFields = t.GetEntityFields().ToArray();
         var relationFields = t.GetRelationFields().ToArray();
 
-        cb.AppendLine($"public partial class {t.Name}Table : EntityTable_v2");
+        cb.AppendLine($"public partial class {t.Name}Table : EntityTable_v2, IEnumerable<{t.Name}>");
         cb.AppendLine("{");
         cb.AppendLine("private readonly EntityTableSet _parentTableSet; // can be null");
         cb.AppendLine();
@@ -413,6 +419,14 @@ public static class ObjectModelGenerator
         cb.AppendLine("return r;");
         cb.AppendLine("}");
 
+        cb.AppendLine("// Enumerator");
+        cb.AppendLine("IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();");
+        cb.AppendLine($"public IEnumerator<{t.Name}> GetEnumerator()");
+        cb.AppendLine("{");
+        cb.AppendLine("for (var i = 0; i < RowCount; ++i)");
+        cb.AppendLine("    yield return Get(i);");
+        cb.AppendLine("}");
+
         cb.AppendLine($"}} // class {t.Name}Table ");
         cb.AppendLine();
     }
@@ -488,6 +502,7 @@ public static class ObjectModelGenerator
             cb.AppendLine("// AUTO-GENERATED FILE, DO NOT MODIFY.");
             cb.AppendLine("// ReSharper disable All");
             cb.AppendLine("using System;");
+            cb.AppendLine("using System.Collections;");
             cb.AppendLine("using System.Collections.Generic;");
             cb.AppendLine("using System.Linq;");
             cb.AppendLine("using Vim.Math3d;");

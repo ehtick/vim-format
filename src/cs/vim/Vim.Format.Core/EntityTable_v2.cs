@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using Vim.BFast;
+using Vim.Util;
 
 namespace Vim.Format
 {
     public class EntityTable_v2
     {
-        private readonly Dictionary<string, NamedBuffer<int>> _indexColumnMap = new Dictionary<string, NamedBuffer<int>>();
-        private readonly Dictionary<string, NamedBuffer<int>> _stringColumnMap = new Dictionary<string, NamedBuffer<int>>();
-        private readonly Dictionary<string, INamedBuffer> _dataColumnMap = new Dictionary<string, INamedBuffer>();
         private readonly string[] _stringBuffer;
+
+        public Dictionary<string, NamedBuffer<int>> IndexColumns { get; } = new Dictionary<string, NamedBuffer<int>>();
+        public Dictionary<string, NamedBuffer<int>> StringColumns { get; } = new Dictionary<string, NamedBuffer<int>>();
+        public Dictionary<string, INamedBuffer> DataColumns { get; } = new Dictionary<string, INamedBuffer>();
 
         /// <summary>
         /// The entity table name
@@ -39,13 +41,13 @@ namespace Vim.Format
             RowCount = Columns.FirstOrDefault()?.NumElements() ?? 0;
 
             foreach (var column in et.IndexColumns)
-                _indexColumnMap[column.Name] = column;
+                IndexColumns[column.Name] = column;
 
             foreach (var column in et.StringColumns)
-                _stringColumnMap[column.Name] = column;
+                StringColumns[column.Name] = column;
 
             foreach (var column in et.DataColumns)
-                _dataColumnMap[column.Name] = column;
+                DataColumns[column.Name] = column;
 
             _stringBuffer = stringBuffer;
         }
@@ -57,16 +59,27 @@ namespace Vim.Format
         /// Returns the index column based on the given column name.
         /// </summary>
         public int[] GetIndexColumnValues(string columnName)
-            => GetColumnOrDefault(_indexColumnMap, columnName)?.GetColumnValues<int>();
+            => GetColumnOrDefault(IndexColumns, columnName)?.GetColumnValues<int>();
 
         /// <summary>
         /// Returns the string column based on the given column name.
         /// </summary>
         public string[] GetStringColumnValues(string columnName)
-            => GetColumnOrDefault(_stringColumnMap, columnName)
-                ?.GetColumnValues<int>()
-                ?.Select(i => _stringBuffer[i])
-                .ToArray();
+        {
+            var stringIndices = GetColumnOrDefault(StringColumns, columnName)
+                 ?.GetColumnValues<int>() ?? Array.Empty<int>();
+
+            var strings = new string[stringIndices.Length];
+
+            for (var i = 0; i < strings.Length; i++)
+            {
+                strings[i] = _stringBuffer == null || _stringBuffer.Length == 0
+                    ? "" // Guard against the case where the string buffer is null or empty.
+                    : _stringBuffer.ElementAtOrDefault(stringIndices[i], "");
+            }
+
+            return strings;
+        }
 
         /// <summary>
         /// Returns the data column based on the given column name.
@@ -78,7 +91,7 @@ namespace Vim.Format
             if (!ColumnExtensions.DataColumnTypes.Contains(type))
                 throw new Exception($"{nameof(GetDataColumnValues)} error - unsupported data column type {type}");
 
-            var namedBuffer = GetColumnOrDefault(_dataColumnMap, columnName);
+            var namedBuffer = GetColumnOrDefault(DataColumns, columnName);
             if (namedBuffer == null)
                 return null;
 

@@ -57,6 +57,34 @@ namespace Vim.Format.ObjectModel
             }
         }
 
+        public ElementIndexMaps(EntityTableSet entityTables, bool inParallel = true)
+        {
+            var actions = new Action[]
+            {
+                () => FamilyInstanceIndexFromElementIndex = GetElementIndexMap(entityTables.FamilyInstanceTable),
+                () => FamilyTypeIndexFromElementIndex = GetElementIndexMap(entityTables.FamilyTypeTable),
+                () => FamilyIndexFromElementIndex = GetElementIndexMap(entityTables.FamilyTable),
+                () => ViewIndexFromElementIndex = GetElementIndexMap(entityTables.ViewTable),
+                () => AssemblyIndexFromElementIndex = GetElementIndexMap(entityTables.AssemblyInstanceTable),
+                () => DesignOptionIndexFromElementIndex = GetElementIndexMap(entityTables.DesignOptionTable),
+                () => LevelIndexFromElementIndex = GetElementIndexMap(entityTables.LevelTable),
+                () => PhaseIndexFromElementIndex = GetElementIndexMap(entityTables.PhaseTable),
+                () => RoomIndexFromElementIndex = GetElementIndexMap(entityTables.RoomTable),
+                () => ParameterIndicesFromElementIndex = GetElementIndicesMap(entityTables.ParameterTable),
+                () => SystemIndexFromElementIndex = GetElementIndexMap(entityTables.SystemTable)
+            };
+
+            if (inParallel)
+            {
+                Parallel.Invoke(actions);
+            }
+            else
+            {
+                foreach (var action in actions)
+                    action.Invoke();
+            }
+        }
+
         public static readonly string ElementIndexColumnName = ColumnExtensions.GetIndexColumnName(TableNames.Element, nameof(Element));
 
         public static DictionaryOfLists<int, int> GetElementIndicesMap(EntityTable et)
@@ -70,7 +98,29 @@ namespace Vim.Format.ObjectModel
             return indicesMap;
         }
 
+        public static DictionaryOfLists<int, int> GetElementIndicesMap(EntityTable_v2 et)
+        {
+            var indicesMap = new DictionaryOfLists<int, int>();
+            var elementIndices = et?.IndexColumns[ElementIndexColumnName]?.GetTypedData();
+            if (elementIndices == null)
+                return indicesMap;
+            for (var i = 0; i < elementIndices.Length; ++i)
+                indicesMap.Add(elementIndices[i], i);
+            return indicesMap;
+        }
+
         public static IndexMap GetElementIndexMap(EntityTable et)
+        {
+            var indexMap = new IndexMap();
+            var elementIndices = et?.IndexColumns[ElementIndexColumnName]?.GetTypedData();
+            if (elementIndices == null)
+                return indexMap;
+            for (var i = 0; i < elementIndices.Length; ++i)
+                indexMap.TryAdd(elementIndices[i], i);
+            return indexMap;
+        }
+
+        public static IndexMap GetElementIndexMap(EntityTable_v2 et)
         {
             var indexMap = new IndexMap();
             var elementIndices = et?.IndexColumns[ElementIndexColumnName]?.GetTypedData();
