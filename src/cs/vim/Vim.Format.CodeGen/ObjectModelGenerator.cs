@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters;
 using Vim.Format.ObjectModel;
 
 namespace Vim.Format.CodeGen;
@@ -355,7 +354,7 @@ public static class ObjectModelGenerator
                 var dataColumnGetter = $"{functionName}(\"{eci.SerializedValueColumnName}\")";
                 if (eci.EntityColumnAttribute.SerializedType != fieldType)
                 {
-                    dataColumnGetter += $"?.Select(v => ({fieldTypeName}) v)";
+                    dataColumnGetter += $"?.Select(v => ({fieldTypeName}) v).ToArray()";
                 }
                 return dataColumnGetter;
             }).ToArray();
@@ -364,14 +363,14 @@ public static class ObjectModelGenerator
                 ? $"({string.Join(" ?? ", dataColumnGetters)})"
                 : dataColumnGetters[0];
 
-            cb.AppendLine($"Column{fieldName} = {dataColumnGetterString} ?? Array.Empty<{fieldTypeName}>();");
+            cb.AppendLine($"Column_{fieldName} = {dataColumnGetterString} ?? Array.Empty<{fieldTypeName}>();");
         }
         foreach (var f in relationFields)
         {
             var (indexColumnName, localFieldName) = f.GetIndexColumnInfo();
-            cb.AppendLine($"Column{localFieldName}Index = GetIndexColumnValues(\"{indexColumnName}\") ?? Array.Empty<int>();");
+            cb.AppendLine($"Column_{localFieldName}Index = GetIndexColumnValues(\"{indexColumnName}\") ?? Array.Empty<int>();");
         }
-        cb.AppendLine($"}} // {t.Name}Table constructor");
+        cb.AppendLine("}");
         cb.AppendLine();
 
         foreach (var f in entityFields)
@@ -382,20 +381,17 @@ public static class ObjectModelGenerator
             var baseStrategy = loadingInfos[0].Strategy; // Invariant: there is always at least one entityColumnInfo (the default one)
             var defaultValue = baseStrategy == ValueSerializationStrategy.SerializeAsStringColumn ? "\"\"" : "default";
 
-            cb.AppendLine($"public {fieldTypeName}[] Column{fieldName} {{ get; }}");
-            cb.AppendLine($"public {fieldTypeName} Get{fieldName}(int index, {fieldTypeName} @default = {defaultValue}) => Column{fieldName}.ElementAtOrDefault(index, @default);");
-            cb.AppendLine();
+            cb.AppendLine($"public {fieldTypeName}[] Column_{fieldName} {{ get; }}");
+            cb.AppendLine($"public {fieldTypeName} Get{fieldName}(int index, {fieldTypeName} @default = {defaultValue}) => Column_{fieldName}.ElementAtOrDefault(index, @default);");
         }
-
-        cb.AppendLine();
         foreach (var f in relationFields)
         {
             var (_, localFieldName) = f.GetIndexColumnInfo();
             var relType = f.FieldType.RelationTypeParameter();
-            cb.AppendLine($"public int[] Column{localFieldName}Index {{ get; }}");
-            cb.AppendLine($"public int Get{localFieldName}Index(int index) => Column{localFieldName}Index.ElementAtOrDefault(index, EntityRelation.None);");
-            cb.AppendLine($"public Get{localFieldName}(int index) => _parentTableSet.Get{relType.Name}(Get{localFieldName}Index(index));");
-            cb.AppendLine();
+            cb.AppendLine($"public int[] Column_{localFieldName}Index {{ get; }}");
+            cb.AppendLine($"public int Get{localFieldName}Index(int index) => Column_{localFieldName}Index.ElementAtOrDefault(index, EntityRelation.None);");
+            cb.AppendLine($"public {relType.Name} Get{localFieldName}(int index) => _GetReferenced{localFieldName}(Get{localFieldName}Index(index));");
+            cb.AppendLine($"private {relType.Name} _GetReferenced{localFieldName}(int referencedIndex) => _parentTableSet.Get{relType.Name}(referencedIndex);");
         }
 
         cb.AppendLine("// Object Getter");
@@ -410,11 +406,12 @@ public static class ObjectModelGenerator
         }
         foreach (var f in relationFields)
         {
+            var (_, localFieldName) = f.GetIndexColumnInfo();
             var relType = f.FieldType.RelationTypeParameter();
-            cb.AppendLine($"r.{f.Name} = new Relation<{relType}>(Get{f.Name.Substring(1)}Index(index), _parentTableSet.Get{relType.Name});");
+            cb.AppendLine($"r.{f.Name} = new Relation<{relType}>(Get{f.Name.Substring(1)}Index(index), _GetReferenced{localFieldName});");
         }
         cb.AppendLine("return r;");
-        cb.AppendLine($"}} // {t.Name} Get");
+        cb.AppendLine("}");
 
         cb.AppendLine($"}} // class {t.Name}Table ");
         cb.AppendLine();
