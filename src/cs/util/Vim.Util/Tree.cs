@@ -67,15 +67,17 @@ namespace Vim.Util
         }
 
         /// <summary>
-        /// Visits the tree hierarchy in a depth-first manner. Ancestors are listed from furthest to closest.
+        /// Visits the tree hierarchy in a depth-first manner.
+        /// Ancestors are listed from furthest to closest.
+        /// The last ancestor is always the current node.
         /// </summary>
         public void VisitDepthFirst(TreeVisitDelegate visitFn, List<Tree<T>> ancestors = null)
         {
             ancestors = ancestors ?? new List<Tree<T>>();
 
-            visitFn(this, ancestors);
-
             ancestors.Add(this);
+
+            visitFn(this, ancestors);
 
             foreach (var child in Children)
             {
