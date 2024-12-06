@@ -65,5 +65,31 @@ namespace Vim.Util
                 }
             }
         }
+
+        /// <summary>
+        /// Visits the tree hierarchy in a depth-first manner.
+        /// Ancestors are listed from furthest to closest.
+        /// The last ancestor is always the current node.
+        /// </summary>
+        public void VisitDepthFirst(TreeVisitDelegate visitFn, List<Tree<T>> ancestors = null)
+        {
+            ancestors = ancestors ?? new List<Tree<T>>();
+
+            ancestors.Add(this);
+
+            visitFn(this, ancestors);
+
+            foreach (var child in Children)
+            {
+                child.VisitDepthFirst(visitFn, ancestors);
+            }
+
+            ancestors.Remove(this);
+        }
+
+        /// <summary>
+        /// The delegate function used for visiting the tree hierarchy.
+        /// </summary>
+        public delegate void TreeVisitDelegate(Tree<T> node, IReadOnlyList<Tree<T>> ancestors);
     }
 }

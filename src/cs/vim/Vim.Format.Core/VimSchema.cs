@@ -55,7 +55,7 @@ namespace Vim.Format
                 var ets = vimSchema.AddEntityTableSchema(entityTable.Name);
 
                 // Collect all the column names in the entity table and sort them alphabetically.
-                foreach (var columnName in entityTable.Columns.Select(nb => nb.Name).ToEnumerable().OrderBy(n => n))
+                foreach (var columnName in entityTable.Columns.Select(nb => nb.Name).OrderBy(n => n))
                     ets.AddColumn(columnName);
             }
             return vimSchema;
