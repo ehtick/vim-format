@@ -7,18 +7,19 @@ namespace Vim.Gltf.Converter.Tests;
 [TestFixture]
 public static class TestVimGltfConverter
 {
-    [Test]
-    public static void VimGltfConverterWritesVimFile()
+    [TestCase("Fox.glb")]
+    [TestCase("ToyCar.glb")]
+    public static void VimGltfConverterWritesVimFile(string gltfFileName)
     {
-        var ctx = new CallerTestContext();
+        var ctx = new CallerTestContext(subDirComponents: gltfFileName);
         var dir = ctx.PrepareDirectory();
 
-        var vimFilePath = Path.Combine(dir, "Fox.glb.vim");
-        var gltfFilePath = Path.Combine(VimFormatRepoPaths.DataDir, "gltf-samples", "Fox.glb");
+        var gltfFilePath = Path.Combine(VimFormatRepoPaths.DataDir, "gltf-samples", gltfFileName);
+        var vimFilePath = Path.Combine(dir, Path.ChangeExtension(Path.GetFileName(gltfFilePath), ".vim"));
+        
         Assert.IsTrue(File.Exists(gltfFilePath), $"Input GLTF file not found: {gltfFilePath}");
 
-        var gltfToVimStore = new GltfToVimStore();
-        gltfToVimStore.Convert(gltfFilePath, vimFilePath);
+        GltfToVimStore.Convert(gltfFilePath, vimFilePath);
 
         Assert.IsTrue(File.Exists(vimFilePath), $"VIM File not found: {vimFilePath}");
     }

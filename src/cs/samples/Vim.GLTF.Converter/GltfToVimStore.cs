@@ -1,16 +1,12 @@
 ﻿using SharpGLTF.Schema2;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Vim.Format;
 using Vim.Format.ObjectModel;
 using Vim.Math3d;
-using Node = Vim.Format.ObjectModel.Node;
-
-// Aliasing some types to reduce verbosity
-//using MeshMap = System.Collections.Generic.Dictionary<int, (int index, Vim.Format.DocumentBuilder.Mesh gb)>;
-//using InstanceMap = System.Collections.Generic.Dictionary<int, (int index, Vim.Format.DocumentBuilder.Instance instance)>;
 
 namespace Vim.Gltf.Converter
 {
@@ -22,7 +18,7 @@ namespace Vim.Gltf.Converter
         private const string GeneratorString = "Vim.Gltf.Converter";
 
         /// <summary>
-        /// Converts a GLTF file into a VIM file.
+        /// Entry point: converts a GLTF file into a VIM file.
         /// </summary>
         public static void Convert(string gltfFilePath, string vimFilePath)
         {
@@ -32,9 +28,9 @@ namespace Vim.Gltf.Converter
         }
 
         private readonly string _gltfFilePath;
-        private readonly SharpGLTF.Schema2.ModelRoot _gltfModelRoot;
-
-        private DisplayUnit _defaultDisplayUnit;
+        private readonly ModelRoot _gltfModelRoot;
+        private readonly DisplayUnit _defaultDisplayUnit;
+        private readonly Category _defaultCategory;
 
         /// <summary>
         /// Private constructor. Please use the static function ConvertGltfToVim to convert a GLTF file into a VIM file.
@@ -43,6 +39,8 @@ namespace Vim.Gltf.Converter
         {
             _gltfFilePath = gltfFilePath;
             _gltfModelRoot = ModelRoot.Load(gltfFilePath);
+            _defaultDisplayUnit = StoreDefaultDisplayUnit();
+            _defaultCategory = StoreDefaultCategory();
         }
 
         /// <summary>
@@ -50,17 +48,22 @@ namespace Vim.Gltf.Converter
         /// </summary>
         private void VisitGltf()
         {
-            _defaultDisplayUnit = StoreDefaultDisplayUnit();
-            var defaultCategory = StoreDefaultCategory();
-            var rootBimDocument = StoreGltfModel(_gltfFilePath, _gltfModelRoot, defaultCategory);
-            var defaultFamily = StoreDefaultFamily(rootBimDocument, defaultCategory);
-            var defaultFamilyType = StoreDefaultFamilyType(rootBimDocument, defaultCategory, defaultFamily);
+            var rootBimDocument = StoreGltfModel(_gltfFilePath, _gltfModelRoot, _defaultCategory);
+            var defaultFamily = StoreDefaultFamily(rootBimDocument, _defaultCategory);
+            var defaultFamilyType = StoreDefaultFamilyType(rootBimDocument, _defaultCategory, defaultFamily);
 
             var scene = _gltfModelRoot.DefaultScene;
-            StoreGltfScene(scene, rootBimDocument, defaultCategory);
+            StoreGltfScene(scene, rootBimDocument, _defaultCategory);
 
             foreach (var node in scene.VisualChildren)
-                StoreGltfNodeRecursively(node, rootBimDocument, defaultCategory, defaultFamilyType, Matrix4x4.Identity);
+            {
+                StoreGltfNodeTree(
+                    node,
+                    rootBimDocument,
+                    _defaultCategory,
+                    defaultFamilyType,
+                    Matrix4x4.Identity);
+            }
         }
 
         /// <summary>
@@ -200,9 +203,27 @@ namespace Vim.Gltf.Converter
         }
 
         /// <summary>
-        /// Stores a GLTF node as a VIM Family Instance entity.
+        /// Stores the GLTF node tree as a collection of VIM Family Instance entities.
         /// </summary>
-        private void StoreGltfNodeRecursively(
+        private void StoreGltfNodeTree(
+            SharpGLTF.Schema2.Node gltfNode,
+            BimDocument bimDocument,
+            Category category,
+            FamilyType familyType,
+            Matrix4x4 parentMatrix)
+        {
+            var newParentMatrix = StoreGltfNode(gltfNode, bimDocument, category, familyType, parentMatrix);
+
+            foreach (var node in gltfNode.VisualChildren)
+            {
+                StoreGltfNodeTree(node, bimDocument, category, familyType, newParentMatrix);
+            }
+        }
+
+        /// <summary>
+        /// Stores a GLTF node as a VIM Family Instance entity and returns its world-space transform.
+        /// </summary>
+        private Matrix4x4 StoreGltfNode(
             SharpGLTF.Schema2.Node gltfNode,
             BimDocument bimDocument,
             Category category,
@@ -231,7 +252,10 @@ namespace Vim.Gltf.Converter
             });
 
             // Store the GLTF node's mesh as a VIM mesh.
-            var vimMeshIndex = StoreGltfMesh(gltfNode.Mesh);
+            var gltfMesh = gltfNode.Mesh;
+            var vimMeshIndex = gltfMesh == null
+                ? EntityRelation.None
+                : StoreGltfMesh(gltfNode.Mesh, bimDocument, category);
 
             // Store the GLTF node's transform as a VIM instance
             var vimInstance = new DocumentBuilder.Instance
@@ -242,24 +266,39 @@ namespace Vim.Gltf.Converter
             Instances.Add(vimInstance);
 
             // Store the node associated to the geometric instance.
-            // This 1:1 relationship connects the entities with the geometric instances.
-            ObjectModelBuilder.Add(new Node
+            // This ordered 1:1 relationship connects the entities with the geometric instances.
+            ObjectModelBuilder.Add(new Vim.Format.ObjectModel.Node
             {
                 _Element = { Index = familyInstanceElement.Index },
             });
+
+            return vimInstance.Transform;
         }
+
+        // NOTE: In GLTF the axis system is (Forward: +Z, Up: +Y, Right: +X), whereas in VIM the axis system is (Forward: +Y, Up: +Z, Right: +X), so we swap the Y and Z components.
+        private static readonly Matrix4x4 AxisSwap = new Matrix4x4(
+            m11: 1, m12: 0, m13: 0, m14: 0,
+            m21: 0, m22: 0, m23: 1, m24: 0,
+            m31: 0, m32: 1, m33: 0, m34: 0,
+            m41: 0, m42: 0, m43: 0, m44: 1);
+
+        // NOTE: IN GLTF, units are assumed to be in meters however in VIM they are in feet.
+        private static readonly Matrix4x4 MetersToFeet = Matrix4x4.CreateScale(3.280839895f);
 
         private static Matrix4x4 ConvertToVimMatrix(System.Numerics.Matrix4x4 a)
             => new Matrix4x4(
                 m11: a.M11, m12: a.M12, m13: a.M13, m14: a.M14,
                 m21: a.M21, m22: a.M22, m23: a.M23, m24: a.M24,
                 m31: a.M31, m32: a.M32, m33: a.M33, m34: a.M34,
-                m41: a.M41, m42: a.M42, m43: a.M43, m44: a.M44);
+                m41: a.M41, m42: a.M42, m43: a.M43, m44: a.M44) * AxisSwap * MetersToFeet;
 
         /// <summary>
-        /// Stores the GLTF mesh and its materials.
+        /// Stores the GLTF mesh and its associated materials.
         /// </summary>
-        private int StoreGltfMesh(SharpGLTF.Schema2.Mesh gltfMesh)
+        private int StoreGltfMesh(
+            SharpGLTF.Schema2.Mesh gltfMesh,
+            BimDocument bimDocument,
+            Category category)
         {
             var vertices = new List<Vector3>();
             var indices = new List<int>();
@@ -267,9 +306,42 @@ namespace Vim.Gltf.Converter
 
             foreach (var gltfPrimitive in gltfMesh.Primitives)
             {
-                // TODO: store vertex and index attributes...
+                // Collect the vertices.
+                var primitiveVertices = gltfPrimitive
+                    .GetVertexAccessor("POSITION")
+                    ?.AsVector3Array()
+                    ?.Select(v => new Vector3(v.X, v.Y, v.Z).Transform(MetersToFeet))
+                    .ToArray();
 
-                // TODO: store material/color info per submesh...
+                if (primitiveVertices == null || primitiveVertices.Length == 0)
+                    continue;
+
+                // Collect the indices.
+                var primitiveIndices = gltfPrimitive.GetIndices()?.Select(i => (int) i).ToArray();
+                if (primitiveIndices == null)
+                {
+                    // "Indices may be null if the primitive does not used indexed drawing. In that case, the vertices are drawn sequentially"
+                    primitiveIndices = new int[primitiveVertices.Length];
+                    for (var i = 0; i < primitiveIndices.Length; ++i)
+                        primitiveIndices[i] = i;
+                }
+
+                var indexOffset = indices.Count;
+                for (var i = 0; i < primitiveIndices.Length; ++i)
+                {
+                    // Add an index offset as we accumulate vertices.
+                    primitiveIndices[i] += indexOffset;
+                }
+                
+                // Collect the material applied to the primitive and apply it as face materials.
+                var materialIndex = StoreGltfMaterial(gltfPrimitive.Material, bimDocument, category);
+                var primitiveFaceMaterials = new int[primitiveIndices.Length / 3]; // division by 3 because we're dealing with a tri-mesh.
+                for (var i = 0; i < primitiveFaceMaterials.Length; ++i)
+                    primitiveFaceMaterials[i] = materialIndex;
+
+                vertices.AddRange(primitiveVertices);
+                indices.AddRange(primitiveIndices);
+                faceMaterials.AddRange(primitiveFaceMaterials);
             }
 
             var meshIndex = Meshes.Count;
@@ -280,13 +352,56 @@ namespace Vim.Gltf.Converter
             );
             Meshes.Add(vimMesh);
 
-
             return meshIndex;
         }
 
-        private void StoreGltfMaterial(SharpGLTF.Schema2.Material gltfMaterial)
+        /// <summary>
+        /// Store the GLTF material.
+        /// </summary>
+        private int StoreGltfMaterial(
+            SharpGLTF.Schema2.Material gltfMaterial,
+            BimDocument bimDocument,
+            Category category)
         {
-            // TODO
+            var getOrAddResult = ObjectModelBuilder.GetOrAdd(
+                gltfMaterial.LogicalIndex,
+            _ =>
+                {
+                    var maybeChannel = gltfMaterial.FindChannel("BaseColor") ?? gltfMaterial.FindChannel("Diffuse");
+                    if (maybeChannel == null)
+                        return new Format.ObjectModel.Material { Color_X = 0.5d, Color_Y = 0.5d, Color_Z = 0.5d }; // default material
+
+                    var color = maybeChannel.Value.Color;
+
+                    return new Format.ObjectModel.Material { Color_X = color.X, Color_Y = color.Y, Color_Z = color.Z, Transparency = 1 - color.W };
+                });
+
+            var material = getOrAddResult.Entity;
+            var materialIndex = material.Index;
+            
+            if (!getOrAddResult.Added)
+                return materialIndex; // If the GetOrAdd operation already contained the material, then return early.
+
+            // The material entity was just added so apply an Element to it.
+            var materialElement = ObjectModelBuilder.Add(new Element()
+            {
+                Id = VimConstants.SyntheticElementId,
+                Name = gltfMaterial.Name,
+                _BimDocument = { Index = bimDocument.Index },
+                _Category = { Index = category.Index },
+            });
+
+            // Connect the material entity to the element we created.
+            material._Element.Index = materialElement.Index;
+
+            // Store any relevant parameters about the material.
+            StoreParameter(materialElement, nameof(gltfMaterial.Alpha), $"{gltfMaterial.Alpha:G}");
+            StoreParameter(materialElement, nameof(gltfMaterial.AlphaCutoff), gltfMaterial.AlphaCutoff.ToString(CultureInfo.InvariantCulture));
+            StoreParameter(materialElement, nameof(gltfMaterial.DoubleSided), gltfMaterial.DoubleSided.ToString());
+            StoreParameter(materialElement, nameof(gltfMaterial.IndexOfRefraction), gltfMaterial.IndexOfRefraction.ToString(CultureInfo.InvariantCulture));
+            StoreParameter(materialElement, nameof(gltfMaterial.Unlit), gltfMaterial.Unlit.ToString());
+
+            return materialIndex;
         }
 
         private void WriteVim(string vimFilePath)
@@ -294,62 +409,5 @@ namespace Vim.Gltf.Converter
             var vimDocumentBuilder = ToDocumentBuilder(GeneratorString, VersionString);
             vimDocumentBuilder.Write(vimFilePath);
         }
-
-        
-
-
-        
-        ///// <summary>
-        ///// Main entry point 
-        ///// </summary>
-        ///// <param name="gltfFilePath"></param>
-        ///// <param name="vimFilePath"></param>
-        //public void Convert(string gltfFilePath, string vimFilePath)
-        //{
-        //    var gltfModel = 
-
-        //    var gltfScene = gltfModel.LogicalScenes.FirstOrDefault();
-        //    StoreGltfScene(gltfScene);
-
-        //    WriteVim(vimFilePath);
-
-            
-
-        //    // Each GLTF mesh is interpreted as an instance in VIM
-        //    for (var meshIndex = 0; meshIndex < gltfModel.LogicalMeshes.Count; meshIndex++)
-        //    {
-        //        var mesh = gltfModel.LogicalMeshes[meshIndex];
-        //        Console.WriteLine($"\nMesh {meshIndex}:");
-        //        Console.WriteLine($"  Mesh Name: {mesh.Name}");
-
-        //        // Iterate through mesh primitives (these correspond to submeshes)
-        //        for (var primitiveIndex = 0; primitiveIndex < mesh.Primitives.Count; primitiveIndex++)
-        //        {
-        //            var primitive = mesh.Primitives[primitiveIndex];
-        //            Console.WriteLine($"  Primitive {primitiveIndex}:");
-
-        //            // Read vertex attributes
-        //            foreach (var attribute in primitive.VertexAccessors)
-        //            {
-        //                Console.WriteLine($"    Attribute: {attribute.Key}");
-        //                Console.WriteLine($"      Vertex Count: {attribute.Value.Count}");
-        //                Console.WriteLine($"      Data Type: {attribute.Value.Dimensions}");
-        //            }
-
-        //            // Read indices
-        //            if (primitive.IndexAccessor != null)
-        //            {
-        //                Console.WriteLine($"    Indices Count: {primitive.IndexAccessor.Count}");
-        //            }
-
-        //            // Material information
-        //            if (primitive.Material != null)
-        //            {
-        //                Console.WriteLine($"    Material Name: {primitive.Material.Name}");
-        //                Console.WriteLine($"    Alpha Mode: {primitive.Material.Alpha}");
-        //            }
-        //        }
-        //    }
-        //}
     }
 }
