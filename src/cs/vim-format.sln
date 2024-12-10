@@ -55,9 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vim.JsonDigest.Tests", "sam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vim.JsonDigest.AzureFunction", "samples\Vim.JsonDigest.AzureFunction\Vim.JsonDigest.AzureFunction.csproj", "{A0FA4646-67AC-4310-9BA5-53D2D7CF218F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vim.Gltf.Converter", "samples\Vim.GLTF.Converter\Vim.Gltf.Converter.csproj", "{8C81050A-951C-418F-BBA8-76EE0353863C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vim.Gltf.Converter", "samples\Vim.Gltf.Converter\Vim.Gltf.Converter.csproj", "{8C81050A-951C-418F-BBA8-76EE0353863C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vim.Gltf.Converter.Tests", "samples\Vim.GLTF.Converter.Tests\Vim.Gltf.Converter.Tests.csproj", "{902CF0A5-3433-4CF4-AEFB-E1E0E7A5A3F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vim.Gltf.Converter.Tests", "samples\Vim.Gltf.Converter.Tests\Vim.Gltf.Converter.Tests.csproj", "{902CF0A5-3433-4CF4-AEFB-E1E0E7A5A3F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
