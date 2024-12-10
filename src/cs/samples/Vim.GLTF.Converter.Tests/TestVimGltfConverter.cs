@@ -23,9 +23,27 @@ public static class TestVimGltfConverter
 
         GltfToVimStore.Convert(gltfFilePath, vimFilePath);
 
-        Assert.IsTrue(File.Exists(vimFilePath), $"VIM File not found: {vimFilePath}");
+        Assert.IsTrue(File.Exists(vimFilePath), $"Output VIM file not found: {vimFilePath}");
 
         var vim = VimScene.LoadVim(vimFilePath);
         vim.Validate();
+    }
+
+    [TestCase("RoomTest.vim")]
+    public static void VimGltfConverterWritesGltfFile(string vimFileName)
+    {
+        var ctx = new CallerTestContext(subDirComponents: vimFileName);
+        var dir = ctx.PrepareDirectory();
+
+        var vimFilePath = Path.Combine(VimFormatRepoPaths.DataDir, vimFileName);
+        var gltfFilePath = Path.Combine(dir, Path.ChangeExtension(Path.GetFileName(vimFilePath), ".glb"));
+
+        Assert.IsTrue(File.Exists(vimFilePath), $"Input VIM file path not found: {vimFilePath}");
+
+        VimToGltfStore.Convert(vimFilePath, gltfFilePath);
+
+        Assert.IsTrue(File.Exists(gltfFilePath), $"Output GLTF file not found: {gltfFilePath}");
+
+        // Util.IO.OpenFile(gltfFilePath);
     }
 }

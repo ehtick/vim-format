@@ -268,7 +268,7 @@ namespace Vim.Gltf.Converter
             // Store the GLTF node's transform as a VIM instance
             var vimInstance = new DocumentBuilder.Instance
             {
-                Transform = parentMatrix * ConvertToVimMatrix(gltfNode.LocalMatrix),
+                Transform = parentMatrix * ConvertToVimMatrix(gltfNode.LocalMatrix, _scale),
                 MeshIndex = vimMeshIndex,
             };
             Instances.Add(vimInstance);
@@ -290,12 +290,12 @@ namespace Vim.Gltf.Converter
             m31: 0, m32: 1, m33: 0, m34: 0,
             m41: 0, m42: 0, m43: 0, m44: 1);
 
-        private Matrix4x4 ConvertToVimMatrix(System.Numerics.Matrix4x4 a)
+        private static Matrix4x4 ConvertToVimMatrix(System.Numerics.Matrix4x4 a, float scale)
             => new Matrix4x4(
                 m11: a.M11, m12: a.M12, m13: a.M13, m14: a.M14,
                 m21: a.M21, m22: a.M22, m23: a.M23, m24: a.M24,
                 m31: a.M31, m32: a.M32, m33: a.M33, m34: a.M34,
-                m41: a.M41, m42: a.M42, m43: a.M43, m44: a.M44) * AxisSwap * _scale;
+                m41: a.M41, m42: a.M42, m43: a.M43, m44: a.M44) * AxisSwap * scale;
 
         /// <summary>
         /// Stores the GLTF mesh and its associated materials.
@@ -315,7 +315,7 @@ namespace Vim.Gltf.Converter
                 var primitiveVertices = gltfPrimitive
                     .GetVertexAccessor("POSITION")
                     ?.AsVector3Array()
-                    ?.Select(v => new Vector3(v.X, v.Y, v.Z) * _scale)
+                    ?.Select(v => new Vector3(v.X, v.Y, v.Z))
                     .ToArray();
 
                 if (primitiveVertices == null || primitiveVertices.Length == 0)
