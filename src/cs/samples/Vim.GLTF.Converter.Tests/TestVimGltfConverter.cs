@@ -8,6 +8,7 @@ namespace Vim.Gltf.Converter.Tests;
 public static class TestVimGltfConverter
 {
     [TestCase("Fox.glb")]
+    [TestCase("SciFiHelmet.glb")]
     [TestCase("ToyCar.glb")]
     public static void VimGltfConverterWritesVimFile(string gltfFileName)
     {

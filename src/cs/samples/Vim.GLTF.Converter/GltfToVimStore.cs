@@ -10,6 +10,9 @@ using Vim.Math3d;
 
 namespace Vim.Gltf.Converter
 {
+    /// <summary>
+    /// A bare-bones example of converting a GLTF into a VIM file.
+    /// </summary>
     public class GltfToVimStore : ObjectModelStore
     {
         // ASSEMBLY VERSION INFO
@@ -17,16 +20,20 @@ namespace Vim.Gltf.Converter
         public static readonly string VersionString = $"v{AssemblyVersion.Major}.{AssemblyVersion.Minor}.{AssemblyVersion.Build}";
         private const string GeneratorString = "Vim.Gltf.Converter";
 
+        // NOTE: IN GLTF, units are assumed to be in meters however in VIM they are in feet.
+        public const float MetersToFeet = 3.280839895f;
+
         /// <summary>
-        /// Entry point: converts a GLTF file into a VIM file.
+        /// Converts a GLTF file into a VIM file.
         /// </summary>
-        public static void Convert(string gltfFilePath, string vimFilePath)
+        public static void Convert(string gltfFilePath, string vimFilePath, float scale = MetersToFeet)
         {
-            var store = new GltfToVimStore(gltfFilePath);
+            var store = new GltfToVimStore(gltfFilePath, scale);
             store.VisitGltf();
             store.WriteVim(vimFilePath);
         }
 
+        private readonly float _scale;
         private readonly string _gltfFilePath;
         private readonly ModelRoot _gltfModelRoot;
         private readonly DisplayUnit _defaultDisplayUnit;
@@ -35,9 +42,10 @@ namespace Vim.Gltf.Converter
         /// <summary>
         /// Private constructor. Please use the static function ConvertGltfToVim to convert a GLTF file into a VIM file.
         /// </summary>
-        private GltfToVimStore(string gltfFilePath)
+        private GltfToVimStore(string gltfFilePath, float scale = MetersToFeet)
         {
             _gltfFilePath = gltfFilePath;
+            _scale = scale;
             _gltfModelRoot = ModelRoot.Load(gltfFilePath);
             _defaultDisplayUnit = StoreDefaultDisplayUnit();
             _defaultCategory = StoreDefaultCategory();
@@ -282,15 +290,12 @@ namespace Vim.Gltf.Converter
             m31: 0, m32: 1, m33: 0, m34: 0,
             m41: 0, m42: 0, m43: 0, m44: 1);
 
-        // NOTE: IN GLTF, units are assumed to be in meters however in VIM they are in feet.
-        private static readonly Matrix4x4 MetersToFeet = Matrix4x4.CreateScale(3.280839895f);
-
-        private static Matrix4x4 ConvertToVimMatrix(System.Numerics.Matrix4x4 a)
+        private Matrix4x4 ConvertToVimMatrix(System.Numerics.Matrix4x4 a)
             => new Matrix4x4(
                 m11: a.M11, m12: a.M12, m13: a.M13, m14: a.M14,
                 m21: a.M21, m22: a.M22, m23: a.M23, m24: a.M24,
                 m31: a.M31, m32: a.M32, m33: a.M33, m34: a.M34,
-                m41: a.M41, m42: a.M42, m43: a.M43, m44: a.M44) * AxisSwap * MetersToFeet;
+                m41: a.M41, m42: a.M42, m43: a.M43, m44: a.M44) * AxisSwap * _scale;
 
         /// <summary>
         /// Stores the GLTF mesh and its associated materials.
@@ -310,7 +315,7 @@ namespace Vim.Gltf.Converter
                 var primitiveVertices = gltfPrimitive
                     .GetVertexAccessor("POSITION")
                     ?.AsVector3Array()
-                    ?.Select(v => new Vector3(v.X, v.Y, v.Z).Transform(MetersToFeet))
+                    ?.Select(v => new Vector3(v.X, v.Y, v.Z) * _scale)
                     .ToArray();
 
                 if (primitiveVertices == null || primitiveVertices.Length == 0)
@@ -356,7 +361,7 @@ namespace Vim.Gltf.Converter
         }
 
         /// <summary>
-        /// Store the GLTF material.
+        /// Store the GLTF material. Note: many GLTF models are styled using textures, however these textures are not stored in the VIM file in this example.
         /// </summary>
         private int StoreGltfMaterial(
             SharpGLTF.Schema2.Material gltfMaterial,
