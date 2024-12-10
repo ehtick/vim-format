@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.IO;
+using Vim.Format.SceneBuilder;
 using Vim.Util.Tests;
 
 namespace Vim.Gltf.Converter.Tests;
@@ -23,5 +24,8 @@ public static class TestVimGltfConverter
         GltfToVimStore.Convert(gltfFilePath, vimFilePath);
 
         Assert.IsTrue(File.Exists(vimFilePath), $"VIM File not found: {vimFilePath}");
+
+        var vim = VimScene.LoadVim(vimFilePath);
+        vim.Validate();
     }
 }
