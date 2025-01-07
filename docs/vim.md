@@ -11,21 +11,6 @@ Characteristics of the VIM format:
 
 Unlike other 3D data formats, VIM is designed to carry substantial amounts of complex relational data and instanced geometry in an efficient and standardized manner with minimal pre-processing.
 
-<!--
-* Unlike Revit and FBX, VIM is an open and cross platform format and does not require an SDK to read or write
-* Unlike IFC and STEP, VIM geometry is already triangulated and is in a GPU-friendly format
-* Unlike glTF and USD, VIM supports structured BIM data in a compact relational form
-* Unlike 3DXML and Collada, VIM is a binary format and requires minimal parsing 
-* Unlike glTF, VIM is an opinionated format, that has fixed access patterns for data buffers, and can be extended in very precise ways to simplify parsing.
-* Unlike FBX, VIM is easy to extend with new buffers. 
-* Unlike glTF and FBX, VIM is not designed to specify animated assets  
--->
-
-<!-- TODO: Do we want to keep this?
-# Sample Implementation
-A sample validating VIM reader can be found at: https://github.com/vimaec/vim/blob/master/VIMReference/Program.cs
--->
-
 # About this Specification
 
 This is the specification for version 1.0.0 of the VIM data format. It is divided up into the following parts:
